@@ -134,6 +134,55 @@ function addAdvertisementSource(map) {
 					'data': {
 						'type': 'FeatureCollection',
 						'features': locations
+					},
+					'cluster': true,
+					'clusterMaxZoom': 16,
+					'clusterRadius': 60
+				});
+
+				map.addLayer({
+					'id': 'count-quang-cao',
+					'type': 'circle',
+					'filter': ['has', 'point_count'],
+					'source': 'diem-dat',
+					paint: {
+						// Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
+						// with three steps to implement three types of circles:
+						//   * Blue, 20px circles when point count is less than 100
+						//   * Yellow, 30px circles when point count is between 100 and 750
+						//   * Pink, 40px circles when point count is greater than or equal to 750
+						'circle-color': [
+							'step',
+							['get', 'point_count'],
+							'#51bbd6',
+							5,
+							'#f1f075',
+							10,
+							'#f28cb1'
+						],
+						'circle-radius': [
+							'step',
+							['get', 'point_count'],
+							20,
+							2,
+							25,
+							5,
+							35,
+							7,
+							40
+						]
+					}
+				});
+
+				map.addLayer({
+					id: 'cluster-count',
+					type: 'symbol',
+					source: 'diem-dat',
+					filter: ['has', 'point_count'],
+					layout: {
+					'text-field': ['get', 'point_count_abbreviated'],
+					'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+					'text-size': 12
 					}
 				});
 
@@ -142,6 +191,7 @@ function addAdvertisementSource(map) {
 					'id': 'quang-cao',
 					'type': 'symbol',
 					'source': 'diem-dat',
+					'filter': ['!',['has', 'point_count']],
 					'layout': {
 						'icon-image': 'quang-cao',
 						'icon-size': 0.5,
@@ -171,24 +221,6 @@ function addAdvertisementSource(map) {
 		bsOffcanvas.toggle();
 		const feature = e.feature[0];
 	});
-
-	// map.on('mouseover', 'quang-cao', (e) => {
-	// 	// Copy coordinates array.
-	// 	const coordinates = e.features[0].geometry.coordinates.slice();
-	// 	const description = e.features[0].properties.description;
-		 
-	// 	// Ensure that if the map is zoomed out such that multiple
-	// 	// copies of the feature are visible, the popup appears
-	// 	// over the copy being pointed to.
-	// 	while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-	// 	coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-	// 	}
-		 
-	// 	new mapboxgl.Popup()
-	// 	.setLngLat(coordinates)
-	// 	.setHTML(description)
-	// 	.addTo(map);
-	// 	});
 		
 
 	// const popup = new mapboxgl.Popup()
@@ -356,6 +388,16 @@ mapboxScript.onload = function () {
 
 		attachToggle('bao-cao', 'bao-cao', map);
 		attachToggle('quang-cao', 'quang-cao', map);
-	});	
+	});
+	
+	map.on('style.load', function(e) {
+		map.on('click', function(e) {
+			var coor = e.lngLat;
+			new mapboxgl.Popup()
+				.setLngLat(coor)
+				.setHTML(coor)
+				.addTo(map)
+		})
+	});
 }
 
