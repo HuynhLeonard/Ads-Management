@@ -17,11 +17,12 @@ const AdsCategoriesSchema = new mongoose.Schema({
 });
 
 // create id for this one
-AdsCategoriesSchema.pre('save', async function(){
+AdsCategoriesSchema.pre('save', async function(next){
     const adsCat = this;
-    const count = await adsCat.countDocument();
-    adsCat.CategoriesID = 'H' + String(count + 1).padStart(3,'0');
+    const count = await AdsCategories.countDocuments();
+    adsCat.CategoriesID = 'HT' + String(count + 1).padStart(3,'0');
     next();
-})
+});
+const AdsCategories = mongoose.model('AdsCategories', AdsCategoriesSchema);
 
-export default mongoose.model('AdsCategories', AdsCategoriesSchema);
+export default AdsCategories

@@ -1,10 +1,10 @@
 import express from 'express';
 import path from 'path';
 // create 2 servers
-import http from 'http';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import http from 'http';
+import mongoose from 'mongoose';
 const __dirname = path.resolve();
 
 dotenv.config(path.join(__dirname, '.env'));
@@ -24,10 +24,11 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // ======================================================================================
 
 // setup for governmentApp
-import {createNewDistrict,deleteDistrict,getAllDistricts,getDistrictByID,updateDistrict} from './government/services/districtService.js';
-import {createNewWard,getAllWard,getWard,getWardOfDistrict,updateWard} from './government/services/wardService.js';
-import {createNewLocationType,deleteLocationType,getAllLocationType,getLocationType,updateLocationType} from './government/services/locationTypeService.js';
-import {createNewLocation, getAllLocation} from './government/services/locationService.js';
+import { createCategories, deleteCategorires, getAllCategories, getSingleCategories, modifyCategories } from './government/services/adsCategoriesService.js';
+import { createNewDistrict, deleteDistrict, getAllDistricts, getDistrictByID, updateDistrict } from './government/services/districtService.js';
+import { createNewLocation, getAllLocation } from './government/services/locationService.js';
+import { createNewLocationType, deleteLocationType, getAllLocationType, getLocationType, updateLocationType } from './government/services/locationTypeService.js';
+import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
 // import * as boardTypeService from './government/services/boardTypeService.js';
 // import * as boardService from './government/services/boardService.js';
 
@@ -79,6 +80,13 @@ governmentApp.delete('/api/spot-type/:id', deleteLocationType);
 // for locations
 governmentApp.post('/api/location/create-location', createNewLocation);
 governmentApp.get('/api/location/', getAllLocation);
+
+// for adscategories
+governmentApp.post('/api/category/create-category', createCategories);
+governmentApp.get('/api/category', getAllCategories);
+governmentApp.get('/api/category/:id',getSingleCategories);
+governmentApp.put('/api/category/:id', modifyCategories);
+governmentApp.delete('/api/category/:id', deleteCategorires);
 
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
