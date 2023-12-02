@@ -1,71 +1,64 @@
 import LocationType from '../models/locationTypeSchema.js';
 
-export const createNewLocationType = async (req,res,next) => {
+// Done
+export const createNewLocationType = async (locationTypeData) => {
     try {
-        const newSpotType = new LocationType(req.body);
+        const newSpotType = new LocationType(locationTypeData);
         const savedData = await newSpotType.save();
 
-        res.status(200).json({
-            savedData
-        });
+        return savedData;
     } catch (error) {
         throw new Error('Error happened when creating new spot Type');
     }
 };
 
-export const getLocationType = async (req,res,next) => {
+// Done
+export const getLocationType = async (locationTypeID) => {
     try {
-        const type = await LocationType.find({locationTypeID: req.params.id});
+        const type = await LocationType.find({locationTypeID: locationTypeID});
 
         if(!type) {
-            res.status(500).json({
-                message: 'Invalid ID'
-            });
+            return {message: 'Invalid ID'}
         } else {
-            res.status(200).json({
-                type
-            })
+            return type;
         }
     } catch (error) {
         throw new Error('Error happened when getting data.');
     }
 };
 
-export const getAllLocationType = async (req,res,next) => {
+// Done
+export const getAllLocationType = async () => {
     try {
         const types = await LocationType.find();
 
-        res.status(200).json({
-            types
-        });
+        return types;
     } catch (error) {
         throw new Error('Error happened when getting data.');
     }
 };
 
-export const updateLocationType = async (req,res,next) => {
+// Done
+export const updateLocationType = async (locationTypeID, updateData) => {
     try {
         console.log(req.body);
         await LocationType.findOneAndUpdate(
-            { locationTypeID: req.params.id },
-            { $set: req.body },
+            { locationTypeID: locationTypeID },
+            { $set: updateData },
         );
 
-        res.status(200).json({
-            message: 'Success'
-        })
+        return {message: 'Update Type Successfully'};
     } catch (error) {
         throw new Error('Error happened when updating data.')
     }
 };
 
-export const deleteLocationType = async (req,res,next) => {
+// Done
+export const deleteLocationType = async (locationTypeID) => {
     try {
-        await LocationType.findOneAndDelete({locationTypeID: req.prarams.id});
+        await LocationType.findOneAndDelete({locationTypeID: locationTypeID});
 
-        res.status(200).json({
-            message: 'Deleting spot type successfully'
-        })
+        return { message: 'Deleting spot type successfully' }
     } catch (error) {
         throw new Error('Error Happened when deleting data');
     }
