@@ -78,3 +78,23 @@ export const updateWard = async (req,res,next) => {
 };
 
 // add delete (delete by Id and all in district)
+
+// add all
+export const findAll = async (req,res,next) => {
+    try {
+        const count = await Ward.countDocuments();
+        res.status(200).json({
+            count
+        })
+    } catch (error) {
+        throw new Error('Error happened')
+    }
+};
+
+export const countAllOfDistrict = async (req,res,next) => {
+    try {
+        return Ward.countDocuments({districtID: req.body.districtID});
+    } catch (error) {
+        throw new Error(`Error get wards of count documents: ${error.message}`)
+    }
+};
