@@ -1,18 +1,16 @@
 import Ward from '../models/wardSchema.js';
 import District from '../models/districtSchema.js';
 
-export const createNewWard = async(req,res,next) => {
+// Done
+export const createNewWard = async(wardData) => {
     try {   
-        const existedDistrict = await District.findOne({districtID: req.body.districtID});
+        const existedDistrict = await District.find({districtID: wardData.districtID});
         if(existedDistrict) {
-            const existedWard = await Ward.findOne({wardID: req.body.wardID});
+            const existedWard = await Ward.find({wardID: wardData.wardID});
             if(!existedWard) {
                 const savedWard = new Ward(req.body);
                 await savedWard.save();
-                res.status(200).json({
-                    message: 'success',
-                    savedWard
-                })
+                return savedWard;
             } else {
                 res.status(400).json({
                     message: 'WardID have already existed'
@@ -28,72 +26,79 @@ export const createNewWard = async(req,res,next) => {
     }
 };
 
-export const getWard = async (req,res,next) => {
+// Done
+export const getWard = async (wardID) => {
     try {
-        const ward = await Ward.findOne({wardID: req.body.wardID});
+        const ward = await Ward.findOne({wardID: wardID});
         if(!ward) {
-            res.status(400).json({
+            return {
                 message: 'Ward ID not existed!'
-            })
+            };
         }
-        res.status(200).json({
-            ward
-        })
+        
+        return ward;
     } catch (error) {
         throw new Error('Error happended when get ward!');
     }
 };
 
-export const getAllWard = async(req,res,next) => {
+export const getAllWard = async() => {
     try {
         const wards = await Ward.find();
-        res.status(200).json({
-            wards
-        })
+        return wards;
     } catch (error) {
-        
+        throw new Error('Error happended when get ward!');
     }
 };
 
-export const getWardOfDistrict = async(req,res,next) => {
+export const getWardOfDistrict = async(districtID) => {
     try {
-        const wards = await Ward.findOne({districtID: req.params.districtID});
-        res.status(200).json({
-            wards
-        })
+        const wards = await Ward.findOne({districtID: districtID});
+        
+        return wards;
     } catch (error) {
         throw new Error('Error happened when getting ward.');
     }
 };
 
-export const updateWard = async (req,res,next) => {
+export const updateWard = async (wardID, updatedData) => {
     try {
-        const wards = await Ward.findOneAndUpdate({wardID: req.params.wardID}, {$set: req.body});
-        res.status(200).json({
+        const wards = await Ward.findOneAndUpdate({wardID: wardID}, {$set: updatedData});
+        return {
             message: "Ward update successfully",
-        });
+        }
     } catch (error) {
         throw new Error('Error happened when update ward.');
     }
 };
 
 // add delete (delete by Id and all in district)
+export const deleteWard = async (wardID) => {
+    try {
+        await Ward.findOneAndDelete({wardID: wardID});
+
+        return {message: 'Delete ward successfully'};
+    } catch (error) {
+        throw new Error('Error happened.')
+    }
+}
+
 
 // add all
-export const findAll = async (req,res,next) => {
+export const countAll = async () => {
     try {
         const count = await Ward.countDocuments();
-        res.status(200).json({
-            count
-        })
+        return count;
     } catch (error) {
         throw new Error('Error happened')
     }
 };
 
-export const countAllOfDistrict = async (req,res,next) => {
+export const countAllOfDistrict = async (districtID) => {
     try {
-        return Ward.countDocuments({districtID: req.body.districtID});
+        const count = Ward.countDocuments({districtID: districtID});
+        
+        return count;
     } catch (error) {
         throw new Error(`Error get wards of count documents: ${error.message}`)
     }
