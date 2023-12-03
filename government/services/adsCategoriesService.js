@@ -61,3 +61,8 @@ export const deleteCategorires = async (req,res,next) => {
         throw new Error('Error happened when delete category.');
     }
 };
+
+
+export const check = (req,res,next) => {
+
+}
