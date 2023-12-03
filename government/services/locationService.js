@@ -2,21 +2,19 @@ import Location from '../models/locationSchema.js';
 import District from '../models/districtSchema.js';
 import Ward from '../models/wardSchema.js';
 
-export const createNewLocation = async (req,res,next) => {
+// Contruct this file Done
+// Done
+export const createNewLocation = async (locationData) => {
     try {
-        const newLocation = new Location(req.body);
-        const existedDistrict = await District.find({districtID: req.body.districtID});
-        const existedWard = await Ward.find({wardID: req.body.wardID});
+        const newLocation = new Location(locationData);
+        const existedDistrict = await District.find({districtID: locationData.districtID});
+        const existedWard = await Ward.find({wardID: locationData.wardID});
         
         if(!existedDistrict || !existedWard) {
-            res.status(400).json({
-                message: 'Error'
-            })
+            return {message: 'Error'};
         } else {
             await newLocation.save();
-            res.status(200).json({
-                newLocation
-            });
+            return {message: 'Location created successfully'};
         }
 
     } catch (error) {
@@ -24,110 +22,97 @@ export const createNewLocation = async (req,res,next) => {
     }
 };
 
-export const getAllLocation = async (req,res,next) => {
+// Done
+export const getAllLocation = async () => {
     try {
         const locations = await Location.find();
 
-        res.status(200).json({
-            locations
-        })
+        return locations;
     } catch (error) {
         throw new Error('Error happened when getting all locations data.');
     }
 };
 
-export const updateLocation = async (req,res,next) => {
+// Done
+export const updateLocation = async (locationID,updateData) => {
     try {
-        const updatedLocation = await Location.findOneAndUpdate({locationID: req.params.id}, {$set: req.body});
+        const updatedLocation = await Location.findOneAndUpdate({locationID: locationID}, {$set: updateData});
 
-        res.status(200).json({
-            message: 'Location update successfully'
-        })
+        return {message: 'Location update successfully'};
     } catch (error) {
         throw new Error('Error happened when update location.')
     }
 };
 
-export const deleteLocation = async (req,res,next) => {
+// Done
+export const deleteLocation = async (locationID) => {
     try {
-        await Location.findOneAndDelete({locationID: req.params.id});
-        res.status(200).json({
-            message: 'Location deleted successfully'
-        })
+        await Location.findOneAndDelete({locationID: locationID});
+        return {message: 'Location deleted'};
     } catch (error) {
         throw new Error('Error happened when deleting location');
     }
 };
 
 // using locationID
-export const getSingleLocation = async (req,res,next) => {
+export const getSingleLocation = async (locationID) => {
     try {
-        const location = await Location.findOne({locationID: req.params.locationID});
+        const location = await Location.findOne({locationID: locationID});
 
-        res.status(200).json({
-            location
-        })
+        return location;
     } catch (error) {
         throw new Error('Error');
     }
 };
 
-// sort by type
-export const getLocationByType = async (req,res,next) => {
+// sort by type (Done)
+export const getLocationByType = async (spotType) => {
     try {
-        const locations = await Location.find({spotType: req.params.spotType});
+        const locations = await Location.find({spotType: spotType});
 
-        res.status(200).json({
-            location
-        });
+        return locations;
     } catch (error) {
         throw new Error('Error');
     }
 };
 
-// using districtID
-export const getLocationFromDistricts = async (req,res,next) => {
+// using districtID (Done)
+export const getLocationFromDistricts = async (districtID) => {
     try {
-        const locations = await Location.findOne({districtID: req.params.districtID});
+        const locations = await Location.findOne({districtID: districtID});
 
-        res.status(200).json({
-            locations
-        });
+        return locations;
     } catch (error) {
         throw new Error('Error');
     }
 };
 
 // using wardID
-export const getLocationFromWard = async (req,res,next) => {
+export const getLocationFromWard = async (wardID) => {
     try {
-        const locations = await Location.findOne({wardID: req.params.wardID});
-        res.status(200).json({
-            locations
-        });
+        const locations = await Location.findOne({wardID: wardID});
+        
+        return locations
     } catch (error) {
         throw new Error('Error')
     }
 };
 
 // count all place
-export const countAll = async (req,res,next) => {
+export const countAll = async () => {
     try {
         const countDoc = await Location.countDocuments();
-        res.status(200).json({
-            countDoc
-        })
+        return countDoc
     } catch (error) {
         throw new Error('Error');
     }
 };
 
-export const countByDistrict = async (req,res,next) => {
+// Done
+export const countByDistrict = async (districtID) => {
     try {
-        const countDoc = await location.countDocuments({districtID: req.params.districtID});
-        res.status(200).json({
-            countDoc
-        })
+        const countDoc = await location.countDocuments({districtID: districtID});
+        return countDoc;
     } catch (error) {
         throw new Error('Error');
     }

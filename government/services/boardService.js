@@ -1,71 +1,67 @@
 import Board from '../models/boardSchema.js';
 
 // check loi vi tri diem dat
-export const createNewBoard = async (req,res,next) => {
+// Done
+export const createNewBoard = async (boardData) => {
     try {
-        const newBoard = new Board(req.body);
+        const newBoard = new Board(boardData);
         const saveData = await newBoard.save();
-        res.status(200).json({
-            saveData
-        })
+        return saveData;
     } catch (error) {
         throw new Error(`Error creating board: ${error.message}`);
     }
 };
 
-export const getSingleBoard = async (req,res,next) => {
+// Done
+export const getSingleBoard = async (boardID) => {
     try {
-        const board = await Board.find({boardID: req.params.id});
-        res.status(200).json({
-            board
-        });
+        const board = await Board.find({boardID: boardID});
+        return board;
     } catch (error) {
         throw new Error(`Error getting board by ID: ${error.message}`);
     }
 };
 
-export const getAllBoards = async (req,res,next) => {
+// Done
+export const getAllBoards = async () => {
     try {
         const boards = await Board.find();
-        res.status(200).json({
-            boards
-        });
+        
+        return boards
     } catch (error) {
         throw new Error(`Error getting all boards: ${error.message}`);
     }
 };
 
-export const getAllBoardsOfSpot = async (req,res,next) => {
+// done
+export const getAllBoardsOfSpot = async (spotID) => {
     try {
-        const boards = await Board.find();
-        res.status(200).json({
-            boards
-        })
+        const boards = await Board.find({spotID: spotID});
+        return boards;
     } catch (error) {
         throw new Error(`Error getting all boards: ${error.message}`);
     }
 };
 
-export const updateBoard = async (req,res,next) => {
+// done
+export const updateBoard = async (boardID, updatedData) => {
     try {
         const updatedBoard = await Board.findOneAndUpdate(
-            { boardID: req.params.id },
-            { $set: req.body },
+            { boardID: boardID },
+            { $set: updatedData },
         );
-        res.status(200).json({
-            updatedBoard
-        })
+        
+        return {message: 'Board upated successfully'}
     } catch (error) {
         throw new Error(`Error updating board by ID: ${error.message}`);
     }
 };
 
-export const deleteBoardByID = async (req,res,next) => {
+// done
+export const deleteBoardByID = async (boardID) => {
     try {
-        await Board.findOneAndDelete({ boardID: req.params.id });
-        res.status(200).json({
-            message: 'Board Deleted successfully'
-        });
+        await Board.findOneAndDelete({ boardID: boardID });
+        return {message: 'Board deleted successfully.'}
     } catch (error) {
         throw new Error(`Error deleting board by ID: ${error.message}`);
     }
@@ -74,9 +70,7 @@ export const deleteBoardByID = async (req,res,next) => {
 export const countAll = async () => {
     try {
         const docs = Board.countDocuments();
-        res.status(200).json({
-            docs
-        })
+        return docs
     } catch (error) {
         throw new Error(`Error couting boards of spot: ${error.message}`);
     }
@@ -85,9 +79,8 @@ export const countAll = async () => {
 export const countDistrict = async (districtID) => {
     try {
         const docs = Board.countDocuments({districtID: districtID});
-        res.status(200).json({
-            docs
-        })
+        
+        return docs
     } catch (error) {
         throw new Error(`Error get wards of count documents: ${error.message}`)
     }
