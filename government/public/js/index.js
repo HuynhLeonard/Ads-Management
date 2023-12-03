@@ -108,7 +108,7 @@ const handleAddAdsPanel = (ad) => {
 const getLocationData = async () => {
 	const response = await fetch("http://localhost:3000/api/location/");
 	const locations = await response.json();
-	console.log(locations.locations);
+	console.log(locations);
 	locations.locations.map((location) => {
 		handleAddAdsPanel(location);
 	})

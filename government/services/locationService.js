@@ -11,9 +11,7 @@ export const createNewLocation = async (locationData) => {
         const existedWard = await Ward.find({wardID: locationData.wardID});
         
         if(!existedDistrict || !existedWard) {
-            res.status(400).json({
-                message: 'Error'
-            })
+            return {message: 'Error'};
         } else {
             await newLocation.save();
             return {message: 'Location created successfully'};

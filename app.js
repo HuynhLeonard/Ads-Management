@@ -31,6 +31,8 @@ import { createNewLocationType, deleteLocationType, getAllLocationType, getLocat
 import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
 // import * as boardTypeService from './government/services/boardTypeService.js';
 // import * as boardService from './government/services/boardService.js';
+import departmentRoute from './government/routes/departmentRoute.js';
+import locationController from './government/controllers/locationsController.js';
 
 const governmentApp = express();
 governmentApp.use(express.json());
@@ -54,39 +56,43 @@ mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mon
 
 governmentApp.get("/", (req,res) => {
     res.render('index')
-})
+});
+
+governmentApp.use('/department', departmentRoute);
 
 // for district service
-governmentApp.post('/api/district/create-district', createNewDistrict);
-governmentApp.get('/api/district', getAllDistricts);
-governmentApp.get('/api/district/:id',getDistrictByID);
-governmentApp.put('/api/district/:id', updateDistrict);
-governmentApp.delete('/api/district/:id', deleteDistrict);
+// governmentApp.post('/api/district/create-district', createNewDistrict);
+// governmentApp.get('/api/district', getAllDistricts);
+// governmentApp.get('/api/district/:id',getDistrictByID);
+// governmentApp.put('/api/district/:id', updateDistrict);
+// governmentApp.delete('/api/district/:id', deleteDistrict);
 
 // for ward service
-governmentApp.post('/api/ward/create-ward', createNewWard);
-governmentApp.get('/api/ward', getAllWard);
-governmentApp.get('/api/ward/single/:wardID', getWard);
-governmentApp.get('/api/ward/:districtID', getWardOfDistrict);
-governmentApp.put('/api/ward/:wardID', updateWard);
+// governmentApp.post('/api/ward/create-ward', createNewWard);
+// governmentApp.get('/api/ward', getAllWard);
+// governmentApp.get('/api/ward/single/:wardID', getWard);
+// governmentApp.get('/api/ward/:districtID', getWardOfDistrict);
+// governmentApp.put('/api/ward/:wardID', updateWard);
 
 // for spot type service
-governmentApp.post('/api/spot-type/create', createNewLocationType);
-governmentApp.get('/api/spot-type', getAllLocationType);
-governmentApp.get('/api/spot-type/:id', getLocationType);
-governmentApp.put('/api/spot-type/:id', updateLocationType);
-governmentApp.delete('/api/spot-type/:id', deleteLocationType);
+// governmentApp.post('/api/spot-type/create', createNewLocationType);
+// governmentApp.get('/api/spot-type', getAllLocationType);
+// governmentApp.get('/api/spot-type/:id', getLocationType);
+// governmentApp.put('/api/spot-type/:id', updateLocationType);
+// governmentApp.delete('/api/spot-type/:id', deleteLocationType);
 
 // for locations
-governmentApp.post('/api/location/create-location', createNewLocation);
-governmentApp.get('/api/location/', getAllLocation);
+// governmentApp.post('/api/location/create-location', createNewLocation);
+governmentApp.get('/api/location/', locationController.getAllLocation);
 
 // for adscategories
-governmentApp.post('/api/category/create-category', createCategories);
-governmentApp.get('/api/category', getAllCategories);
-governmentApp.get('/api/category/:id',getSingleCategories);
-governmentApp.put('/api/category/:id', modifyCategories);
-governmentApp.delete('/api/category/:id', deleteCategorires);
+// governmentApp.post('/api/category/create-category', createCategories);
+// governmentApp.get('/api/category', getAllCategories);
+// governmentApp.get('/api/category/:id',getSingleCategories);
+// governmentApp.put('/api/category/:id', modifyCategories);
+// governmentApp.delete('/api/category/:id', deleteCategorires);
+
+
 
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
