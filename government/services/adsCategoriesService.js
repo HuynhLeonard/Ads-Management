@@ -56,9 +56,7 @@ export const deleteCategorires = async (req,res,next) => {
     try {
         const categoryID = req.params.id;
         await AdsCategories.findOneAndDelete({CategoriesID: categoryID});
-        res.status(200).json({
-            message: 'Delete successful.'
-        })
+        return {message: 'Categories deleted successfully'};
     } catch (error) {
         throw new Error('Error happened when delete category.');
     }
