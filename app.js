@@ -28,6 +28,7 @@ import { createCategories, deleteCategorires, getAllCategories, getSingleCategor
 import { createNewDistrict, deleteDistrict, getAllDistricts, getDistrictByID, updateDistrict } from './government/services/districtService.js';
 import { createNewLocation, getAllLocation } from './government/services/locationService.js';
 import { createNewLocationType, deleteLocationType, getAllLocationType, getLocationType, updateLocationType } from './government/services/locationTypeService.js';
+import { createReportType, deleteReportType } from './government/services/reportTypeService.js';
 import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
 // import * as boardTypeService from './government/services/boardTypeService.js';
 // import * as boardService from './government/services/boardService.js';
@@ -62,7 +63,6 @@ governmentApp.get('/api/district', getAllDistricts);
 governmentApp.get('/api/district/:id',getDistrictByID);
 governmentApp.put('/api/district/:id', updateDistrict);
 governmentApp.delete('/api/district/:id', deleteDistrict);
-
 // for ward service
 governmentApp.post('/api/ward/create-ward', createNewWard);
 governmentApp.get('/api/ward', getAllWard);
@@ -87,6 +87,10 @@ governmentApp.get('/api/category', getAllCategories);
 governmentApp.get('/api/category/:id',getSingleCategories);
 governmentApp.put('/api/category/:id', modifyCategories);
 governmentApp.delete('/api/category/:id', deleteCategorires);
+
+// for report type
+governmentApp.post('/api/reportType/create-reportType', createReportType);
+governmentApp.delete('/api/reportType/:id', deleteReportType);
 
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
