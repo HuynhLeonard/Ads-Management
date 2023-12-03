@@ -1,72 +1,67 @@
 import District from "../models/districtSchema.js";
 
-export const createNewDistrict = async(req,res,next) => {
+// Done
+export const createNewDistrict = async(districtData) => {
     try {
-        const data = req.body;
-        const districtID = req.body.districtID;
+        const data = districtData;
+        const districtID = districtData.districtID;
         const existed = await District.findOne({districtID});
         if(!existed){
             const newDistrict = new District(data);
             await newDistrict.save();
-            res.status(200).json({
-                message: 'District create sucessfully',
-                newDistrict
-            })
+            return new District;
         } else {
-            res.status(400).json({
-                message: 'District ID have existed'
-            });
+            return {message: 'District ID has existed'};
         }
     } catch (error) {
         throw new Error('Error happen when creating district.');
     }
 };
 
-export const getDistrictByID = async(req,res,next) => {
+// Done
+export const getDistrictByID = async(districtID) => {
     try {
-        const districtID = req.params.id;
-        const district = await District.findOne({districtID});
-        res.status(200).json({
-            districtID,
-            district
-        });
+        const district = await District.find({districtID: districtID});
+        
+        return district;
     } catch (error) {
         throw new Error('Error happened when finding district.')
     }
 };
 
-export const getAllDistricts = async(req,res,next) => {
+// Done
+export const getAllDistricts = async() => {
     try {
         const districts = await District.find();
-        res.status(200).json({
-            districts
-        });
+        return districts;
     } catch (error) {
         throw new Error('Error happened when finding districts.');
     }
 };
 
-export const updateDistrict = async (req,res,next) => {
+// Done
+export const updateDistrict = async (districtID, updateData) => {
     try {
-        const districtID = req.params.id;
-        const district = await District.findOne({districtID});
+        const district = await District.find({districtID: districtID});
         if(!district) {
             throw new Error('District not found.');
         }
 
-        const updatedDistrict = await District.findOneAndUpdate({districtID}, {$set: req.body}, {new: true});
-        res.status(200).json({
-            updatedDistrict
-        })
+        const updatedDistrict = await District.findOneAndUpdate({districtID: districtID}, {$set: updateData}, {new: true});
+        return {message: 'District delete successfully'};
     } catch (error) {
         throw new Error('Error updating district.');
     }
 };
 
-export const deleteDistrict = async(req,res,next) => {
+// Done
+export const deleteDistrict = async(districtID) => {
     try {
-        const districtID = req.params.id;
-        const deleteDistrict = await District.findOneAndDelete({districtID});
+        
+        await District.findOneAndDelete({districtID: districtID});
+
+        return {message: "District delete successfully"};
+
     } catch (error) {
         throw new Error('Error happened when delete district.');
     }

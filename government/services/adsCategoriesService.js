@@ -1,61 +1,52 @@
 import AdsCategories from '../models/AdsCategoriesSchema.js';
 
-export const createCategories = async (req,res,next) => {
+// Done
+export const createCategories = async (newData) => {
     try {
-        const data = req.body;
-        const existed = await AdsCategories.find({CategoriesName: req.body.CategoriesName});
+        const data = newData;
+        const existed = await AdsCategories.find({CategoriesName: data.CategoriesName});
         if(existed.length === 0){
             const newCategory = new AdsCategories(data);
             await newCategory.save();
-            res.status(200).json({
-                message: 'Category create successfully',
-                newCategory
-            });
+            
+            return newCategory;
         } else {
-            res.status(400).json({
-                message: 'Category ID have existed'
-            });
+            return {message: 'Message create successfully'};
         }
     } catch (error) {
         throw new Error('Error happen when creating category.')
     }
 };
 
-export const getAllCategories = async (req,res,next) => {
+// Done
+export const getAllCategories = async () => {
     try {
         const categories = await AdsCategories.find();
-        res.status(200).json({
-            categories
-        });
+        return categories;
     } catch (error) {
         throw new Error('Error happened when finding categories.')
     }
 };
 
-export const getSingleCategories = async (req,res,next) => {
+// Done
+export const getSingleCategories = async (CategoriesID) => {
     try {
-        const CategoryID = req.params.id;
-        const category = await AdsCategories.find({CategoriesID: CategoryID});
-        res.status(200).json({
-            CategoryID,
-            category
-        });
+        const category = await AdsCategories.find({CategoriesID: CategoriesID});
+        return category;
     } catch (error) {
         throw new Error('Error happened when find category.')
     }
 };
 
-export const modifyCategories = async (req,res,next) => {
+// Done
+export const modifyCategories = async (CategoriesID, updateData) => {
     try {
-        const categoryID = req.params.id;
-        const category = await AdsCategories.find({CategoriesID: categoryID});
+        const category = await AdsCategories.find({CategoriesID: CategoriesID});
         if(!category){
             throw new Error('District not found.');
         }
-        const modifyCategory = await AdsCategories.findOneAndUpdate({CategoriesID: categoryID}, {$set: req.body}, {new: true});
-        res.status(200).json({
-            modifyCategory
-        });
+        const modifyCategory = await AdsCategories.findOneAndUpdate({CategoriesID: CategoriesID}, {$set: updateData}, {new: true});
+        return {message: 'Categories updated successfully'};
     } catch (error) {
         throw new Error('Error modify category.');
     }
