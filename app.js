@@ -24,11 +24,12 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // ======================================================================================
 
 // setup for governmentApp
-import { createCategories, deleteCategorires, getAllCategories, getSingleCategories, modifyCategories } from './government/services/adsCategoriesService.js';
-import { createNewDistrict, deleteDistrict, getAllDistricts, getDistrictByID, updateDistrict } from './government/services/districtService.js';
-import { createNewLocation, getAllLocation } from './government/services/locationService.js';
-import { createNewLocationType, deleteLocationType, getAllLocationType, getLocationType, updateLocationType } from './government/services/locationTypeService.js';
-import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
+// import { createCategories, deleteCategorires, getAllCategories, getSingleCategories, modifyCategories } from './government/services/adsCategoriesService.js';
+// import { createNewDistrict, deleteDistrict, getAllDistricts, getDistrictByID, updateDistrict } from './government/services/districtService.js';
+// import { createNewLocation, getAllLocation } from './government/services/locationService.js';
+// import { createNewLocationType, deleteLocationType, getAllLocationType, getLocationType, updateLocationType } from './government/services/locationTypeService.js';
+// import { createReportType, deleteReportType } from './government/services/reportTypeService.js';
+// import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
 // import * as boardTypeService from './government/services/boardTypeService.js';
 // import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
@@ -63,7 +64,9 @@ governmentApp.use('/department', departmentRoute);
 governmentApp.get('/api/location/', locationController.getAllLocation);
 
 
-
+// for report type
+governmentApp.post('/api/reportType/create-reportType', createReportType);
+governmentApp.delete('/api/reportType/:id', deleteReportType);
 
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
