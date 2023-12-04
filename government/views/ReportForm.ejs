@@ -1,11 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="css/styles.css" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Mẫu Báo Cáo Biển Quảng Cáo</h1>
+      <form action="action_page.php">
+        <div class="item-container">
+          <div class="item-title">
+            <label for="fname">Họ tên</label>
+            <span id="reName">*</span>
+          </div>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Họ tên người gửi báo cáo"
+            required
+          />
+        </div>
+
+        <div class="item-container">
+          <div class="item-title">
+            <label for="email">Email</label>
+            <span id="reEmail">*</span>
+          </div>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email của bạn"
+            required
+          />
+        </div>
+
+        <div class="item-container">
+          <div class="item-title">
+            <label for="phone">Điện thoại liên lạc</label>
+            <span id="rePhone">*</span>
+          </div>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="Số điện thoại của bạn"
+            required
+          />
+        </div>
+
+        <div class="item-container" id="special">
+          <div class="item">
+            <div class="item-title">
+              <label for="phone">ID biển</label>
+            </div>
+            <input type="text" id="IDQC" name="IDQC" value="abcxyz" disabled />
+          </div>
+
+          <div class="item">
+            <div class="item-title">
+              <label for="phone">Điểm đặt biển</label>
+            </div>
+            <input type="text" id="IDDQC" name="IDDQC" value="lc001" disabled />
+          </div>
+        </div>
+
+        <div class="item-container">
+          <label for="subject">Hình thức báo cáo</label>
+          <select id="subject" name="subject">
+            <option value="1">Tố giác sai phạm</option>
+            <option value="2">Đăng ký nội dung</option>
+            <option value="3">Đóng góp ý kiến</option>
+            <option value="4">Giải đáp thắc mắc</option>
+          </select>
+        </div>
+
+        <div class="item-container">
+          <div class="item-title">
+            <label for="report">Nội dung báo cáo</label>
+            <span id="rePort">*</span>
+          </div>
+          <textarea
+            id="report"
+            name="report"
+            placeholder="Viết nội dung báo cáo..."
+            style="height: 200px"
+            required
+          ></textarea>
+        </div>
+
+        <div class="item-container">
+          <div class="item-title">
+            <label for="formFileLg" class="form-label"
+              >Hình ảnh minh họa 1</label
+            >
+            <span id="rePic1">*</span>
+          </div>
+          <input
+            class="form-control form-control-lg"
+            id="formFileLg1"
+            type="file"
+            accept="image/*"
+            required
+          />
+        </div>
+
+        <div class="item-container">
+          <div class="item-title">
+            <label for="formFileLg" class="form-label"
+              >Hình ảnh minh họa 2</label
+            >
+          </div>
+
+          <input
+            class="form-control form-control-lg"
+            id="formFileLg2"
+            type="file"
+            accept="image/*"
+          />
+        </div>
+
+        <div class="item-container">
+          <div class="item-title">
+            <label for="captcha">Nhập Captcha</label>
+            <span id="reCap">*</span>
+          </div>
+          <div class="captcha-form">
+            <div class="input-group mb-lg-4">
+              <input
+                type="text"
+                id="captcha"
+                class="form-control"
+                aria-label="Nhập captcha"
+                aria-describedby="button-addon2"
+                value=""
+                disabled
+                style="
+                  background-image: url(assets/captcha-bg.png);
+                  color: deepskyblue;
+                  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+                    'Helvetica Neue', sans-serif;
+                "
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="refresh"
+              >
+                <i class="fas fa-redo"></i>
+              </button>
+            </div>
+            <div class="input-group mb-lg-4">
+              <input
+                type="text"
+                id="captchaI"
+                placeholder="Nhập captcha"
+                class="form-control"
+                aria-label="Nhập captcha"
+                aria-describedby="button-addon2"
+                value=""
+                required
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="check"
+              >
+                <i class="fas fa-check"></i>
+              </button>
+            </div>
+            <div class="message"></div>
+            <script src="js/script.js"></script>
+          </div>
+        </div>
+        <div class="message" id="must">(*) : Bắt buộc</div>
+        <button id="yes" class="submit">Submit</button>
+        <script src="js/script2.js"></script>
+      </form>
+    </div>
+  </body>
 </html>
