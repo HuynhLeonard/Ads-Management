@@ -32,8 +32,8 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
 // import * as boardTypeService from './government/services/boardTypeService.js';
 // import * as boardService from './government/services/boardService.js';
-import departmentRoute from './government/routes/departmentRoute.js';
 import locationController from './government/controllers/locationsController.js';
+import departmentRoute from './government/routes/departmentRoute.js';
 
 const governmentApp = express();
 governmentApp.use(express.json());
@@ -65,8 +65,8 @@ governmentApp.get('/api/location/', locationController.getAllLocation);
 
 
 // for report type
-governmentApp.post('/api/reportType/create-reportType', createReportType);
-governmentApp.delete('/api/reportType/:id', deleteReportType);
+
+// governmentApp.delete('/api/reportType/:id', deleteReportType);
 
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
