@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    // 3 roles: admin, department, district, ward
     position: {
         type: String,
         required: true
