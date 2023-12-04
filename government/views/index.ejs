@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Agbalumo">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="css/place.css">
     <title>Citizen Side</title>
 
     <style>
@@ -24,8 +29,130 @@
 		rel="stylesheet"
 		href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
 		type="text/css"/>
-    <div id='map'></div>
-
+    <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
+    <!-- Loc updated -->
+    <section class="container fade" style="z-index: 1;" id="container">
+      <section class="image">
+          <div class="slider-wrapper">
+            <div class="close" id="close">
+              <i class='bx bx-x'></i>
+            </div>
+              <div class="slider">
+                  <img src="assets/cow1.jpg" alt="" id="slide1">
+                  <img src="assets/cow2.jpg" alt="" id="slide2">
+                  <img src="assets/cow3.jpg" alt="" id="slide3">
+              </div>
+          </div>
+          <div class="slider-nav">
+              <a href="#slide1"></a>
+              <a href="#slide2"></a>
+              <a href="#slide3"></a>
+          </div>
+      </section>
+      <section class="place-info">
+          <div class="title">Thông tin địa điểm</div>
+          <div class="place-name">Quân Chủng Hải Quân - Trung Tâm Văn Phòng Thương Mại Hải Quân</div>
+          <div>15 Đường Lê Thánh Tôn, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh</div>
+          <button>Báo cáo vi phạm</button>
+      </section>
+      <section class="ads-info">
+          <div class="ads-wrapper">
+              <div class="ads_slider">
+                  <div class="ads" id="ads_1">
+                      <div class="pre">
+                          <a href="#ads_3">
+                              <i class='bx bx-chevron-left'></i>
+                          </a>
+                      </div>
+  
+                      <div class="detail">
+                          <div class="title">Trụ, cụm pano 1</div>
+                          <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
+                          <div>Kích thước: 2.5m x 10m</div>
+                          <div>Số lượng: <strong>1 trụ bảng</strong></div>
+                          <div>Hình thức: <strong>Cổ động chính trị</strong></div>
+                          <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
+                          <div class="btn">
+                              <a href="">
+                                  <i class='bx bx-info-circle'></i>
+                              </a>
+                              <button>Báo cáo vi phạm</button>
+                          </div>
+                      </div>
+  
+                      <div class="next">
+                          <a href="#ads_2">
+                              <i class='bx bx-chevron-right'></i>
+                          </a>
+                      </div>
+                  </div>
+                  
+                  <div class="ads" id="ads_2">
+                      <div class="pre">
+                          <a href="#ads_1">
+                              <i class='bx bx-chevron-left'></i>
+                          </a>
+                      </div>
+  
+                      <div class="detail">
+                          <div class="title">Trụ, cụm pano 2</div>
+                          <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
+                          <div>Kích thước: 2.5m x 10m</div>
+                          <div>Số lượng: <strong>1 trụ bảng</strong></div>
+                          <div>Hình thức: <strong>Cổ động chính trị</strong></div>
+                          <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
+                          <div class="btn">
+                              <a href="">
+                                  <i class='bx bx-info-circle'></i>
+                              </a>
+                              <button>Báo cáo vi phạm</button>
+                          </div>
+                      </div>
+  
+                      <div class="next">
+                          <a href="#ads_3">
+                              <i class='bx bx-chevron-right'></i>
+                          </a>
+                      </div>
+                  </div>
+  
+                  <div class="ads" id="ads_3">
+                      <div class="pre">
+                          <a href="#ads_2">
+                              <i class='bx bx-chevron-left'></i>
+                          </a>
+                      </div>
+  
+                      <div class="detail">
+                          <div class="title">Trụ, cụm pano 3</div>
+                          <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
+                          <div>Kích thước: 2.5m x 10m</div>
+                          <div>Số lượng: <strong>1 trụ bảng</strong></div>
+                          <div>Hình thức: <strong>Cổ động chính trị</strong></div>
+                          <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
+                          <div class="btn">
+                              <a href="">
+                                  <i class='bx bx-info-circle'></i>
+                              </a>
+                              <button>Báo cáo vi phạm</button>
+                          </div>
+                      </div>
+  
+                      <div class="next">
+                          <a href="#ads_1">
+                              <i class='bx bx-chevron-right'></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="ads-nav">
+              <a href="#ads_1"></a>
+              <a href="#ads_2"></a>
+              <a href="#ads_3"></a>
+          </div>
+      </section>
+    </section>
 
     <script
 		src="https://code.jquery.com/jquery-3.7.0.min.js"
@@ -42,5 +169,6 @@
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous">
     </script>
+    <script src="js/place.js"></script>
 </body>
 </html>

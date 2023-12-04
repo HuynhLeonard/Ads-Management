@@ -50,12 +50,12 @@ governmentApp.use(express.static(publicDirectory))
 
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
     .then(() => {
-        console.log('Connect to Database')
+        console.log('Connect to Database');
     })
 
 
 governmentApp.get("/", (req,res) => {
-    res.render('index')
+    res.render('index');
 });
 
 governmentApp.use('/department', departmentRoute);

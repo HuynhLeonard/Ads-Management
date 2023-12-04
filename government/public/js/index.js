@@ -216,10 +216,11 @@ function addAdvertisementSource(map) {
 			zoom:16
 		});
 		// toggle #offcanvas element
-		var offcanvas = document.getElementById('offcanvasRight');
-		var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-		bsOffcanvas.toggle();
-		const feature = e.feature[0];
+		// var offcanvas = document.getElementById('offcanvasRight');
+		// var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+		// bsOffcanvas.toggle();
+		// const feature = e.feature[0];
+		document.querySelector("#container").classList.remove("fade");
 	});
 		
 
@@ -358,9 +359,9 @@ mapboxScript.onload = function () {
 		showAccuracyCircle: true,
 		showUserLocation: true
 	});
-	map.addControl(geolocation, 'bottom-right');
-	map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
-	map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+	map.addControl(geolocation, 'bottom-left');
+	map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+	map.addControl(new mapboxgl.FullscreenControl(), 'bottom-left');
 
 
 	const geocoder = new MapboxGeocoder({
