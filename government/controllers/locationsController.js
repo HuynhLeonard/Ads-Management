@@ -20,7 +20,24 @@ controller.createLocation = async (req,res,next) => {
     res.status(200).json({
         result
     })
-}
+};
+
+controller.updateLocation = async (req,res,next) => {
+    const updatedData = req.body;
+    const locationID = req.params.id;
+    const result = await LocationService.updateLocation(locationID, updatedData);
+    res.status(200).json({
+        result
+    });
+};
+
+controller.getLocation = async (req,res,next) => {
+    const locationID = req.params.id;
+    const result = await LocationService.getSingleLocation(locationID);
+    res.status(200).json({
+        result
+    });
+};
 
 // get all location, boards
 // check later

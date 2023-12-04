@@ -57,7 +57,7 @@ export const deleteLocation = async (locationID) => {
 // using locationID
 export const getSingleLocation = async (locationID) => {
     try {
-        const location = await Location.findOne({locationID: locationID});
+        const location = await Location.find({locationID: locationID});
 
         return location;
     } catch (error) {
