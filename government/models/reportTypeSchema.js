@@ -8,7 +8,8 @@ const ReportTypeSchema = new mongoose.Schema({
     },
     reportTypeName: {
         type: String,
-        required: true
+        required: true,
+        //unique: true
     },
     reportTypeDes: {
         type: String,
@@ -17,11 +18,13 @@ const ReportTypeSchema = new mongoose.Schema({
 });
 
 // ReportTypeSchema.pre('save', async function(next){
-//     const reporttype = this;
+//     const rpt = this;
+//     console.log(rpt.reportTypeName);
 //     const count = await reportTypes.countDocuments();
-//     reporttype.reportTypeID = 'LH-BC' + String(count + 1).padStart(3,'0');
+//     rpt.reportTypeID = 'LH-BC' + String(count + 1).padStart(3,'0');
+//     console.log(rpt.reportTypeID);
 //     next();
 // });
 
-const reportTypes = mongoose.model('reportTypes', ReportTypeSchema);
+const reportTypes = mongoose.model('reporttypes', ReportTypeSchema);
 export default reportTypes;

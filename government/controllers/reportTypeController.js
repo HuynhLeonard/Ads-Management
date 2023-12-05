@@ -4,7 +4,6 @@ const controller = {}
 
 controller.createReportType = async (req, res, next) => {
     const newData = req.body;
-    console.log(newData);
     const result = await ReportType.createReportType(newData);
     res.status(200).json({
         result

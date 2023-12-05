@@ -3,9 +3,9 @@ import reportTypes from '../models/reportTypeSchema.js';
 export const createReportType = async (reportTypeData) => {
     try {
         const newReport = new reportTypes(reportTypeData);
-        console.log(newReport);
+        const count = await reportTypes.countDocuments();
+        newReport.reportTypeID = 'LH-BC' + String(count + 1).padStart(3,'0');
         const saveData = await newReport.save();
-        console.log(saveData);
         return saveData;
     } catch (error) {
         throw new Error('Error happen when creating report type.')
