@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sidebar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open Sans"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <header class="sidebar-header">
+          <button type="button" class="sidebar-burger" id="closing"></button>
+          <img src="./assets/blocklord-logo.png" class="sidebar-logo" />
+        </header>
+        <nav class="sidebar-nav">
+          <button type="button">
+            <img src="./assets/icon-home.svg" />
+            <span>Trang chủ</span>
+          </button>
+          <button type="button" class="submenu-btn" id="submenu-btn">
+            <img src="./assets/icon-levels.svg" />
+            <span style="animation-delay: 0.1s">Thống kê</span>
+            <img
+              src="./assets/icon-dropdown.svg"
+              class="dropdown"
+              id="dropdown"
+            />
+          </button>
+          <nav class="submenu" id="submenu">
+            <button type="button" class="sub-item">
+              <span style="animation-delay: 0.1s">Danh sách quận huyện</span>
+            </button>
+            <button type="button" class="sub-item">
+              <span style="animation-delay: 0.2s">Loại hình quảng cáo</span>
+            </button>
+            <button type="button" class="sub-item">
+              <span style="animation-delay: 0.3s">Yêu cầu</span>
+            </button>
+            <button type="button" class="sub-item">
+              <span style="animation-delay: 0.4s">Báo cáo</span>
+            </button>
+          </nav>
+          <button type="button">
+            <img src="./assets/icon-pointat.svg" />
+            <span style="animation-delay: 0.2s">Phân công</span>
+          </button>
+        </nav>
+        <footer class="sidebar-footer">
+          <button type="button">
+            <img src="./assets/icon-logout.svg" />
+            <span>Đăng xuất</span>
+          </button>
+        </footer>
+      </div>
+    </aside>
+    <script src="script.js"></script>
+  </body>
+</html>
