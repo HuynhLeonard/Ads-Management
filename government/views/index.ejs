@@ -6,9 +6,10 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Agbalumo">
+    <%- include("./components/head.ejs") %>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Agbalumo">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"> -->
     <link rel="stylesheet" href="css/place.css">
     <title>Citizen Side</title>
 
@@ -29,9 +30,16 @@
 		rel="stylesheet"
 		href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
 		type="text/css"/>
-    <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
+    <aside class="h-100">
+        <%- include('./components/sidebar.ejs') %>
+    </aside>
+
+    <main class="container-fluid d-flex bg-light p-0">
+        <!-- <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div> -->
+    </main>
+    <!-- <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div> -->
     <!-- Loc updated -->
-    <section class="container fade" style="z-index: 1;" id="container">
+    <!-- <section class="container fade" style="z-index: 1;" id="container">
       <section class="image">
           <div class="slider-wrapper">
             <div class="close" id="close">
@@ -152,7 +160,7 @@
               <a href="#ads_3"></a>
           </div>
       </section>
-    </section>
+    </section> -->
 
     <script
 		src="https://code.jquery.com/jquery-3.7.0.min.js"
