@@ -11,7 +11,7 @@ const boardSchema = new mongoose.Schema({
         required: true
     },
     images: {
-        type: String,
+        type: Array,
         required: true
     },
     width: {
@@ -24,6 +24,10 @@ const boardSchema = new mongoose.Schema({
     },
     spot: {
         type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
         required: true
     },
     licenseNumber: {
