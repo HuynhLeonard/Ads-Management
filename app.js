@@ -91,6 +91,10 @@ governmentApp.use('/department', (req,res) => {
     res.render("Department/index");
 });
 
+governmentApp.use('/add-location', (req,res) => {
+    res.render('add');
+})
+
 governmentApp.get('/api/location/', locationController.getAllLocation);
 governmentApp.use("/api/test", testController);
 
