@@ -335,7 +335,8 @@ mapboxScript.onload = async function() {
 
           const assignBtn = document.createElement('div');
 
-          assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+          // fix this links
+          assignBtn.innerHTML = `<a href="/department/advertisements/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
           divElement.appendChild(assignBtn);
           divElement.setAttribute('class', 'p-2');
 

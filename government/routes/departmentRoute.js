@@ -1,12 +1,33 @@
 import express from 'express';
-import locationController from '../controllers/locationsController.js';
-import userController from '../controllers/userController.js';
 const router = express.Router();
 
-// router.get('/location', locationController.getAllLocation);
-// router.post('/location', locationController.createLocation);
-// router.get('/location/:id', locationController.getLocation);
+router.get("*", (req,res,next) => {
+    res.locals.user = req.user;
+    next();
+});
 
-// create and assign user for district and wards
-router.post('/user', userController.createUser);
+// trang chu
+router.get('/');
+
+// nhom location (quan)
+router.get('/locations');
+router.post('/locations');
+router.delete('/locations/:districtID');
+router.patch('/locations/:districtID');
+// phuong ben trong quan
+router.get('/location-detail');
+router.post('/location-detail');
+router.delete('/location-detail/:wardID');
+router.patch('/location-detail/:wardID');
+
+
+// nhom quang cao (diem dat)
+router.get('/advertisements');
+router.get('/advertisements/new');
+// query: category, lng, lat
+router.post('/advertisements/new');
+router.get('/advertisements/:id');
+router.get('/advertisements/edit/:id');
+router.post('/advertisements')
+
 export default router;
