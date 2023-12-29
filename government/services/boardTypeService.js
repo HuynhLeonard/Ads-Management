@@ -31,7 +31,7 @@ export const getSingleBoardType = async (boardTypeID) => {
 // Done
 export const getAllBoardType = async () => {
     try {
-        const boardTypes = await BoardType.find();
+        const boardTypes = await BoardType.find().sort({boardTypeID: 1});
 
         return boardTypes;
     } catch (error) {

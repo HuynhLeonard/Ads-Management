@@ -393,6 +393,10 @@ mapboxScript.onload = function () {
 	
 	// hien thong tin dia diem bat ki
 	map.on('click', (e) => {
+		if(map.getCanvas().style.cursor === 'pointer') {
+			return;
+		};
+		marker.setLngLat(e.lngLat).addTo(map);
 		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
 		// console.log(e.lngLat.lat);
 		fetch(api)

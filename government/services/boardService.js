@@ -1,3 +1,4 @@
+import boardSchema from '../models/boardSchema.js';
 import Board from '../models/boardSchema.js';
 
 // check loi vi tri diem dat
@@ -67,6 +68,8 @@ export const deleteBoardByID = async (boardID) => {
     }
 };
 
+// count function
+
 export const countAll = async () => {
     try {
         const docs = Board.countDocuments();
@@ -85,3 +88,19 @@ export const countDistrict = async (districtID) => {
         throw new Error(`Error get wards of count documents: ${error.message}`)
     }
 };
+
+export const countByLocation = async (locationID) => {
+    try {
+        return Board.countDocuments({locationID: locationID});
+    } catch (error) {
+        throw new Error("Error getting information!");
+    }
+};
+
+export const countByWard = async (wardID) => {
+    try {
+        return Board.countDocuments({wardID: wardID});
+    } catch (error) {
+        throw new Error('Error happen when getting information.');
+    }
+}

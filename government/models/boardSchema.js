@@ -22,7 +22,7 @@ const boardSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    spot: {
+    locationID: {
         type: String,
         required: true
     },
@@ -32,8 +32,6 @@ const boardSchema = new mongoose.Schema({
     },
     licenseNumber: {
         type: String,
-        required: true,
-        default: null
     }
 });
 

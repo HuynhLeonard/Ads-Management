@@ -22,7 +22,7 @@
             width: 100vw;
         }
     </style>
-    <script src="js/index.js" defer></script>
+    <script src="js/map.js" defer></script>
 </head>
 <body>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
@@ -30,12 +30,43 @@
 		rel="stylesheet"
 		href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
 		type="text/css"/>
-    <aside class="h-100">
+    <aside class="h-100 z-3">
         <%- include('./components/sidebar.ejs') %>
     </aside>
 
     <main class="container-fluid d-flex bg-light p-0">
-        <!-- <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div> -->
+        <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
+        <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3" style="left: 5rem">
+            <div id="toggle-container" class="row align-items-center justify-content-start mx-2">
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="all-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="all-toggle">Hiện tất cả</label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     <!-- <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div> -->
     <!-- Loc updated -->

@@ -9,7 +9,7 @@ export const createNewDistrict = async(districtData) => {
         if(!existed){
             const newDistrict = new District(data);
             await newDistrict.save();
-            return new District;
+            return newDistrict;
         } else {
             return {message: 'District ID has existed'};
         }
@@ -48,7 +48,7 @@ export const updateDistrict = async (districtID, updateData) => {
         }
 
         const updatedDistrict = await District.findOneAndUpdate({districtID: districtID}, {$set: updateData}, {new: true});
-        return {message: 'District delete successfully'};
+        return {message: 'District updated successfully'};
     } catch (error) {
         throw new Error('Error updating district.');
     }

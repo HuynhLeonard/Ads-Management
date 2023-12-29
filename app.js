@@ -33,7 +33,7 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
 import locationController from './government/controllers/locationsController.js';
-
+import testController from "./government/controllers/testController.js";
 const governmentApp = express();
 governmentApp.use(express.json());
 governmentApp.use(express.urlencoded({ extended: false }));
@@ -46,8 +46,8 @@ const publicDirectory = path.join(__dirname, '/government/public');
 console.log(publicDirectory)
 governmentApp.use(express.static(publicDirectory))
 
-
-
+// mongodb+srv://admin:civicads8080@civicads.koin10i.mongodb.net/civicads?retryWrites=true&w=majority
+// mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
     .then(() => {
         console.log('Connect to Database');
@@ -61,7 +61,7 @@ governmentApp.get("/", (req,res) => {
 governmentApp.use('/department', departmentRoute);
 
 governmentApp.get('/api/location/', locationController.getAllLocation);
-
+governmentApp.use("/api/test", testController);
 
 
 
