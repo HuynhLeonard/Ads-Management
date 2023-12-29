@@ -45,9 +45,9 @@ export const getSingleRequest = async (requestID) => {
     }
 }
 
-export const getByBoardID = async (boardID) => {
+export const getByBoardID = async (objectID) => {
     try {
-        const data = await EditRequest.find({boardID});
+        const data = await EditRequest.find({objectID});
         return data;
     } catch (error) {
         throw new Error(`Error deleting edit request by ID: ${error.message}`);

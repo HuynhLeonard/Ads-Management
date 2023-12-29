@@ -1,213 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <%- include("./components/head.ejs") %>
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Agbalumo">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"> -->
-    <link rel="stylesheet" href="css/place.css">
-    <title>Citizen Side</title>
-
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("./components/head.ejs"); %>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
+    <script defer src="/js/index/map.js"></script>
     <style>
-        body {
-            margin: 0;
-        }
-        #map {
-            height: 100vh;
-            width: 100vw;
-        }
+			.mapboxgl-ctrl-top-left {
+				left: 5rem !important;
+			}
     </style>
-    <script src="js/map.js" defer></script>
 </head>
+
 <body>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-    <link
-		rel="stylesheet"
-		href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-		type="text/css"/>
-    <aside class="h-100 z-3">
-        <%- include('./components/sidebar.ejs') %>
-    </aside>
-
-    <main class="container-fluid d-flex bg-light p-0">
-        <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div>
-        <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3" style="left: 5rem">
-            <div id="toggle-container" class="row align-items-center justify-content-start mx-2">
-                <div class="col-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked />
-                        <label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
-                    </div>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link
+        rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css"/>
+<header></header>
+<aside class="position-absolute z-3 h-100">
+    <!-- <%- include('./components/sidebar.ejs'); %> -->
+</aside>
+<main class="container-fluid d-flex bg-light p-0">
+    <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
+    <!--Login form-->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0 pb-0 mt-2 mb-2">
+                    <h5 class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3">Đăng nhập</h5>
                 </div>
+                <form id="loginForm" method="post" action="">
+                    <div class="modal-body border-0">
+                        <% if (messages.error) { %>
+                            <div class="alert alert-danger">
+                                <%= messages.error %>
+                            </div>
+                        <% } %>
+                        <div class="mb-3 form-floating">
+                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập" value="<% if (username) { %><%= username %><% } %>" 
+                                   name="username" required>
+                            <label for="username" class="form-label">Tên đăng nhập<span
+                                        class="text-danger">*</span></label>
+                        </div>
+                        <div class="mb-3 form-floating position-relative">
+                            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"
+                                   name="password" value="<%= password %>" required>
+                            <i id="ico-pass"
+                               class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
+                               style="cursor: pointer" onclick="togglePassword()"></i>
+                            <label for="password" class="form-label">
+                                Mật khẩu <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <div class="form-check mx-auto">
+                            <input type="checkbox" id="rememberPass" class="form-check-input" name="rememberPass"/>
+                            <label for="rememberPass">Ghi nhớ mật khẩu</label>
+                        </div>
 
-                <div class="col-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked />
-                        <label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
                     </div>
-                </div>
-
-                <div class="col-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked />
-                        <label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
+                    <div class="modal-footer d-flex justify-content-around bg-transparent border-0">
+                        <button class="btn w-100" style="min-width: 6.5rem; color: #fff; background-color: #0d6efd"
+                                type="submit">
+                            Đăng nhập
+                        </button>
+                        <!-- Forgot password button -->
+                        <div class="w-100 mt-0 text-end">
+                            <button type="button" class="btn btn-link text-decoration-none text-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#forgotPassModal">
+                                Quên mật khẩu?
+                            </button>
+                        </div>
+                        <div class="col-md-12 shadow text-center border" style="width: 80%;">
+                            <a class="btn btn-lg btn-google d-flex align-items-center justify-content-center"
+                               href="/auth/google" style="font-size: 18px;">
+                                <img src="https://img.icons8.com/color/20/000000/google-logo.png" class="me-2">
+                                Đăng nhập bằng Google
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="all-toggle" aria-checked="false" checked />
-                        <label class="form-check-label" for="all-toggle">Hiện tất cả</label>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-    </main>
-    <!-- <div id='map' style="position: absolute; width: 100%; top: 0; bottom: 0;"></div> -->
-    <!-- Loc updated -->
-    <!-- <section class="container fade" style="z-index: 1;" id="container">
-      <section class="image">
-          <div class="slider-wrapper">
-            <div class="close" id="close">
-              <i class='bx bx-x'></i>
-            </div>
-              <div class="slider">
-                  <img src="assets/cow1.jpg" alt="" id="slide1">
-                  <img src="assets/cow2.jpg" alt="" id="slide2">
-                  <img src="assets/cow3.jpg" alt="" id="slide3">
-              </div>
-          </div>
-          <div class="slider-nav">
-              <a href="#slide1"></a>
-              <a href="#slide2"></a>
-              <a href="#slide3"></a>
-          </div>
-      </section>
-      <section class="place-info">
-          <div class="title">Thông tin địa điểm</div>
-          <div class="place-name">Quân Chủng Hải Quân - Trung Tâm Văn Phòng Thương Mại Hải Quân</div>
-          <div>15 Đường Lê Thánh Tôn, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh</div>
-          <button>Báo cáo vi phạm</button>
-      </section>
-      <section class="ads-info">
-          <div class="ads-wrapper">
-              <div class="ads_slider">
-                  <div class="ads" id="ads_1">
-                      <div class="pre">
-                          <a href="#ads_3">
-                              <i class='bx bx-chevron-left'></i>
-                          </a>
-                      </div>
-  
-                      <div class="detail">
-                          <div class="title">Trụ, cụm pano 1</div>
-                          <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
-                          <div>Kích thước: 2.5m x 10m</div>
-                          <div>Số lượng: <strong>1 trụ bảng</strong></div>
-                          <div>Hình thức: <strong>Cổ động chính trị</strong></div>
-                          <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
-                          <div class="btn">
-                              <a href="">
-                                  <i class='bx bx-info-circle'></i>
-                              </a>
-                              <button>Báo cáo vi phạm</button>
-                          </div>
-                      </div>
-  
-                      <div class="next">
-                          <a href="#ads_2">
-                              <i class='bx bx-chevron-right'></i>
-                          </a>
-                      </div>
-                  </div>
-                  
-                  <div class="ads" id="ads_2">
-                      <div class="pre">
-                          <a href="#ads_1">
-                              <i class='bx bx-chevron-left'></i>
-                          </a>
-                      </div>
-  
-                      <div class="detail">
-                          <div class="title">Trụ, cụm pano 2</div>
-                          <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
-                          <div>Kích thước: 2.5m x 10m</div>
-                          <div>Số lượng: <strong>1 trụ bảng</strong></div>
-                          <div>Hình thức: <strong>Cổ động chính trị</strong></div>
-                          <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
-                          <div class="btn">
-                              <a href="">
-                                  <i class='bx bx-info-circle'></i>
-                              </a>
-                              <button>Báo cáo vi phạm</button>
-                          </div>
-                      </div>
-  
-                      <div class="next">
-                          <a href="#ads_3">
-                              <i class='bx bx-chevron-right'></i>
-                          </a>
-                      </div>
-                  </div>
-  
-                  <div class="ads" id="ads_3">
-                      <div class="pre">
-                          <a href="#ads_2">
-                              <i class='bx bx-chevron-left'></i>
-                          </a>
-                      </div>
-  
-                      <div class="detail">
-                          <div class="title">Trụ, cụm pano 3</div>
-                          <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
-                          <div>Kích thước: 2.5m x 10m</div>
-                          <div>Số lượng: <strong>1 trụ bảng</strong></div>
-                          <div>Hình thức: <strong>Cổ động chính trị</strong></div>
-                          <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
-                          <div class="btn">
-                              <a href="">
-                                  <i class='bx bx-info-circle'></i>
-                              </a>
-                              <button>Báo cáo vi phạm</button>
-                          </div>
-                      </div>
-  
-                      <div class="next">
-                          <a href="#ads_1">
-                              <i class='bx bx-chevron-right'></i>
-                          </a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="ads-nav">
-              <a href="#ads_1"></a>
-              <a href="#ads_2"></a>
-              <a href="#ads_3"></a>
-          </div>
-      </section>
-    </section> -->
-
-    <script
-		src="https://code.jquery.com/jquery-3.7.0.min.js"
-		integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-		crossorigin="anonymous">
+    </div>
+    <script>
+			document.addEventListener('DOMContentLoaded', function () {
+				var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+					keyboard: false
+				})
+				myModal.show();
+			})
+			const togglePassword = () => {
+				const password = document.getElementById('password');
+				// change icon
+				const eyeIcon = document.getElementById('ico-pass')
+				if (eyeIcon.classList.contains('bi-eye-slash')) {
+					eyeIcon.classList.replace('bi-eye-slash', 'bi-eye')
+				} else {
+					eyeIcon.classList.replace('bi-eye', 'bi-eye-slash')
+				}
+				if (password.type === 'password') {
+					password.type = 'text';
+				} else {
+					password.type = 'password';
+				}
+			}
     </script>
-    <script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous">
-    </script>
-    <script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-		crossorigin="anonymous">
-    </script>
-    <script src="js/place.js"></script>
+</main>
 </body>
+
 </html>

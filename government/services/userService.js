@@ -17,9 +17,11 @@ export const createUser = async (userData) => {
     }
 };
 
-export const updatePassword = async (username, updateData) => {
+export const updatePassword = async (username, newPassword) => {
     try {
-        
+        await User.findOneAndUpdate({username}, {$set: {password: newPassword}});
+
+        return {message: 'Create user successfully'};
     } catch (error) {
         throw new Error('Error');
     }
@@ -35,7 +37,8 @@ export const updateOfficer = async (username, updateData) => {
 
 export const getSingleUser = async (username) => {
     try {
-        
+        const user = user.findOne({username});
+        return user;
     } catch (error) {
         throw new Error('Error');
     }

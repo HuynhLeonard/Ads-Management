@@ -34,6 +34,8 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 import departmentRoute from './government/routes/departmentRoute.js';
 import locationController from './government/controllers/locationsController.js';
 import testController from "./government/controllers/testController.js";
+import flash from 'express-flash';
+import session from 'express-session'
 const governmentApp = express();
 governmentApp.use(express.json());
 governmentApp.use(express.urlencoded({ extended: false }));
@@ -44,9 +46,29 @@ console.log(`${governmentApp.get('views')}`);
 
 const publicDirectory = path.join(__dirname, '/government/public');
 console.log(publicDirectory)
-governmentApp.use(express.static(publicDirectory))
+governmentApp.use(express.static(publicDirectory));
+governmentApp.use(flash());
 
-// mongodb+srv://admin:civicads8080@civicads.koin10i.mongodb.net/civicads?retryWrites=true&w=majority
+governmentApp.use(
+    session({
+        secret: 'hihihi', // secret key
+        resave: false,
+        saveUninitialized: true
+         // use local session, session store will be cleared when the server restarts
+    })
+);
+
+governmentApp.use((req, res, next) => {
+    res.locals.url = req.originalUrl
+    res.locals.host = req.get('host')
+    res.locals.protocol = req.protocol
+    res.locals.message = req.flash()
+    // check this one later
+    res.locals.username = ''
+    res.locals.password = ''
+    next()
+});
+
 // mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
     .then(() => {
@@ -55,10 +77,19 @@ mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mon
 
 
 governmentApp.get("/", (req,res) => {
-    res.render('index');
+    res.render('index', {
+        title: 'Sở Văn Hóa',
+        username: "",
+        password: "",
+    });
+});
+governmentApp.post('/', (req,res) => {
+    res.redirect('/department')
 });
 
-governmentApp.use('/department', departmentRoute);
+governmentApp.use('/department', (req,res) => {
+    res.render("Department/index");
+});
 
 governmentApp.get('/api/location/', locationController.getAllLocation);
 governmentApp.use("/api/test", testController);

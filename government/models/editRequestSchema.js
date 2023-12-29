@@ -11,7 +11,7 @@ const EditRequestSchema = new mongoose.Schema({
         required: true
     },
     // check this name here again
-    boardID: {
+    objectID: {
         type: String,
         required: true
     },
@@ -26,7 +26,7 @@ const EditRequestSchema = new mongoose.Schema({
     },
     editContent: {
         type: Object,
-        required: true``
+        required: true
     },
     officer: {
         type: String,
