@@ -1,117 +1,176 @@
 <!DOCTYPE html>
 <html lang="vi">
-
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%- title %></title>
     <%- include("./components/head.ejs"); %>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
     <script defer src="/js/index/map.js"></script>
     <style>
-			.mapboxgl-ctrl-top-left {
-				left: 5rem !important;
-			}
+      .mapboxgl-ctrl-top-left {
+        left: 5rem !important;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link
-        rel="stylesheet"
-        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-        type="text/css"/>
-<header></header>
-<aside class="position-absolute z-3 h-100">
-    <!-- <%- include('./components/sidebar.ejs'); %> -->
-</aside>
-<main class="container-fluid d-flex bg-light p-0">
-    <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
-    <!--Login form-->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-modal="true" role="dialog">
-        <div class="modal-dialog modal-dialog-centered ">
-            <div class="modal-content rounded-4">
-                <div class="modal-header border-0 pb-0 mt-2 mb-2">
-                    <h5 class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3">Đăng nhập</h5>
-                </div>
-                <form id="loginForm" method="post" action="">
-                    <div class="modal-body border-0">
-                        <% if (messages.error) { %>
-                            <div class="alert alert-danger">
-                                <%= messages.error %>
-                            </div>
-                        <% } %>
-                        <div class="mb-3 form-floating">
-                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập" value="<% if (username) { %><%= username %><% } %>" 
-                                   name="username" required>
-                            <label for="username" class="form-label">Tên đăng nhập<span
-                                        class="text-danger">*</span></label>
-                        </div>
-                        <div class="mb-3 form-floating position-relative">
-                            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"
-                                   name="password" value="<%= password %>" required>
-                            <i id="ico-pass"
-                               class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
-                               style="cursor: pointer" onclick="togglePassword()"></i>
-                            <label for="password" class="form-label">
-                                Mật khẩu <span class="text-danger">*</span>
-                            </label>
-                        </div>
-                        <div class="form-check mx-auto">
-                            <input type="checkbox" id="rememberPass" class="form-check-input" name="rememberPass"/>
-                            <label for="rememberPass">Ghi nhớ mật khẩu</label>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer d-flex justify-content-around bg-transparent border-0">
-                        <button class="btn w-100" style="min-width: 6.5rem; color: #fff; background-color: #0d6efd"
-                                type="submit">
-                            Đăng nhập
-                        </button>
-                        <!-- Forgot password button -->
-                        <div class="w-100 mt-0 text-end">
-                            <button type="button" class="btn btn-link text-decoration-none text-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#forgotPassModal">
-                                Quên mật khẩu?
-                            </button>
-                        </div>
-                        <div class="col-md-12 shadow text-center border" style="width: 80%;">
-                            <a class="btn btn-lg btn-google d-flex align-items-center justify-content-center"
-                               href="/auth/google" style="font-size: 18px;">
-                                <img src="https://img.icons8.com/color/20/000000/google-logo.png" class="me-2">
-                                Đăng nhập bằng Google
-                            </a>
-                        </div>
-                    </div>
-                </form>
+  <body>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+    <header></header>
+    <aside class="position-absolute z-3 h-100">
+      <%- include('./components/sidebar.ejs'); %>
+    </aside>
+    <main class="container-fluid d-flex bg-light p-0">
+      <div
+        id="map"
+        style="position: absolute; width: 100%; top: 0; bottom: 0"
+      ></div>
+      <!--Login form-->
+      <div
+        class="modal fade"
+        id="loginModal"
+        tabindex="-1"
+        aria-modal="true"
+        role="dialog"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content rounded-4">
+            <div class="modal-header border-0 pb-0 mt-2 mb-2">
+              <h5
+                class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3"
+              >
+                Đăng nhập
+              </h5>
             </div>
+            <form id="loginForm" method="post" action="">
+              <div class="modal-body border-0">
+                <% if (messages.error) { %>
+                <div class="alert alert-danger"><%= messages.error %></div>
+                <% } %>
+                <div class="mb-3 form-floating">
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    placeholder="Nhập tên đăng nhập"
+                    value="<% if (username) { %><%= username %><% } %>"
+                    name="username"
+                    required
+                  />
+                  <label for="username" class="form-label"
+                    >Tên đăng nhập<span class="text-danger">*</span></label
+                  >
+                </div>
+                <div class="mb-3 form-floating position-relative">
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Nhập mật khẩu"
+                    name="password"
+                    value="<%= password %>"
+                    required
+                  />
+                  <i
+                    id="ico-pass"
+                    class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
+                    style="cursor: pointer"
+                    onclick="togglePassword()"
+                  ></i>
+                  <label for="password" class="form-label">
+                    Mật khẩu <span class="text-danger">*</span>
+                  </label>
+                </div>
+                <div class="form-check mx-auto">
+                  <input
+                    type="checkbox"
+                    id="rememberPass"
+                    class="form-check-input"
+                    name="rememberPass"
+                  />
+                  <label for="rememberPass">Ghi nhớ mật khẩu</label>
+                </div>
+              </div>
+              <div
+                class="modal-footer d-flex justify-content-around bg-transparent border-0"
+              >
+                <button
+                  class="btn w-100"
+                  style="
+                    min-width: 6.5rem;
+                    color: #fff;
+                    background-color: #0d6efd;
+                  "
+                  type="submit"
+                >
+                  Đăng nhập
+                </button>
+                <!-- Forgot password button -->
+                <div class="w-100 mt-0 text-end">
+                  <button
+                    type="button"
+                    class="btn btn-link text-decoration-none text-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#forgotPassModal"
+                  >
+                    Quên mật khẩu?
+                  </button>
+                </div>
+                <div
+                  class="col-md-12 shadow text-center border"
+                  style="width: 80%"
+                >
+                  <a
+                    class="btn btn-lg btn-google d-flex align-items-center justify-content-center"
+                    href="/auth/google"
+                    style="font-size: 18px"
+                  >
+                    <img
+                      src="https://img.icons8.com/color/20/000000/google-logo.png"
+                      class="me-2"
+                    />
+                    Đăng nhập bằng Google
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-    </div>
-    <script>
-			document.addEventListener('DOMContentLoaded', function () {
-				var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
-					keyboard: false
-				})
-				myModal.show();
-			})
-			const togglePassword = () => {
-				const password = document.getElementById('password');
-				// change icon
-				const eyeIcon = document.getElementById('ico-pass')
-				if (eyeIcon.classList.contains('bi-eye-slash')) {
-					eyeIcon.classList.replace('bi-eye-slash', 'bi-eye')
-				} else {
-					eyeIcon.classList.replace('bi-eye', 'bi-eye-slash')
-				}
-				if (password.type === 'password') {
-					password.type = 'text';
-				} else {
-					password.type = 'password';
-				}
-			}
-    </script>
-</main>
-</body>
-
+      </div>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var myModal = new bootstrap.Modal(
+            document.getElementById("loginModal"),
+            {
+              keyboard: false,
+            }
+          );
+          myModal.show();
+        });
+        const togglePassword = () => {
+          const password = document.getElementById("password");
+          // change icon
+          const eyeIcon = document.getElementById("ico-pass");
+          if (eyeIcon.classList.contains("bi-eye-slash")) {
+            eyeIcon.classList.replace("bi-eye-slash", "bi-eye");
+          } else {
+            eyeIcon.classList.replace("bi-eye", "bi-eye-slash");
+          }
+          if (password.type === "password") {
+            password.type = "text";
+          } else {
+            password.type = "password";
+          }
+        };
+      </script>
+    </main>
+  </body>
 </html>

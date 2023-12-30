@@ -1,22 +1,14 @@
-<link
-  href="https://fonts.googleapis.com/css?family=Open Sans"
-  rel="stylesheet"
-/>
 <style>
   * {
     box-sizing: border-box;
   }
 
-  body {
-    margin: 0;
-    background: #121212;
-  }
-
-  button {
+  a {
     background: transparent;
     border: 0;
     padding: 0;
     cursor: pointer;
+    text-decoration-line: none;
   }
 
   .sidebar {
@@ -81,12 +73,12 @@
     flex: 1 1 auto;
   }
 
-  .sidebar button {
+  .sidebar a {
     display: flex;
     gap: 25px;
     align-items: center;
     /* height: 50px;
-        width: 72px; */
+width: 72px; */
     font-family: "Open Sans";
     font-size: 16px;
     font-weight: 200;
@@ -95,17 +87,17 @@
     padding: 0 25px;
   }
 
-  .sidebar-header button {
+  .sidebar-header a {
     height: 50px;
     width: 70px;
   }
 
-  .sidebar-nav button {
+  .sidebar-nav a {
     height: 50px;
     width: 100%;
   }
 
-  .sidebar-nav button:hover {
+  .sidebar-nav a:hover {
     background: #1e1e1e !important;
   }
 
@@ -114,19 +106,19 @@
     display: none;
   }
 
-  .show {
+  .Sdrop {
     background: #08a5a0;
     max-height: 500px;
     width: max-content;
     display: block !important;
   }
 
-  .sidebar-nav .submenu button {
+  .sidebar-nav .submenu a {
     padding-left: 25px;
     cursor: pointer;
   }
 
-  .sidebar button > img {
+  .sidebar a > img {
     width: 24px;
     height: 24px;
   }
@@ -139,7 +131,7 @@
     transform: rotate(90deg);
   }
 
-  .sidebar button > span {
+  .sidebar a > span {
     color: #f9f9f9;
     opacity: 0;
     transition: 0.3s;
@@ -156,63 +148,68 @@
     }
   }
 
-  body.open .sidebar button > span {
+  body.open .sidebar a > span {
     opacity: 1;
     animation: appear 0.3s both;
   }
 
-  .sidebar-footer button {
+  .sidebar-footer a {
     height: 50px;
     width: 100%;
   }
 
-  .sidebar-footer button:hover {
+  .sidebar-footer a:hover {
     background: #1e1e1e !important;
   }
 </style>
+</head>
 
-<div class="sidebar d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
-  <div class="sidebar-inner">
-    <header class="sidebar-header">
-      <button type="button" class="sidebar-burger" id="closing"></button>
-      <img src="./assets/blocklord-logo.png" class="sidebar-logo" />
-    </header>
-    <nav class="sidebar-nav">
-      <a type="button">
-        <img src="./assets/icon-home.svg" />
-        <span>Trang chủ</span>
+<div class="sidebar">
+<div class="sidebar-inner">
+  <header class="sidebar-header">
+    <a href="#" type="button" class="sidebar-burger" id="closing"></a>
+    <img src="./assets/blocklord-logo.png" class="sidebar-logo" />
+  </header>
+  <nav class="sidebar-nav">
+    <a href="#" type="button">
+      <img src="./assets/icon-home.svg" />
+      <span>Trang chủ</span>
+    </a>
+    <a href="#" type="button" class="submenu-btn" id="submenu-btn">
+      <img src="./assets/icon-levels.svg" />
+      <span style="animation-delay: 0.1s">Thống kê</span>
+      <img
+        src="./assets/icon-dropdown.svg"
+        class="dropdown"
+        id="dropdown"
+      />
+    </a>
+    <nav class="submenu" id="submenu">
+      <a href="#" type="button" class="sub-item">
+        <span style="animation-delay: 0.1s">Danh sách quận huyện</span>
       </a>
-      <a type="button" class="submenu-btn" id="submenu-btn">
-        <img src="./assets/icon-levels.svg" />
-        <span style="animation-delay: 0.1s">Thống kê</span>
-        <img src="./assets/icon-dropdown.svg" class="dropdown" id="dropdown" />
+      <a href="#" type="button" class="sub-item">
+        <span style="animation-delay: 0.2s">Loại hình quảng cáo</span>
       </a>
-      <nav class="submenu" id="submenu">
-        <a type="button" class="sub-item">
-          <span style="animation-delay: 0.1s">Danh sách quận huyện</span>
-        </a>
-        <a type="button" class="sub-item">
-          <span style="animation-delay: 0.2s">Loại hình quảng cáo</span>
-        </a>
-        <a type="button" class="sub-item">
-          <span style="animation-delay: 0.3s">Yêu cầu</span>
-        </a>
-        <a type="button" class="sub-item">
-          <span style="animation-delay: 0.4s">Báo cáo</span>
-        </a>
-      </nav>
-      <a type="button">
-        <img src="./assets/icon-pointat.svg" />
-        <span style="animation-delay: 0.2s">Phân công</span>
+      <a href="#" type="button" class="sub-item">
+        <span style="animation-delay: 0.3s">Yêu cầu</span>
+      </a>
+      <a href="#" type="button" class="sub-item">
+        <span style="animation-delay: 0.4s">Báo cáo</span>
       </a>
     </nav>
-    <footer class="sidebar-footer">
-      <a type="button">
-        <img src="./assets/icon-logout.svg" />
-        <span>Đăng xuất</span>
-      </a>
-    </footer>
-  </div>
+    <a href="#" type="button">
+      <img src="./assets/icon-pointat.svg" />
+      <span style="animation-delay: 0.2s">Phân công</span>
+    </a>
+  </nav>
+  <footer class="sidebar-footer">
+    <a href="#" type="button">
+      <img src="./assets/icon-logout.svg" />
+      <span>Đăng xuất</span>
+    </a>
+  </footer>
+</div>
 </div>
 
 <script>
@@ -221,13 +218,13 @@
     .addEventListener("click", showSubMenu);
   function showSubMenu() {
     if (
-      document.querySelector("#submenu").classList.contains("show") &&
+      document.querySelector("#submenu").classList.contains("Sdrop") &&
       document.querySelector("#dropdown").classList.contains("change")
     ) {
-      document.querySelector("#submenu").classList.remove("show");
+      document.querySelector("#submenu").classList.remove("Sdrop");
       document.querySelector("#dropdown").classList.remove("change");
     } else {
-      document.querySelector("#submenu").classList.add("show");
+      document.querySelector("#submenu").classList.add("Sdrop");
       document.querySelector("#dropdown").classList.add("change");
     }
   }
@@ -238,7 +235,7 @@
   function handleSideBar() {
     if (document.body.classList.contains("open")) {
       document.body.classList.remove("open");
-      document.querySelector("#submenu").classList.remove("show");
+      document.querySelector("#submenu").classList.remove("Sdrop");
       document.querySelector("#dropdown").classList.remove("change");
     } else {
       document.body.classList.toggle("open");
