@@ -26,7 +26,7 @@
   <body>
     <div class="container">
       <h1>Tạo điểm đặt quảng cáo mới</h1>
-      <form action="action_page.php">
+      <form action="" method="POST">
           <div class="image drag-area">
             <img src="assets/addImage.jpg" alt="">
             <div class="dragText">Kéo và thả để tải hình ảnh lên</div>
@@ -37,12 +37,12 @@
           <div class="formContent">
             <div class="item-container">
               <div class="item-title">
-                <label for="fname">Điểm đặt</label>
+                <label for="name-field">Điểm đặt</label>
                 <span id="reName">*</span>
               </div>
               <input
                 type="text"
-                id="name"
+                id="name-field"
                 name="name"
                 placeholder="Tên điểm đặt mới"
                 required
@@ -53,84 +53,79 @@
             <div class="coor">
               <div class="item-container">
                 <div class="item-title">
-                  <label for="fname">Kinh độ</label>
-                  <span id="reName">*</span>
+                  <label for="long-field">Kinh độ</label>
                 </div>
                 <input
                   type="number"
-                  id="name"
+                  id="long-field"
                   name="long"
                   placeholder="Kinh độ của điểm đặt"
-                  required
+                  disabled
                 />
               </div>
   
               <div class="item-container">
                 <div class="item-title">
-                  <label for="fname">Vĩ độ</label>
-                  <span id="reName">*</span>
+                  <label for="lat-field">Vĩ độ</label>
                 </div>
                 <input
                   type="number"
-                  id="name"
+                  id="lat-field"
                   name="lat"
                   placeholder="Vĩ độ của điểm đặt"
-                  required
+                  disabled
                 />
               </div>
             </div>
   
             <div class="item-container">
               <div class="item-title">
-                <label for="fname">Địa chỉ</label>
-                <span id="reName">*</span>
+                <label for="address-field">Địa chỉ</label>
               </div>
               <input
                 type="text"
-                id="name"
+                id="address-field"
                 name="address"
                 placeholder="Địa chỉ của điểm đặt mới"
-                required
+                disabled
               />
             </div>
   
             <div class="addDetail">
               <div class="item-container">
                 <div class="item-title">
-                  <label for="fname">Phường</label>
-                  <span id="reName">*</span>
+                  <label for="ward-field">Phường</label>
                 </div>
                 <input
                   type="text"
-                  id="name"
+                  id="ward-field"
                   name="ward"
                   placeholder="Tên phường của điểm đặt"
-                  required
+                  disabled
                 />
               </div>
               <div class="item-container">
                 <div class="item-title">
-                  <label for="fname">Quận</label>
-                  <span id="reName">*</span>
+                  <label for="district-field">Quận</label>
                 </div>
                 <input
                   type="text"
-                  id="name"
+                  id="district-field"
                   name="district"
                   placeholder="Tên quận của điểm đặt"
-                  required
+                  disabled
                 />
               </div>
             </div>
   
             <div class="item-container">
               <div class="item-title">
-                <label for="fname">Loại vị trí</label>
+                <label for="locationtype">Loại vị trí</label>
                 <span id="reName">*</span>
               </div>
               <input
                 type="text"
-                id="name"
+                id="locationtype"
                 name="type"
                 placeholder="Loại vị trí của điểm đặt mới"
                 required
@@ -139,12 +134,12 @@
   
             <div class="item-container">
               <div class="item-title">
-                <label for="fname">Hình thức quảng cáo</label>
+                <label for="adCategory">Hình thức quảng cáo</label>
                 <span id="reName">*</span>
               </div>
               <input
                 type="text"
-                id="name"
+                id="adCategory"
                 name="concept"
                 placeholder="Hình thức quảng cáo của điểm đặt"
                 required
@@ -153,20 +148,20 @@
   
             <div class="item-container">
               <div class="item-title">
-                <label for="fname">Thông tin quy hoạch</label>
-                <span id="reName">*</span>
+                <label for="qh-field">Thông tin quy hoạch</label>
               </div>
               <input
                 type="text"
-                id="name"
+                id="qh-field"
                 name="zoning"
                 placeholder="Thông tin quy hoạch của điểm đặt"
-                required
+                value="Chưa Quy Hoạch"
+                disabled
               />
             </div>
 
             <div class="btn">
-                <button type="button">Hủy và thoát</button>
+                <a class="btn btn-danger" type="button">Hủy và thoát</a>
                 <button type="submit">Xác nhận</button>
             </div>
           </div>

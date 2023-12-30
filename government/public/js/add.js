@@ -1,7 +1,43 @@
+const MAPBOX_TOKEN = 'pk.eyJ1IjoibGVvbmFyZGh1eW5oIiwiYSI6ImNscDNxdzNmZzB6dG0ya3M1MGt2MTVreHEifQ.WiaFF1ZoklZy7vMDLcPJ5g'
+
 const dropArea = document.querySelector(".drag-area");
 const dragText = dropArea.querySelector(".dragText");
 const button = dropArea.querySelector("button");
 const input = dropArea.querySelector("input");
+
+const address = document.querySelector('#address-field');
+const district = document.querySelector('#district-field');
+const ward = document.querySelector('#ward-field');
+const urlParams = new URLSearchParams(window.location.search);
+
+console.log(urlParams.get('lng') + " " + urlParams.get('lat'));
+
+if(urlParams.get('lng') !== undefined && urlParams.get('lat') !== undefined){
+  const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${urlParams.get('lng')},${urlParams.get('lat')}.json?access_token=${MAPBOX_TOKEN}`
+
+  const long = document.querySelector('#long-field');
+  const lat = document.querySelector('#lat-field');
+
+  long.value = urlParams.get('lng');
+  lat.value = urlParams.get('lat');
+
+  fetch(api)
+      .then((res) => res.json())
+      .then((res) => {
+        let description = res.features[0].place_name
+        .replace(/,\s*\d+,\s*Vietnam/, '')
+        .replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P|, District|, Ward.*/g, '')
+        .replace(/,.*Dist\.|,.*Ward\./, '');
+
+        address.value = description || ' '
+        district.value = res.features[0].context[2].text.replace('Quận ', '').trim() || ' '
+        ward.value = res.features[0].context[0].text.replace('Phường ', '').trim() || ' '
+        if (dist.value.length === 1) {
+          dist.value = '0' + dist.value
+        }
+      })  
+}
+
 let isExisted = false;
 
 button.addEventListener("click", () => {

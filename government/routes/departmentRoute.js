@@ -7,7 +7,9 @@ router.get("*", (req,res,next) => {
 });
 
 // trang chu
-router.get('/');
+router.get('/', (req,res) => {
+    res.render('Department/index');
+});
 
 // nhom location (quan)
 router.get('/locations');
@@ -23,7 +25,9 @@ router.patch('/location-detail/:wardID');
 
 // nhom quang cao (diem dat)
 router.get('/advertisements');
-router.get('/advertisements/new');
+router.get('/advertisements/new', (req,res) => {
+    res.render('add');
+});
 // query: category, lng, lat
 router.post('/advertisements/new');
 router.get('/advertisements/:id');
