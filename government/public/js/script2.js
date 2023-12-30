@@ -1,4 +1,4 @@
-document.querySelector("#yes").addEventListener("click", checkRequirement);
+document.querySelector("#Syes").addEventListener("click", checkRequirement);
 
 function IsInvalidEmail(the_email) {
   var at = the_email.indexOf("@");
@@ -20,59 +20,60 @@ function IsInvalidEmail(the_email) {
 }
 
 function checkRequirement() {
-  const x = document.querySelector("#name").value;
-  const y = document.querySelector("#email").value;
-  const z = document.querySelector("#phone").value;
-  const t = document.querySelector("#report").value;
-  const u = document.querySelector("#captchaI").value;
+  const editorData = editor.getData();
+  let rePort = document.getElementById("reSport");
+  rePort.textContent = "*";
+
+  const x = document.querySelector("#Sname").value;
+  const y = document.querySelector("#Semail").value;
+  const z = document.querySelector("#Sphone").value;
+  const u = document.querySelector("#ScaptchaI").value;
   const v1 = document.querySelector("#formFileLg1").value;
   const v2 = document.querySelector("#formFileLg2").value;
-  const message = document.querySelector(".message").value;
+  const message = document.querySelector(".Smessage").value;
 
   //   const yes = "Captcha hợp lệ";
   const no = "Captcha không hợp lệ";
 
-  let reName = document.getElementById("reName");
-  let reEmail = document.getElementById("reEmail");
-  let rePhone = document.getElementById("rePhone");
-  let rePass = document.getElementById("rePort");
-  let reCap = document.getElementById("reCap");
+  let reName = document.getElementById("reSName");
+  let reEmail = document.getElementById("reSEmail");
+  let rePhone = document.getElementById("reSPhone");
+  let reCap = document.getElementById("reSCap");
   let rePic1 = document.getElementById("rePic1");
   let rePic2 = document.getElementById("rePic2");
 
   reName.textContent = "*";
   reEmail.textContent = "*";
   rePhone.textContent = "*";
-  rePass.textContent = "*";
   reCap.textContent = "* ";
 
   if (x.length === 0) {
     reName.textContent = "Hãy điền tên";
-    document.querySelector("#name").select();
+    document.querySelector("#Sname").select();
     return;
   }
 
   if (y.length === 0) {
     reEmail.textContent = "Hãy điền email";
-    document.querySelector("#email").select();
+    document.querySelector("#Semail").select();
     return;
   }
 
   if (!IsInvalidEmail(y)) {
     reEmail.textContent = "Email không hợp lệ";
-    document.querySelector("#email").select();
+    document.querySelector("#Semail").select();
     return;
   }
 
   if (z.length === 0) {
     rePhone.textContent = "Hãy điền số điện thoại";
-    document.querySelector("#phone").select();
+    document.querySelector("#Sphone").select();
     return;
   }
 
-  if (t.length === 0) {
-    rePass.textContent = "Hãy viết nội dung báo cáo";
-    document.querySelector("#psw").select();
+  if (editorData.length === 0) {
+    rePort.textContent = "Hãy viết nội dung báo cáo";
+    // document.querySelector(".ck-editor__main").select();
     return;
   }
 
@@ -90,7 +91,7 @@ function checkRequirement() {
 
   if (u.length === 0) {
     reCap.textContent = "Hãy nhập captcha";
-    document.querySelector("#captchaI").select();
+    document.querySelector("#ScaptchaI").select();
     return;
   }
 

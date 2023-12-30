@@ -1,9 +1,9 @@
 // Selecting necessary DOM elements
-const captchaTextBox = document.querySelector("#captcha");
-const refreshButton = document.querySelector("button");
-const captchaInputBox = document.querySelector("#captchaI");
-const message = document.querySelector(".message");
-const submitButton = document.querySelector("#check");
+const captchaTextBox = document.querySelector("#Scaptcha");
+const refreshButton = document.querySelector("#Srefresh");
+const captchaInputBox = document.querySelector("#ScaptchaI");
+const message = document.querySelector(".Smessage");
+const submitButton = document.querySelector("#Scheck");
 
 // Variable to store generated captcha
 let captchaText = null;

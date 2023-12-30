@@ -3,9 +3,8 @@ h1 {
   text-align: center;
 }
 
-.container {
-  margin-block-start: 20px;
-  margin-block-end: 20px;
+.rp-container {
+  margin: 20px 80px 20px 80px;
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
@@ -16,21 +15,21 @@ h1 {
   justify-content: space-between;
 }
 
-.item {
+.item-rp {
   width: 45%;
 }
 
-.container span {
+.rp-container span {
   color: red;
   font-weight: bold;
 }
 
-#must {
+#Smust {
   color: red;
   font-weight: bold;
 }
 
-.item-title {
+.item-rp-title {
   display: flex;
   justify-content: space-between;
 }
@@ -101,7 +100,7 @@ textarea {
   border: 1px solid #ccc; /* Gray border
 } */
 /* Style the submit button with a specific background color etc */
-.submit {
+.Ssubmit {
   margin: 0 auto;
   background-color: #0058bc;
   color: white;
@@ -114,7 +113,7 @@ textarea {
 }
 
 /* When moving the mouse over the submit button, add a darker green color */
-.submit:hover {
+.Ssubmit:hover {
   background-color: rgb(125, 240, 255);
 }
 

@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/styles.css" />
     <title>Document</title>
     <style>
-      #container {
+      #Scontainer {
         width: 100%;
         margin: 20px auto;
       }
@@ -39,70 +39,70 @@
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="rp-container">
       <h1>Mẫu Báo Cáo Biển Quảng Cáo</h1>
       <form action="action_page.php">
-        <div class="item-container">
-          <div class="item-title">
-            <label for="fname">Họ tên</label>
-            <span id="reName">*</span>
+        <div class="item-rp-container">
+          <div class="item-rp-title">
+            <label for="Sfname">Họ tên</label>
+            <span id="reSName">*</span>
           </div>
           <input
             type="text"
-            id="name"
-            name="name"
+            id="Sname"
+            name="Sname"
             placeholder="Họ tên người gửi báo cáo"
             required
           />
         </div>
 
-        <div class="item-container">
-          <div class="item-title">
-            <label for="email">Email</label>
-            <span id="reEmail">*</span>
+        <div class="item-rp-container">
+          <div class="item-rp-title">
+            <label for="Semail">Email</label>
+            <span id="reSEmail">*</span>
           </div>
           <input
             type="email"
-            id="email"
-            name="email"
+            id="Semail"
+            name="Semail"
             placeholder="Email của bạn"
             required
           />
         </div>
 
-        <div class="item-container">
-          <div class="item-title">
-            <label for="phone">Điện thoại liên lạc</label>
-            <span id="rePhone">*</span>
+        <div class="item-rp-container">
+          <div class="item-rp-title">
+            <label for="Sphone">Điện thoại liên lạc</label>
+            <span id="reSPhone">*</span>
           </div>
           <input
             type="text"
-            id="phone"
-            name="phone"
+            id="Sphone"
+            name="Sphone"
             placeholder="Số điện thoại của bạn"
             required
           />
         </div>
 
-        <div class="item-container" id="special">
-          <div class="item">
-            <div class="item-title">
+        <div class="item-rp-container" id="special">
+          <div class="item-rp">
+            <div class="item-rp-title">
               <label for="phone">ID biển</label>
             </div>
             <input type="text" id="IDQC" name="IDQC" value="abcxyz" disabled />
           </div>
 
-          <div class="item">
-            <div class="item-title">
-              <label for="phone">Điểm đặt biển</label>
+          <div class="item-rp">
+            <div class="item-rp-title">
+              <label for="Sphone">Điểm đặt biển</label>
             </div>
             <input type="text" id="IDDQC" name="IDDQC" value="lc001" disabled />
           </div>
         </div>
 
-        <div class="item-container">
-          <label for="subject">Hình thức báo cáo</label>
-          <select id="subject" name="subject">
+        <div class="item-rp-container">
+          <label for="Ssubject">Hình thức báo cáo</label>
+          <select id="Ssubject" name="Ssubject">
             <option value="1">Tố giác sai phạm</option>
             <option value="2">Đăng ký nội dung</option>
             <option value="3">Đóng góp ý kiến</option>
@@ -110,13 +110,14 @@
           </select>
         </div>
 
-        <div class="item-container">
-          <div class="item-title">
-            <label for="report">Nội dung báo cáo</label>
-            <span id="rePort">*</span>
+        <div class="item-rp-container">
+          <div class="item-rp-title">
+            <label for="Sreport">Nội dung báo cáo</label>
+            <span id="reSport">*</span>
           </div>
-          <div id="container">
-            <div id="editor"></div>
+          <div id="Scontainer">
+            <!-- <div id="editor"></div> -->
+            <input type="text" id="editor" />
           </div>
           <!--
                   The "super-build" of CKEditor&nbsp;5 served via CDN contains a large set of plugins and multiple editor types.
@@ -128,8 +129,6 @@
                   <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/super-build/translations/es.js"></script>
               -->
           <script>
-            // This sample still does not showcase all CKEditor&nbsp;5 features (!)
-            // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
             CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
               // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
               toolbar: {
@@ -377,12 +376,18 @@
                 "TableOfContents",
                 "PasteFromOfficeEnhanced",
               ],
-            });
+            })
+              .then((newEditor) => {
+                editor = newEditor;
+              })
+              .catch((error) => {
+                console.error(error);
+              });
           </script>
         </div>
 
-        <div class="item-container">
-          <div class="item-title">
+        <div class="item-rp-container">
+          <div class="item-rp-title">
             <label for="formFileLg" class="form-label"
               >Hình ảnh minh họa 1</label
             >
@@ -412,16 +417,16 @@
           />
         </div>
 
-        <div class="item-container">
-          <div class="item-title">
-            <label for="captcha">Nhập Captcha</label>
-            <span id="reCap">*</span>
+        <div class="item-rp-container">
+          <div class="item-rp-title">
+            <label for="Scaptcha">Nhập Captcha</label>
+            <span id="reSCap">*</span>
           </div>
           <div class="captcha-form">
             <div class="input-group mb-lg-4">
               <input
                 type="text"
-                id="captcha"
+                id="Scaptcha"
                 class="form-control"
                 aria-label="Nhập captcha"
                 aria-describedby="button-addon2"
@@ -438,7 +443,7 @@
               <button
                 class="btn btn-outline-secondary"
                 type="button"
-                id="refresh"
+                id="Srefresh"
               >
                 <i class="fas fa-redo"></i>
               </button>
@@ -446,7 +451,7 @@
             <div class="input-group mb-lg-4">
               <input
                 type="text"
-                id="captchaI"
+                id="ScaptchaI"
                 placeholder="Nhập captcha"
                 class="form-control"
                 aria-label="Nhập captcha"
@@ -457,17 +462,17 @@
               <button
                 class="btn btn-outline-secondary"
                 type="button"
-                id="check"
+                id="Scheck"
               >
                 <i class="fas fa-check"></i>
               </button>
             </div>
-            <div class="message"></div>
+            <div class="Smessage"></div>
             <script src="js/script.js"></script>
           </div>
         </div>
-        <div class="message" id="must">(*) : Bắt buộc</div>
-        <button id="yes" class="submit">Submit</button>
+        <div class="Smessage" id="Smust">(*) : Bắt buộc</div>
+        <button id="Syes" class="Ssubmit">Submit</button>
         <script src="js/script2.js"></script>
       </form>
     </div>
