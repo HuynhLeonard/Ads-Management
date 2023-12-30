@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+      integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/addBoard.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tạo bảng quảng cáo mới</h1>
+      <form action="action_page.php">
+          <div class="image drag-area">
+            <img src="/assets/addImage.jpg" alt="">
+            <div class="dragText">Kéo và thả để tải hình ảnh lên</div>
+            <div>hoặc</div>
+            <button>Chọn hình ảnh cho biển quảng cáo</button>
+            <input type="file" hidden multiple>
+          </div>
+          <div class="formContent">
+            <div class="item-container">
+              <div class="item-title">
+                <label for="fname">ID điểm đặt</label>
+                <span id="reName">*</span>
+              </div>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="ID điểm đặt của bảng quảng cáo"
+                required
+                autofocus
+              />
+            </div>
+
+            <div class="item-container">
+              <div class="item-title">
+                <label for="fname">Địa chỉ điểm đặt</label>
+                <span id="reName">*</span>
+              </div>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Địa chỉ điểm đặt của bảng quảng cáo"
+                required
+                autofocus
+              />
+            </div>
+  
+            <div class="addDetail">
+              <div class="item-container">
+                <div class="item-title">
+                  <label for="fname">Phường</label>
+                  <span id="reName">*</span>
+                </div>
+                <input
+                  type="text"
+                  id="name"
+                  name="ward"
+                  placeholder="Tên phường của điểm đặt"
+                  required
+                />
+              </div>
+              <div class="item-container">
+                <div class="item-title">
+                  <label for="fname">Quận</label>
+                  <span id="reName">*</span>
+                </div>
+                <input
+                  type="text"
+                  id="name"
+                  name="district"
+                  placeholder="Tên quận của điểm đặt"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="adsDetail">
+              <div class="item-container">
+                <div class="item-title">
+                  <label for="fname">Loại bảng</label>
+                  <span id="reName">*</span>
+                </div>
+                <input
+                  type="text"
+                  id="name"
+                  name="ward"
+                  placeholder="Loại bảng quảng cáo"
+                  required
+                />
+              </div>
+              <div class="item-container">
+                <div class="item-title">
+                  <label for="fname">Số lượng trụ</label>
+                  <span id="reName">*</span>
+                </div>
+                <input
+                  type="number"
+                  id="name"
+                  name="district"
+                  placeholder="Số lượng trụ của bảng quảng cáo"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="sizeDetail">
+              <div class="item-container">
+                <div class="item-title">
+                  <label for="fname">Chiều cao (m)</label>
+                  <span id="reName">*</span>
+                </div>
+                <input
+                  type="number"
+                  id="name"
+                  name="ward"
+                  placeholder="Chiều cao của bảng quảng cáo"
+                  required
+                />
+              </div>
+              <div class="item-container">
+                <div class="item-title">
+                  <label for="fname">Chiều rộng</label>
+                  <span id="reName">*</span>
+                </div>
+                <input
+                  type="number"
+                  id="name"
+                  name="district"
+                  placeholder="Chiều rộng của bẳng quảng cáo"
+                  required
+                />
+              </div>
+            </div>
+  
+            
+            <div class="button">
+              <button class="btn btn-danger" type="button">Hủy và thoát</button>
+              <button class="btn btn-success" type="submit">Xác nhận</button>
+            </div>
+          </div>
+      </form>
+    </div>
+    <script src="/js/addBoard.js"></script>
+  </body>
+</html>
