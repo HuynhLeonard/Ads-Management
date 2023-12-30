@@ -83,13 +83,6 @@ export const getAllLocation = async () => {
                 }
             },
             {
-                $match: {
-                    wardID: "P0101",
-                    locationType: "LCT06",
-                    adsForm: "HT001"
-                }
-            },
-            {
                 $project: {
                     _id: 0,
                     adsForm: 1,
@@ -99,6 +92,8 @@ export const getAllLocation = async () => {
                     locationID: 1,
                     locationName: 1,
                     locationType: 1,
+                    latitude: 1,
+                    longitude: 1,
                     planned: 1,
                     districtName: "$district.districtName",
                     wardName: "$ward.wardName",
@@ -514,7 +509,7 @@ export const getAdsCategoryByID = async (locationID) => {
             },
             {
                 $project: {
-                    
+
                 }
             }
         ]
