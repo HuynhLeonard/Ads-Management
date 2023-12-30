@@ -87,13 +87,11 @@ governmentApp.post('/', (req,res) => {
     res.redirect('/department')
 });
 
-governmentApp.use('/department', (req,res) => {
-    res.render("Department/index");
-});
-
-governmentApp.use('/add-location', (req,res) => {
-    res.render('add');
+governmentApp.use('/department', departmentRoute);
+governmentApp.use('/add', (req,res) => {
+    res.render('add')
 })
+
 
 governmentApp.get('/api/location/', locationController.getAllLocation);
 governmentApp.use("/api/test", testController);
