@@ -170,23 +170,21 @@ form {
     color: burlywood;
 }
 
-.btn {
+.button {
     display: flex;
     justify-content: center;
 }
 
-.btn button {
+.button button {
     margin: 0 15px;
 }
 
-.btn button[type = "submit"] {
-    background-color: #19bf2b;
+.button button[type = "submit"] {
     width: 20%;
     border-radius: 10px;
 }
 
-.btn button[type = "button"] {
-    background-color: #ed2d2d;
+.button button[type = "button"] {
     width: 20%;
     border-radius: 10px;
 }
