@@ -7,7 +7,7 @@ const controller = {}
 
 controller.getAllLocation = async (req,res,next) => {
     const locations = await LocationService.getAllLocation();
-    // console.log(locations);
+    console.log(locations);
     res.status(200).json({
         locations
     })
