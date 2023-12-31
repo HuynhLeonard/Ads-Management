@@ -32,7 +32,7 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // import * as boardTypeService from './government/services/boardTypeService.js';
 // import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
-import locationController from './government/controllers/locationsController.js';
+import * as api from "./government/controllers/MainAPI/main.js";
 import testController from "./government/controllers/testController.js";
 import flash from 'express-flash';
 import session from 'express-session'
@@ -93,7 +93,11 @@ governmentApp.use('/add', (req,res) => {
 })
 
 
-governmentApp.get('/api/location/', locationController.getAllLocation);
+governmentApp.get('/api/location/', (req,res) => {
+    api
+        .getAllLocations(req.query.districtID, req.query.wardID)
+        .then((location) => res.status(200).json(location));
+});
 governmentApp.use("/api/test", testController);
 
 

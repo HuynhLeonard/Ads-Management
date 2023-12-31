@@ -34,7 +34,7 @@ async function getSpotsData() {
     // const districtID = userData.split(',')[0];
     // const wardID = userData.split(',')[1];
     // rewrite the data in backend
-    const spots1 = await fetch(`http://localhost:3000/api/location`, {
+    const spots = await fetch(`http://localhost:3000/api/location`, {
         method: 'GET',
         headers: new Headers(),
         mode: 'cors'
@@ -43,7 +43,7 @@ async function getSpotsData() {
       type: 'FeatureCollection',
       features: []
     };
-    const spots = spots1.locations
+    // const spots = spots1.locations
 
     console.log(spots);
     Object.values(spots).forEach((spot) => {
