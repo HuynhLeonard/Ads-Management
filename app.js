@@ -100,6 +100,17 @@ governmentApp.get('/api/location/', (req,res) => {
 });
 governmentApp.use("/api/test", testController);
 
+governmentApp.get('/error-page', (req,res) => {
+    res.render('error', {
+        title: '404',
+        error: 'Page not Found'
+    })
+});
+
+governmentApp.get('/addBoard', (req,res) => {
+    res.render('addBoard');
+})
+
 
 
 const governmentServer = http.createServer(governmentApp);
