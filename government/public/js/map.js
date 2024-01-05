@@ -17,14 +17,14 @@ const COLORS = {
 function generateSpotHTML(spot) {
   // console.log(spot.spotID);
   return `<div class="card">
-            <img src="${spot.spotImage[0]}" class="card-img-top img-fluid" alt="...">
+            <img src="${spot.images[0]}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
-              <h6 class="card-title fw-bold">${spot.spotName}</h6>
-              <p class="card-text">${spot.spotTypeName}</p>
+              <h6 class="card-title fw-bold">${spot.locationName}</h6>
+              <p class="card-text">${spot.locationTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
-              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
-              <a href="/department/advertisements/new?category=board&spotID=${spot.spotID}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.locationID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              <a href="/department/advertisements/new?category=board&spotID=${spot.locationID}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
             </div>
           </div>`;
 }
@@ -56,7 +56,7 @@ async function getSpotsData() {
         },
         properties: {
           ...spot,
-        //   description: generateSpotHTML(spot)
+          description: generateSpotHTML(spot)
         }
       });
     });
