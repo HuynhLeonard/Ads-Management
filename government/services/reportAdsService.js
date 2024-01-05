@@ -23,14 +23,29 @@ export const updateReport = async (reportID,updateData) => {
 };
 
 export const getAllReport = async () => {
+    const option = [
+        {
+            $project: {
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                locationDistrictName: '$',
+                locationWardName: '$',
+            }
+        }
+    ]
     try {
-        const report = await report.find();
+        const report = await report.aggregate(option);
         return report;
     } catch (error) {
         throw new Error('Error happened when getting all report type.');
     }
 };
 
+// query
 export const getSingleReport = async (reportID) => {
     try {
         const report = await report.find({reportID: reportID});
@@ -39,6 +54,18 @@ export const getSingleReport = async (reportID) => {
         throw new Error('Error');
     }
 };
+
+export const getReportsByObjectID = async (objectID) => {
+
+};
+
+export const getReportsByType = async (reportType) => {
+
+};
+
+export const getReportsByStatus = async (status) => {
+
+}
 
 export const deleteReport = async (reportID) => {
     try {
