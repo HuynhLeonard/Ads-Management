@@ -105,24 +105,376 @@ export const getAllReport = async () => {
 
 // query
 export const getSingleReport = async (reportID) => {
+    const option = [
+        {
+            $match: {
+                reportID: reportID,
+            }
+        },
+        {
+            $lookup: {
+                from: "boards",
+                localField: "objectID",
+                foreignField: "boardID",
+                as: "board",
+            }
+        },
+        {
+            $unwind: {
+                path: "$board",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "locations",
+                localField: "board.locationID",
+                foreignField: "locationID",
+                as: "location",
+            }
+        },
+        {
+            $unwind: {
+                path: "$location",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "districts",
+                localField: "location.districtID",
+                foreignField: "districtID",
+                as: "district",
+            }
+        },
+        {
+            $unwind: {
+                path: "$district",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "wards",
+                localField: "location.wardID",
+                foreignField: "wardID",
+                as: "ward",
+            }
+        },
+        {
+            $unwind: {
+                path: "$ward",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                locationDistrictName: "$district.districtName",
+                locationWardName: "$ward.wardName",
+            }
+        },
+        {
+            $limit: 1
+        }
+    ];
     try {
-        const report = await report.find({reportID: reportID});
-        return report;
+        const reports = await report.aggregate(option);
+        return reports;
     } catch (error) {
-        throw new Error('Error');
+        throw new Error('Error happened when getting single report.');
     }
 };
 
 export const getReportsByObjectID = async (objectID) => {
-
+    const option = [
+        {
+            $match: {
+                objectID: objectID,
+            }
+        },
+        {
+            $lookup: {
+                from: "boards",
+                localField: "objectID",
+                foreignField: "boardID",
+                as: "board",
+            }
+        },
+        {
+            $unwind: {
+                path: "$board",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "locations",
+                localField: "board.locationID",
+                foreignField: "locationID",
+                as: "location",
+            }
+        },
+        {
+            $unwind: {
+                path: "$location",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "districts",
+                localField: "location.districtID",
+                foreignField: "districtID",
+                as: "district",
+            }
+        },
+        {
+            $unwind: {
+                path: "$district",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "wards",
+                localField: "location.wardID",
+                foreignField: "wardID",
+                as: "ward",
+            }
+        },
+        {
+            $unwind: {
+                path: "$ward",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                locationDistrictName: "$district.districtName",
+                locationWardName: "$ward.wardName",
+            }
+        },
+    ];
+    try {
+        const reports = await report.aggregate(option);
+        return reports;
+    } catch (error) {
+        throw new Error('Error happened when getting report by object.');
+    }
 };
 
 export const getReportsByType = async (reportType) => {
-
+    const option = [
+        {
+            $match: {
+                reportType: reportType,
+            }
+        },
+        {
+            $lookup: {
+                from: "boards",
+                localField: "objectID",
+                foreignField: "boardID",
+                as: "board",
+            }
+        },
+        {
+            $unwind: {
+                path: "$board",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "locations",
+                localField: "board.locationID",
+                foreignField: "locationID",
+                as: "location",
+            }
+        },
+        {
+            $unwind: {
+                path: "$location",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "districts",
+                localField: "location.districtID",
+                foreignField: "districtID",
+                as: "district",
+            }
+        },
+        {
+            $unwind: {
+                path: "$district",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "wards",
+                localField: "location.wardID",
+                foreignField: "wardID",
+                as: "ward",
+            }
+        },
+        {
+            $unwind: {
+                path: "$ward",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "reporttypes",
+                localField: "reportType",
+                foreignField: "reportTypeID",
+                as: "reporttype",
+            }
+        },
+        {
+            $unwind: {
+                path: "$reporttype",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                reportTypeName: "$reporttype.reportTypeName",
+                locationDistrictName: "$district.districtName",
+                locationWardName: "$ward.wardName",
+            }
+        },
+    ];
+    try {
+        const reports = await report.aggregate(option);
+        return reports;
+    } catch (error) {
+        throw new Error('Error happened when getting report by type.');
+    }
 };
 
 export const getReportsByStatus = async (status) => {
-
+    const option = [
+        {
+            $match: {
+                status: Number(status),
+            }
+        },
+        {
+            $lookup: {
+                from: "boards",
+                localField: "objectID",
+                foreignField: "boardID",
+                as: "board",
+            }
+        },
+        {
+            $unwind: {
+                path: "$board",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "locations",
+                localField: "board.locationID",
+                foreignField: "locationID",
+                as: "location",
+            }
+        },
+        {
+            $unwind: {
+                path: "$location",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "districts",
+                localField: "location.districtID",
+                foreignField: "districtID",
+                as: "district",
+            }
+        },
+        {
+            $unwind: {
+                path: "$district",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "wards",
+                localField: "location.wardID",
+                foreignField: "wardID",
+                as: "ward",
+            }
+        },
+        {
+            $unwind: {
+                path: "$ward",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "reporttypes",
+                localField: "reportType",
+                foreignField: "reportTypeID",
+                as: "reporttype",
+            }
+        },
+        {
+            $unwind: {
+                path: "$reporttype",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                reportTypeName: "$reporttype.reportTypeName",
+                locationDistrictName: "$district.districtName",
+                locationWardName: "$ward.wardName",
+            }
+        },
+    ];
+    try {
+        const reports = await report.aggregate(option);
+        return reports;
+    } catch (error) {
+        throw new Error('Error happened when getting report by status.');
+    }
 }
 
 export const deleteReport = async (reportID) => {
