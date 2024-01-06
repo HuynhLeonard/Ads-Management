@@ -19,30 +19,40 @@ controller.findAllDistricts = async (req,res) => {
     });
 
     const totalWard = await wardService.countAll();
-    const totalLocation = await locationService.countAll();
+    const totalSpot = await locationService.countAll();
     const totalBoard = await boardService.countAll();
 
     console.log(tableData);
     console.log(totalWard);
-    console.log(totalLocation);
+    console.log(totalSpot);
     console.log(totalBoard)
 
-    return res.render('test')
+    return res.render('Department/locations', {
+        tableData, totalBoard, totalSpot, totalWard,
+        title: 'Sở VH-TT - Quản lý danh sách Quận'
+    })
 };
 
 // ?district=id
 controller.locationsDetails = async (req,res) => {
     let districtID = req.query.district;
+    console.log(districtID);
     let districtDetail = await locationDetailService.getDistrictDetail(districtID);
-    
+    console.log(districtDetail);
     districtDetail = districtDetail[0];
     const wards = await locationDetailService.getDetails(districtID);
-    console.log(wards);
+    // console.log(wards);
     const districts = await districtService.getAllDistricts();
-    console.log(districts);
+    // console.log(districts);
     
     // quan ly phuong
-    res.render('test');
+    res.render('./Department/location-detail', {
+        districtID,
+        districtDetail: districtDetail,
+        wards,
+        districts,
+        title: 'Sở - Quản lý Phường',
+      });
 };
 
 controller.addDistrict = async (req,res) => {

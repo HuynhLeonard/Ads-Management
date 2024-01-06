@@ -56,7 +56,7 @@ export const getDetails = async (districtID) => {
     const option = [
         {
           $match: {
-            districtID: 'Q001'
+            districtID: districtID
           }
         },
         {
@@ -102,7 +102,7 @@ export const getDistrictDetail = async (districtID) => {
     const option = [
         {
             $match: {
-              districtID: 'Q001'
+              districtID: districtID
             }
           },
           {
