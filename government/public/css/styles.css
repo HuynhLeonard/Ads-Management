@@ -12,11 +12,7 @@ h1 {
 
 #special {
   display: flex;
-  justify-content: space-between;
-}
-
-.item-rp {
-  width: 45%;
+  /* justify-content: space-between; */
 }
 
 .rp-container span {
@@ -31,7 +27,6 @@ h1 {
 
 .item-rp-title {
   display: flex;
-  justify-content: space-between;
 }
 
 input[type="text"],
