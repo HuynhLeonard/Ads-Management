@@ -10,7 +10,7 @@ const ReportAdsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    boardID: {
+    objectID: {
         type: String,
         required: true
     },
