@@ -394,6 +394,128 @@ const getLocationDetail = async (locationID) => {
     }
 };
 
-const getListReport = async () => {
-
+// get all/single report
+const getListReport = async (reportIDs) => {
+    try {
+        reportIDs = reportIDs.split(',');
+        const option = [
+            {
+                $match: {
+                    reportID: { $in: reportIDs }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'reporttypes',
+                    localField: 'reportType',
+                    foreignField: 'reportTypeID',
+                    as: 'reportType'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$reportType',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'locations',
+                    localField: 'objectID',
+                    foreignField: 'locationID',
+                    as: 'spotInfo'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'boards',
+                    localField: 'objectID',
+                    foreignField: 'boardID',
+                    as: 'boardInfo'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$boardInfo',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'locations',
+                    localField: 'boardInfo.locationID',
+                    foreignField: 'locationID',
+                    as: 'boardSpotInfo'
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    reportID: 1,
+                    objectID: 1,
+                    reportType: '$reportType.reportTypeName',
+                    reporterName: 1,
+                    sendTime: 1,
+                    status: 1,
+                    spotDistrictID: {
+                    $cond: {
+                        if: { $eq: ['$boardSpotInfo', []] },
+                        then: '$spotInfo.districtID',
+                        else: '$boardSpotInfo.districtID'
+                    }
+                },
+                spotWardID: {
+                    $cond: {
+                        if: { $eq: ['$boardSpotInfo', []] },
+                        then: '$spotInfo.wardID',
+                        else: '$boardSpotInfo.wardID'
+                    }
+                },
+              }
+            },
+            {
+              $lookup: {
+                from: 'districts',
+                localField: 'spotDistrictID',
+                foreignField: 'districtID',
+                as: 'spotDistrict'
+              }
+            },
+            {
+              $lookup: {
+                from: 'wards',
+                localField: 'spotWardID',
+                foreignField: 'wardID',
+                as: 'spotWard'
+              }
+            },
+            {
+              $unwind: {
+                path: '$spotDistrict',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $unwind: {
+                path: '$spotWard',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $project: {
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                spotDistrictName: '$spotDistrict.districtName',
+                spotWardName: '$spotWard.wardName'
+              }
+            }
+        ]
+    } catch (error) {
+        console.log(error);
+        throw new Error(`Error getting list report: ${error.message}`);
+    }
 };
