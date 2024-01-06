@@ -25,9 +25,88 @@ export const getSingleBoard = async (boardID) => {
 
 // Done
 export const getAllBoards = async () => {
+    const option = [
+        {
+            $lookup: {
+                from: 'boardtypes',
+                localField: 'boardModelType',
+                foreignField: 'boardTypeID',
+                as: 'boardtypes'
+            }
+        },
+        {
+            $unwind: {
+                path: '$boardtypes',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: 'locations',
+                localField: 'locationID',
+                foreignField: 'locationID',
+                as: 'location'
+            }
+        },
+        {
+            $unwind: {
+                path: '$location',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: 'districts',
+                localField: 'location.districtID',
+                foreignField: 'districtID',
+                as: 'district'
+            }
+        },
+        {
+            $unwind: {
+                path: '$district',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: 'wards',
+                localField: 'location.wardID',
+                foreignField: 'wardID',
+                as: 'ward'
+            }
+        },
+        {
+            $unwind: {
+                path: '$ward',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                boardID: 1,
+                locationID: 1,
+                locationName: '$location.locationName',
+                districtID: '$district.districtID',
+                districtName: '$district.districtName',
+                wardID: '$ward.wardID',
+                wardName: '$ward.wardName',
+                boardModelType: 1,
+                boardTypeName: '$boardtypes.typeName',
+                height: 1,
+                width: 1,
+                quantity: 1,
+            }
+        },
+        {
+            $sort: {
+                boardID: 1
+            }
+        }
+    ]
     try {
-        const boards = await Board.find();
-        
+        const boards = await Board.aggregate(option);
         return boards
     } catch (error) {
         throw new Error(`Error getting all boards: ${error.message}`);
@@ -36,13 +115,195 @@ export const getAllBoards = async () => {
 
 // done
 export const getAllBoardsOfSpot = async (spotID) => {
+    const option = [
+        {
+            $match: {
+                locationID: spotID
+            }
+        },
+        {
+            $lookup: {
+                from: 'boardtypes',
+                localField: 'boardModelType',
+                foreignField: 'boardTypeID',
+                as: 'boardtypes'
+            }
+        },
+        {
+            $unwind: {
+                path: '$boardtypes',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                boardID: 1,
+                locationID: 1,
+                boardModelType: 1,
+                boardTypeName: '$boardtypes.typeName',
+                height: 1,
+                width: 1,
+                quantity: 1
+            }
+        } 
+    ]
+    
     try {
-        const boards = await Board.find({spotID: spotID});
+        const boards = await Board.aggregate(option);
         return boards;
     } catch (error) {
         throw new Error(`Error getting all boards: ${error.message}`);
     }
 };
+
+export const getAllBoardsOfDistrict = async (districtID) => {
+    try {
+        const option = [
+            {
+                $lookup: {
+                    from: 'boardtypes',
+                    localField: 'boardModelType',
+                    foreignField: 'boardTypeID',
+                    as: 'boardtypes'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$boardtypes',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'locations',
+                    localField: 'locationID',
+                    foreignField: 'locationID',
+                    as: 'location'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$location',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $match: {
+                    'location.districtID': districtID,
+                }
+            },
+            {
+                $lookup: {
+                    from: 'wards',
+                    localField: 'location.wardID',
+                    foreignField: 'wardID',
+                    as: 'ward'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$ward',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    boardID: 1,
+                    locationID: 1,
+                    locationName: '$location.locationName',
+                    districtID: '$location.districtID',
+                    wardID: '$ward.wardID',
+                    wardName: '$ward.wardName',
+                    boardModelType: 1,
+                    boardTypeName: '$boardtypes.typeName',
+                    height: 1,
+                    width: 1,
+                    quantity: 1
+                }
+            }
+        ];
+
+        return await Board.aggregate(option);
+    } catch (error) {
+        throw new Error('Error getting all files.');
+    }
+};
+
+export const getAllBoardsOfWard = async (wardID) => {
+    try {
+        const option = [
+            {
+                $lookup: {
+                    from: 'boardtypes',
+                    localField: 'boardModelType',
+                    foreignField: 'boardTypeID',
+                    as: 'boardtypes'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$boardtypes',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'locations',
+                    localField: 'locationID',
+                    foreignField: 'locationID',
+                    as: 'location'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$location',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $match: {
+                    'location.wardID': wardID,
+                }
+            },
+            {
+                $lookup: {
+                    from: 'wards',
+                    localField: 'location.wardID',
+                    foreignField: 'wardID',
+                    as: 'ward'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$ward',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    boardID: 1,
+                    locationID: 1,
+                    locationName: '$location.locationName',
+                    districtID: '$location.districtID',
+                    wardID: '$ward.wardID',
+                    wardName: '$ward.wardName',
+                    boardModelType: 1,
+                    boardTypeName: '$boardtypes.typeName',
+                    height: 1,
+                    width: 1,
+                    quantity: 1
+                }
+            }
+        ];
+
+        return await Board.aggregate(option);
+    } catch (error) {
+        throw new Error('Error getting all files.');
+    }
+}
 
 // done
 export const updateBoard = async (boardID, updatedData) => {
