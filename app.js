@@ -33,7 +33,7 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
 import * as api from "./government/controllers/MainAPI/main.js";
-import testController from "./government/controllers/testController.js";
+// import testController from "./government/controllers/testController.js";
 import flash from 'express-flash';
 import session from 'express-session'
 const governmentApp = express();
@@ -98,7 +98,8 @@ governmentApp.get('/api/location/', (req,res) => {
         .getAllLocations(req.query.districtID, req.query.wardID)
         .then((location) => res.status(200).json(location));
 });
-governmentApp.use("/api/test", testController);
+import testController from "./government/controllers/Department/locationController.js";
+governmentApp.get("/api/test", testController.locationsDetails);
 
 governmentApp.get('/error-page', (req,res) => {
     res.render('error', {
