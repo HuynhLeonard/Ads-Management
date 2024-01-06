@@ -4,7 +4,7 @@ export const createReportType = async (reportTypeData) => {
     try {
         const newReport = new reportTypes(reportTypeData);
         const count = await reportTypes.countDocuments();
-        newReport.reportTypeID = 'LH-BC' + String(count + 1).padStart(3,'0');
+        newReport.reportTypeID = 'HT-BC' + String(count + 1).padStart(3,'0');
         const saveData = await newReport.save();
         return saveData;
     } catch (error) {

@@ -25,23 +25,81 @@ export const updateReport = async (reportID,updateData) => {
 export const getAllReport = async () => {
     const option = [
         {
+            $lookup: {
+                from: "boards",
+                localField: "objectID",
+                foreignField: "boardID",
+                as: "board",
+            }
+        },
+        {
+            $unwind: {
+                path: "$board",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "locations",
+                localField: "board.locationID",
+                foreignField: "locationID",
+                as: "location",
+            }
+        },
+        {
+            $unwind: {
+                path: "$location",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "districts",
+                localField: "location.districtID",
+                foreignField: "districtID",
+                as: "district",
+            }
+        },
+        {
+            $unwind: {
+                path: "$district",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "wards",
+                localField: "location.wardID",
+                foreignField: "wardID",
+                as: "ward",
+            }
+        },
+        {
+            $unwind: {
+                path: "$ward",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
             $project: {
+                _id: 0,
                 reportID: 1,
                 objectID: 1,
                 reportType: 1,
                 reporterName: 1,
                 sendTime: 1,
                 status: 1,
-                locationDistrictName: '$',
-                locationWardName: '$',
+                locationDistrictName: "$district.districtName",
+                locationWardName: "$ward.wardName",
             }
         }
-    ]
+    ];
     try {
         const report = await report.aggregate(option);
+        console.log(report);
         return report;
     } catch (error) {
-        throw new Error('Error happened when getting all report type.');
+        throw new Error('Error happened when getting all report.');
     }
 };
 

@@ -1,9 +1,19 @@
-import * as LocationService from '../services/locationService.js';
-import * as districtService from '../services/districtService.js';
-import * as wardService from '../services/wardService.js';
 import * as boardService from '../services/boardService.js';
+import * as districtService from '../services/districtService.js';
+import * as LocationService from '../services/locationService.js';
+import * as Report from '../services/reportAdsService.js';
+import * as wardService from '../services/wardService.js';
+
 
 const controller = {}
+
+controller.getAllReport = async (req,res,next) => {
+    const result = await Report.getAllReport();
+    console.log(result);
+    res.status(200).json({
+        result
+    })
+};
 
 controller.getAllLocation = async (req,res,next) => {
     const locations = await LocationService.getAllLocation();
