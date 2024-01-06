@@ -95,10 +95,10 @@ export const getAllReport = async () => {
         }
     ];
     try {
-        const report = await report.aggregate(option);
-        console.log(report);
-        return report;
+        const reports = await report.aggregate(option);
+        return reports;
     } catch (error) {
+        console.log(error);
         throw new Error('Error happened when getting all report.');
     }
 };

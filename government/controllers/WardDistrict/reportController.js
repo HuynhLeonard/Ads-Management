@@ -1,4 +1,4 @@
-import * as Report from '../services/reportAdsService.js';
+import * as Report from '../../services/reportAdsService.js';
 
 const controller = {}
 
@@ -21,7 +21,6 @@ controller.updateReport = async (req,res,next) => {
 
 controller.getAllReport = async (req,res,next) => {
     const result = await Report.getAllReport();
-    
     res.status(200).json({
         result
     })

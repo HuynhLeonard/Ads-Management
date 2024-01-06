@@ -92,10 +92,10 @@ governmentApp.use('/add', (req,res) => {
     res.render('add')
 })
 
-
+import reportController from "./government/controllers/WardDistrict/reportController.js"
 governmentApp.get('/api/location/', locationController.getAllLocation);
 governmentApp.use("/api/test", testController);
-governmentApp.get('/api/report', locationController.getAllReport);
+governmentApp.get('/api/report', reportController.getAllReport);
 
 
 
