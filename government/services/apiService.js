@@ -173,11 +173,11 @@ export const getAllLocations = async (districtID, wardID) => {
     return await Location.aggregate(option);
 };
 
-const getLocationDetail = async (locationID) => {
+export const getLocationDetail = async (locationID) => {
     const option = [
         {
             $match: {
-                locationID: 'LC003'
+                locationID: locationID
             }
         },
         {
@@ -395,7 +395,7 @@ const getLocationDetail = async (locationID) => {
 };
 
 // get all/single report
-const getListReport = async (reportIDs) => {
+export const getListReport = async (reportIDs) => {
     try {
         reportIDs = reportIDs.split(',');
         const option = [
