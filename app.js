@@ -35,7 +35,10 @@ import departmentRoute from './government/routes/departmentRoute.js';
 import * as api from "./government/controllers/MainAPI/main.js";
 // import testController from "./government/controllers/testController.js";
 import flash from 'express-flash';
-import session from 'express-session'
+import session from 'express-session';
+import passportConfig from './government/config/passport.js';
+import passport from 'passport';
+
 const governmentApp = express();
 governmentApp.use(express.json());
 governmentApp.use(express.urlencoded({ extended: false }));
@@ -48,7 +51,7 @@ const publicDirectory = path.join(__dirname, '/government/public');
 console.log(publicDirectory)
 governmentApp.use(express.static(publicDirectory));
 governmentApp.use(flash());
-
+passportConfig(passport)
 governmentApp.use(
     session({
         secret: 'hihihi', // secret key
@@ -57,17 +60,18 @@ governmentApp.use(
          // use local session, session store will be cleared when the server restarts
     })
 );
+governmentApp.use(passport.initialize())
+governmentApp.use(passport.session())
 
 governmentApp.use((req, res, next) => {
     res.locals.url = req.originalUrl
     res.locals.host = req.get('host')
     res.locals.protocol = req.protocol
     res.locals.message = req.flash()
-    // check this one later
-    res.locals.username = ''
-    res.locals.password = ''
-    next()
-});
+    // res.locals.username = req.signedCookies.username || ''
+    // res.locals.password = req.signedCookies.password || ''
+    next();
+})
 
 // mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
@@ -83,6 +87,9 @@ governmentApp.get("/", (req,res) => {
         password: "",
     });
 });
+
+import {loginController} from "./government/controllers/authController.js";
+// governmentApp.post('/', loginController);
 governmentApp.post('/', (req,res) => {
     res.redirect('/department')
 });
