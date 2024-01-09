@@ -93,9 +93,11 @@ governmentApp.use('/add', (req,res) => {
 })
 
 import reportController from "./government/controllers/WardDistrict/reportController.js";
+import userController from "./government/controllers/userController.js";
 governmentApp.get('/api/location/', locationController.getAllLocation);
 governmentApp.use("/api/test", testController);
 governmentApp.get('/api/report/:id', reportController.getReportsByStatus);
+governmentApp.post("/api/create", userController.createUser);
 
 
 

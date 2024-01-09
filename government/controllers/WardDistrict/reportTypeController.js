@@ -1,4 +1,4 @@
-import * as ReportType from '../services/reportTypeService.js';
+import * as ReportType from '../../services/reportTypeService.js';
 
 const controller = {}
 
