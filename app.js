@@ -36,6 +36,10 @@ import session from 'express-session';
 import locationController from './government/controllers/locationsController.js';
 import testController from "./government/controllers/testController.js";
 import departmentRoute from './government/routes/departmentRoute.js';
+
+import * as api from "./government/controllers/MainAPI/main.js";
+// import testController from "./government/controllers/testController.js";
+
 const governmentApp = express();
 governmentApp.use(express.json());
 governmentApp.use(express.urlencoded({ extended: false }));
@@ -99,6 +103,26 @@ governmentApp.use("/api/test", testController);
 governmentApp.get('/api/report/:id', reportController.getReportsByStatus);
 governmentApp.post("/api/create", userController.createUser);
 
+
+
+
+governmentApp.get('/api/location/', (req,res) => {
+    api
+        .getAllLocations(req.query.districtID, req.query.wardID)
+        .then((location) => res.status(200).json(location));
+});
+governmentApp.get("/api/test", testController.locationsDetails);
+
+governmentApp.get('/error-page', (req,res) => {
+    res.render('error', {
+        title: '404',
+        error: 'Page not Found'
+    })
+});
+
+governmentApp.get('/addBoard', (req,res) => {
+    res.render('addBoard');
+})
 
 
 
