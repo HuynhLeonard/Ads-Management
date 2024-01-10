@@ -8,11 +8,9 @@ const redirectUrl = (officer, res) => {
         1: '/district',
         2: '/ward'
     }
-
     const positionKey = officer.username === 'admin' ? 'admin' : officer.position;
     console.log(redirectMap[positionKey])
-    // return res.redirect(redirectMap[positionKey] || '/');
-    res.redirect('http://localhost:3000/department');
+    return res.redirect(redirectMap[positionKey] || '/');
 };
 
 const authController = (strategy) => (req, res, next) => {

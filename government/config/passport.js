@@ -8,9 +8,10 @@ const passportConfig = (passport) => {
         new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, async (username, password, done) => {
             try {
                 const officer = await getSingleUser(username);
-                // if (!officer || !await comparePassword(password, officer.password)) {
-                // return done(null, false, { message: 'Tên đăng nhập hoặc mật khẩu không đúng' })
-                // }
+
+                if (!officer || !await comparePassword(username, password)) {
+                return done(null, false, { message: 'Tên đăng nhập hoặc mật khẩu không đúng' })
+                }
                 return done(null, officer)
             } catch (error) {
                 return done(error)
@@ -44,6 +45,7 @@ const passportConfig = (passport) => {
     passport.deserializeUser(async (username, done) => {
         try {
             const user = await getSingleUser(username);
+            done(null, user);
         } catch (error) {
             done(error);
         }

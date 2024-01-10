@@ -33,15 +33,19 @@ citizenServer.listen(process.env.CITIZENPORT, () => {
 // import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
 import * as api from "./government/controllers/MainAPI/main.js";
+import {checkAuth} from './government/middleware/authMiddleware.js';
 // import testController from "./government/controllers/testController.js";
 import flash from 'express-flash';
 import session from 'express-session';
 import passportConfig from './government/config/passport.js';
 import passport from 'passport';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 const governmentApp = express();
 governmentApp.use(express.json());
 governmentApp.use(express.urlencoded({ extended: false }));
+governmentApp.use(flash());
 governmentApp.use(cors());
 governmentApp.set('views', path.join(__dirname, 'government','views'));
 governmentApp.set('view engine', 'ejs');
@@ -50,7 +54,8 @@ console.log(`${governmentApp.get('views')}`);
 const publicDirectory = path.join(__dirname, '/government/public');
 console.log(publicDirectory)
 governmentApp.use(express.static(publicDirectory));
-governmentApp.use(flash());
+governmentApp.use(cookieParser('leonardHuynh'));
+
 passportConfig(passport)
 governmentApp.use(
     session({
@@ -68,16 +73,12 @@ governmentApp.use((req, res, next) => {
     res.locals.host = req.get('host')
     res.locals.protocol = req.protocol
     res.locals.message = req.flash()
-    // res.locals.username = req.signedCookies.username || ''
-    // res.locals.password = req.signedCookies.password || ''
+    res.locals.username = req.signedCookies.username || ''
+    res.locals.password = req.signedCookies.password || ''
     next();
 })
 
 // mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority
-mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
-    .then(() => {
-        console.log('Connect to Database');
-    })
 
 
 governmentApp.get("/", (req,res) => {
@@ -89,38 +90,38 @@ governmentApp.get("/", (req,res) => {
 });
 
 import {loginController} from "./government/controllers/authController.js";
-// governmentApp.post('/', loginController);
-governmentApp.post('/', (req,res) => {
-    res.redirect('/department')
-});
+governmentApp.post('/', loginController);
+// governmentApp.post('/', (req,res) => {
+//     res.redirect('/department')
+// });
 
-governmentApp.use('/department', departmentRoute);
+governmentApp.use('/department',departmentRoute);
 governmentApp.use('/add', (req,res) => {
     res.render('add')
 })
 
-
-governmentApp.get('/api/location/', (req,res) => {
-    api
-        .getAllLocations(req.query.districtID, req.query.wardID)
-        .then((location) => res.status(200).json(location));
-});
-import testController from "./government/controllers/Department/locationController.js";
-governmentApp.get("/api/test", testController.locationsDetails);
-
-governmentApp.get('/error-page', (req,res) => {
-    res.render('error', {
-        title: '404',
-        error: 'Page not Found'
-    })
-});
-
-governmentApp.get('/addBoard', (req,res) => {
-    res.render('addBoard');
+governmentApp.get('/show', (req,res) => {
+    res.send(req.user);
 })
 
+import apiRoute from "./government/routes/apiRoutes.js";
+import { setHeaders } from './government/routes/apiRoutes.js';
+governmentApp.use('/api',setHeaders ,apiRoute);
 
+// governmentApp.get('/api/location/', (req,res) => {
+//     api
+//         .getAllLocations(req.query.districtID, req.query.wardID)
+//         .then((location) => res.status(200).json(location));
+// });
 
+import userController from './government/controllers/userController.js'
+governmentApp.post('/test', userController.createUser);
+
+governmentApp.use(morgan('dev'))
+mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
+    .then(() => {
+        console.log('Connect to Database');
+    })
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
     console.log(`Government App is running on http://localhost:${process.env.GOVERNMENT_PORT}`);

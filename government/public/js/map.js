@@ -34,7 +34,7 @@ async function getSpotsData() {
     // const districtID = userData.split(',')[0];
     // const wardID = userData.split(',')[1];
     // rewrite the data in backend
-    const spots = await fetch(`http://localhost:3000/api/location`, {
+    const spots = await fetch(`http://localhost:3000/api/map/locations`, {
         method: 'GET',
         headers: new Headers(),
         mode: 'cors'
