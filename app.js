@@ -79,7 +79,7 @@ mongoose
   });
 
 governmentApp.get("/", (req, res) => {
-  res.render("ReportForm");
+  res.render("License");
 });
 
 // for district service
