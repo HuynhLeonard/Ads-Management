@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 MAPBOX_TOKEN = 'pk.eyJ1IjoibGVvbmFyZGh1eW5oIiwiYSI6ImNscDNxdzNmZzB6dG0ya3M1MGt2MTVreHEifQ.WiaFF1ZoklZy7vMDLcPJ5g';
+const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
 
 const mapboxVersion = 'v2.9.1';
 const mapboxScript = document.createElement('script');
@@ -12,11 +13,31 @@ const COLORS = {
   blue: '#3C77FF'
 };
 
-// const userData = document.getElementById('user-data').innerText;
+const userData = document.getElementById('user-data').innerText;
+
+const formatMapFeature = (feature) => {
+  const { properties, text } = feature
+  let address = properties.address ? properties.address.split(',')[0] : feature.place_name.split(',')[0]
+  const coordinates = feature.geometry.coordinates.slice()
+
+  address = address.replace(/"/g, '')
+  address += `, ${feature.context[0].text || ''}, ${feature.context[2].text || ''}, ${feature.context[3].text || ''}`
+  if (address.includes(text)) {
+    address = address.replace(`${text}, `, '')
+  }
+
+  return {
+    text,
+    address,
+    coordinates
+  }
+}
 
 function generateSpotHTML(spot) {
   // console.log(spot.spotID);
-  return `<div class="card">
+  let href = ``;
+  if(position == -1) {
+    return `<div class="card">
             <img src="${spot.images[0]}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
               <h6 class="card-title fw-bold">${spot.locationName}</h6>
@@ -24,7 +45,21 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
               <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.locationID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
-              <a href="/department/advertisements/new?category=board&spotID=${spot.locationID}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
+            </div>
+          </div>`;
+  }
+  if(position == 1) href = `/district/license/create?spotID=${spot.spotID}`
+  if(position == 2) href = `/ward/license/create?spotID=${spot.spotID}`
+  
+  return `<div class="card">
+            <img src="${spot.spotImage[0]}" class="card-img-top img-fluid" alt="...">
+            <div class="card-body">
+              <h6 class="card-title fw-bold">${spot.spotName}</h6>
+              <p class="card-text">${spot.spotTypeName}</p>
+              <p class="card-text">${spot.address}</p>
+              <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              <button class="btn btn-success btn-sm text-white mt-2"><a href="${href}" style="text-decoration: none; color: #FFFFFF;">Thêm bảng quảng cáo</a></button>
             </div>
           </div>`;
 }
@@ -45,7 +80,7 @@ async function getSpotsData() {
     };
     // const spots = spots1.locations
 
-    console.log(spots);
+    // console.log(spots);
     Object.values(spots).forEach((spot) => {
       console.log(spot.longitude);
       spotsGeojson.features.push({
@@ -93,17 +128,17 @@ function createMap() {
   map.addControl(geolocation, 'bottom-right');
   map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
   map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
-  map.addControl(
-    new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-      marker: false,
-      placeholder: 'Tìm kiếm địa điểm',
-      language: 'vi-VN',
-      countries: 'vn'
-    }),
-    'top-left'
-  );
+  // map.addControl(
+  //   new MapboxGeocoder({
+  //     accessToken: mapboxgl.accessToken,
+  //     mapboxgl: mapboxgl,
+  //     marker: false,
+  //     placeholder: 'Tìm kiếm địa điểm',
+  //     language: 'vi-VN',
+  //     countries: 'vn'
+  //   }),
+  //   'top-left'
+  // );
 
   return map;
 }
@@ -237,6 +272,50 @@ async function addSpotLayer(map, spotsGeojson) {
   });
 }
 
+const closeBtn = document.getElementById('close-search-btn');
+const searchInput = document.getElementById('search-input');
+const resultBox = document.querySelector('.result-box');
+let lastSearch = '';
+// searchInput.addEventListener('keyup', (e) => {
+//   let searchValue = searchInput.value;
+//   searchValue = searchValue.trim();
+//   if (searchValue === '' || searchValue === lastSearch) {
+//     return;
+//   }
+//   const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
+
+//   lastSearch = searchValue;
+
+//     fetch(api)
+//         .then((res) => res.json())
+//         .then((res) => {
+//             if (res && res.items && res.items.length > 0) {
+//             const result = res.items.map((item) => {
+//                 return {
+//                 title: item.address.label,
+//                 lat: item.position.lat,
+//                 lng: item.position.lng,
+//                 };
+//             });
+//             displaySearchResult(result);
+//             }
+//         });
+// });
+
+const displaySearchResult = (result) => {
+  const content = result.map((item) => {
+    return `
+    <a  href='#'
+        class='list-group-item list-group-item-action border-0 rounded-0 list-search-item'
+        data-bs-lat='${item.lat}' 
+        data-bs-lng='${item.lng}'
+        data-bs-title='${item.title}'
+        style='cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem'>${item.title}    
+    </a>`;
+  });
+  resultBox.innerHTML = `<div class='list-group'>${content.join('')}</div>`;
+};
+
 mapboxScript.onload = async function() {
   const map = createMap();
   const spotsGeojson = await getSpotsData();
@@ -316,34 +395,33 @@ mapboxScript.onload = async function() {
     }
     marker.setLngLat(e.lngLat).addTo(map);
 
-    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.features);
-        const coordinates = res.features[0].geometry.coordinates.slice();
-        let description = res.features[0].place_name
-          .replace(/,\s*\d+,\s*Vietnam/, '')
-          .replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
-          .replace(/,.*Dist\.|,.*Ward\./, '');
-
-        description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
-
-        const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+        let address = res.items[0].address.label;
+        address = address.replace(', Hồ Chí Minh, Việt Nam', '');
+        const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                  <p class="fw-light" style="font-size: 15px;">${address}</p>`;
         const divElement = document.createElement('div');
-
+        
         divElement.innerHTML = innerHtmlContent;
-
+        divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
+        
+        if (window.location.pathname.startsWith('/so')) {
           const assignBtn = document.createElement('div');
 
-          // fix this links
-          assignBtn.innerHTML = `<a href="/department/advertisements/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+          assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
           divElement.appendChild(assignBtn);
           divElement.setAttribute('class', 'p-2');
-
-        new mapboxgl.Popup({ offset: [0, -30] }).setLngLat(coordinates).setDOMContent(divElement).addTo(map);
+        }
+        new mapboxgl.Popup({ offset: [0, -30] })
+        .setLngLat({lng: e.lngLat.lng, lat: e.lngLat.lat})
+        .setDOMContent(divElement)
+        .addTo(map);
       });
+
   });
 
   // Change the cursor to grab when user drag the map

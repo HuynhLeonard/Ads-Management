@@ -16,8 +16,111 @@ export const createNewBoard = async (boardData) => {
 // Done
 export const getSingleBoard = async (boardID) => {
     try {
-        const board = await Board.find({boardID: boardID});
-        return board;
+        const option = [
+            {
+              $match: {
+                boardID: boardID,
+              }
+            },
+            {
+              $lookup: {
+                from: 'locations',
+                localField: 'locationID',
+                foreignField: 'locationID',
+                as: 'spot',
+              }
+            },
+            {
+              $lookup: {
+                from: 'licensingrequest',
+                localField: 'licenseNumber',
+                foreignField: 'requestID',
+                as: 'licensereq',
+              }
+            },
+            {
+              $lookup: {
+                from: 'boardtypes',
+                localField: 'boardModelType',
+                foreignField: 'boardTypeID',
+                as: 'boardtype',
+              }
+            },
+            {
+              $lookup: {
+                from: 'locationtypes',
+                localField: 'spot.locationType',
+                foreignField: 'locationTypeID',
+                as: 'spottype',
+              }
+            },
+            {
+              $lookup: {
+                from: 'adscategories',
+                localField: 'spot.adsForm',
+                foreignField: 'CategoriesID',
+                as: 'adsform',
+              }
+            },
+            {
+              $unwind: {
+                path: '$spot',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $unwind: {
+                path: '$licensereq',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $unwind: {
+                path: '$boardtype',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $unwind: {
+                path: '$spottype',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $unwind: {
+                path: '$adsform',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+            {
+              $project: {
+                boardID: 1,
+                locationID: 1,
+                spotName: '$spot.locationName',
+                spotAddress: '$spot.address',
+                authCompany: '$licensereq.companyName',
+                authCompanyPhone: '$licensereq.companyPhone',
+                authCompanyEmail: '$licensereq.companyEmail',
+                authCompanyAddress: '$licensereq.companyAddress',
+                startDate: '$licensereq.startDate',
+                endDate: '$licensereq.endDate',
+                boardModelType: 1,
+                boardTypeName: '$boardtype.typeName',
+                quantity: 1,
+                height: 1,
+                width: 1,
+                spotType: '$spot.locationType',
+                spotTypeName: '$spottype.locationTypeName',
+                adsForm: '$adsform.CategoriesID',
+                adsFormName: '$adsform.CategoriesName',
+                images: 1,
+                licenseNumber: 1,
+                content: '$licensereq.content'
+              }
+            }
+          ]
+        const board = await Board.aggregate(option);
+        return board[0];
     } catch (error) {
         throw new Error(`Error getting board by ID: ${error.message}`);
     }

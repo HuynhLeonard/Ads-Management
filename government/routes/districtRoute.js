@@ -1,5 +1,5 @@
 import express from "express";
-
+import controller from "../controllers/WardDistrict/main.js";
 const router = express.Router();
 
 router.get("*", (req, res, next) => {
@@ -14,8 +14,8 @@ router.get("/", (req, res) => {
 });
 
 // lay thong tin officer (:username)
-router.get("/officer/:username");
-
+router.get("/officer/:username", (req,res) => controller.infoController.getInfo(req,res));
+router.post('/officer/:username', (req, res) => controller.infoController.updateInfo(req, res));
 //nhóm report
 router.get("/reports");
 router.get("/reports/:reportID");

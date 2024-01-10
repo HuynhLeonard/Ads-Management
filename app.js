@@ -105,9 +105,10 @@ governmentApp.get('/show', (req,res) => {
 })
 
 import apiRoute from "./government/routes/apiRoutes.js";
+import districtRoute from './government/routes/districtRoute.js';
 import { setHeaders } from './government/routes/apiRoutes.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
-
+governmentApp.use('/district', checkAuth, districtRoute);
 // governmentApp.get('/api/location/', (req,res) => {
 //     api
 //         .getAllLocations(req.query.districtID, req.query.wardID)
@@ -117,13 +118,10 @@ governmentApp.use('/api',setHeaders ,apiRoute);
 import userController from './government/controllers/userController.js'
 governmentApp.post('/test', userController.createUser);
 
-import emailService from "./government/services/emailService.js";
-import {generateOTP} from './government/controllers/authController.js';
-governmentApp.post('/send', async (req,res) => {
-    const otp = generateOTP();
-    await emailService.sendOTP('votanloc1106@gmail.com', otp);
-    res.send('Success')
-});
+// ==============================================================================
+// test area
+import infoController from './government/controllers/WardDistrict/infoController.js';
+// governmentApp.get('/district/officer/:username', infoController.getInfo);
 
 governmentApp.use(morgan('dev'))
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')

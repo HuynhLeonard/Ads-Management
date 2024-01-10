@@ -1,7 +1,7 @@
 import {createToolbar} from './utilities.js';
-import { getSpotsByDistrictID, getSpotsByWardID, getSpotByID } from '../../services/spotService.js'
-import { create, getByUsername, getByID, remove } from '../../services/licensingRequestService.js'
-import { getRoleByUsername } from '../../services/officerService.js';
+import { getSpotsByDistrictID, getSpotsByWardID, getSpotByID } from '../../services/locationService.js'
+import { create, getByUsername, getByID, remove } from '../../services/licensingService.js'
+import { getRoleByUsername } from '../../services/userService.js';
 import { getAllBoardTypes, getBoardTypeByID } from '../../services/boardTypeService.js';
 import { getWardsOfDistrict } from '../../services/wardService.js';
 import { getDistrictByID } from '../../services/districtService.js';

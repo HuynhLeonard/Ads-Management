@@ -1,7 +1,7 @@
-import officerService from '../../services/officerService.js';
+import * as officerService from '../../services/userService.js';
 import { getDistrictByID } from '../../services/districtService.js';
-import { getWardByID } from '../../services/wardService.js';
-import {createToolbar} from './utilities.js';
+import { getWard } from '../../services/wardService.js';
+import AdsCategories from '../../models/AdsCategoriesSchema.js';
 
 const getOfficierRoleInfor = async (info) => {
   let wardName = null;
@@ -10,7 +10,7 @@ const getOfficierRoleInfor = async (info) => {
   switch (info.position) {
     case 2:
       roleName = 'Cán bộ Phường';
-      [wardName, districtName] = await Promise.all([ getWardByID(info.wardID), getDistrictByID(info.districtID) ]);
+      [wardName, districtName] = await Promise.all([ getWard(info.wardID), getDistrictByID(info.districtID) ]);
       [wardName, districtName] = [wardName.wardName, districtName.districtName];
       break;
     case 1:
@@ -31,15 +31,15 @@ const getInfo = async (req, res) => {
   const { username } = req.params;
   const role = String(req.originalUrl.split('/')[1]);
   try {
-    const info = await officerService.getOfficerByUsername(username, true);
+    const info = await officerService.getSingleUser(username, true);
     const { wardName, districtName, roleName } = await getOfficierRoleInfor(info);
     if (wardName) info.managePlace = `Phường ${wardName}, Quận ${districtName}`;
     else if (districtName) info.managePlace = `Quận ${districtName}`;
     else info.managePlace = 'Sở Văn hóa Thể thao và Du lịch';
     info.roleName = roleName;
-    res.render('info', { title: 'Thông tin', info: info, toolbars: createToolbar(role) });
+    res.render('info', { title: 'Thông tin cán bộ', info: info, role: role});
   } catch (error) {
-    res.render('error', { title: 'Lỗi', error});
+    res.render('error', { title: '404', error});
   }
 }
 
@@ -50,10 +50,10 @@ const updateInfo = async (req, res) => {
   try {
     await officerService.updateOfficer(username, { name, email, phone, dob });
     req.flash('success', 'Cập nhật thông tin thành công');
-    return res.redirect(`/${role}/officier/${username}`);
+    return res.redirect(`/${role}/officer/${username}`);
   } catch {
     req.flash('error', 'Cập nhật thông tin thất bại');
-    return res.redirect(`/${role}/officier/${username}`);
+    return res.redirect(`/${role}/officer/${username}`);
   }
 }
 
