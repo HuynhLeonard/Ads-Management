@@ -117,6 +117,14 @@ governmentApp.use('/api',setHeaders ,apiRoute);
 import userController from './government/controllers/userController.js'
 governmentApp.post('/test', userController.createUser);
 
+import emailService from "./government/services/emailService.js";
+import {generateOTP} from './government/controllers/authController.js';
+governmentApp.post('/send', async (req,res) => {
+    const otp = generateOTP();
+    await emailService.sendOTP('votanloc1106@gmail.com', otp);
+    res.send('Success')
+});
+
 governmentApp.use(morgan('dev'))
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')
     .then(() => {
