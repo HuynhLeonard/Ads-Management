@@ -26,6 +26,28 @@ export const getAllReport = async () => {
     const option = [
         {
             $lookup: {
+                from: "reporttypes",
+                localField: "reportType",
+                foreignField: "reportTypeID",
+                as: "reporttype",
+            }
+        },
+        {
+            $unwind: {
+                path: "$reporttype",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: "locations",
+                localField: "objectID",
+                foreignField: "locationID",
+                as: "locationInfo",
+            }
+        },
+        {
+            $lookup: {
                 from: "boards",
                 localField: "objectID",
                 foreignField: "boardID",
@@ -50,6 +72,32 @@ export const getAllReport = async () => {
             $unwind: {
                 path: "$location",
                 preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                reportID: 1,
+                objectID: 1,
+                reportType: 1,
+                reportTypeName: "$reporttype.reportTypeName",
+                reporterName: 1,
+                sendTime: 1,
+                status: 1,
+                LocationDistrictID: {
+                    $cond: {
+                        if: { $eq: ['$location', []] },
+                        then: '$locationInfo.districtID',
+                        else: '$location.districtID'
+                    }
+                },
+                LocationWardID: {
+                    $cond: {
+                        if: { $eq: ['$location', []] },
+                        then: '$locationInfo.wardID',
+                        else: '$location.wardID'
+                    }
+                },
             }
         },
         {
@@ -80,6 +128,7 @@ export const getAllReport = async () => {
                 preserveNullAndEmptyArrays: true
             }
         },
+        
         {
             $project: {
                 _id: 0,
@@ -89,6 +138,7 @@ export const getAllReport = async () => {
                 reporterName: 1,
                 sendTime: 1,
                 status: 1,
+                reportTypeName: "$reporttype.reportTypeName",
                 locationDistrictName: "$district.districtName",
                 locationWardName: "$ward.wardName",
             }
@@ -113,36 +163,36 @@ export const getSingleReport = async (reportID) => {
         },
         {
             $lookup: {
-                from: "boards",
-                localField: "objectID",
-                foreignField: "boardID",
-                as: "board",
+                from: "reporttypes",
+                localField: "reportType",
+                foreignField: "reportTypeID",
+                as: "reporttype",
             }
         },
         {
             $unwind: {
-                path: "$board",
+                path: "$reporttype",
                 preserveNullAndEmptyArrays: true
             }
         },
         {
             $lookup: {
-                from: "locations",
-                localField: "board.locationID",
-                foreignField: "locationID",
-                as: "location",
+                from: "users",
+                localField: "officer",
+                foreignField: "username",
+                as: "user"
             }
         },
         {
             $unwind: {
-                path: "$location",
+                path: "$user",
                 preserveNullAndEmptyArrays: true
             }
         },
         {
             $lookup: {
                 from: "districts",
-                localField: "location.districtID",
+                localField: "user.districtID",
                 foreignField: "districtID",
                 as: "district",
             }
@@ -156,7 +206,7 @@ export const getSingleReport = async (reportID) => {
         {
             $lookup: {
                 from: "wards",
-                localField: "location.wardID",
+                localField: "user.wardID",
                 foreignField: "wardID",
                 as: "ward",
             }
@@ -174,10 +224,16 @@ export const getSingleReport = async (reportID) => {
                 objectID: 1,
                 reportType: 1,
                 reporterName: 1,
+                reporterEmail: 1,
+                phoneNumber: 1,
                 sendTime: 1,
                 status: 1,
-                locationDistrictName: "$district.districtName",
-                locationWardName: "$ward.wardName",
+                reportInfo: 1,
+                solution: 1,
+                reportImages: 1,
+                officer: 1,
+                userDistrictName: "$district.districtName",
+                userWardName: "$ward.wardName",
             }
         },
         {
