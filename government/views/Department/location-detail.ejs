@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include("../components/head.ejs"); %>
+</head>
+
+<body>
+    <header></header>
+    <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+        <div class="row"><%- include("../components/sidebar.ejs"); %></div>
+        <div class="container-fluid vw-100 pt-1">
+            <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+                    <!-- Profile -->
+                    <%- include("../components/card.ejs"); %>
+                    <!-- Title -->
+                    <div class="d-block">
+                        <h1 class="fw-bolder">Sở - Quản lý danh sách Phường - Quận <%= districtDetail.districtName %></h1>
+                    </div>
+                    <!-- Select -->
+                    <div class="container-fluid mt-3 ps-0">
+                        <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                            <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                                <%- include("../components/info-card.ejs", {title: 'Tổng số phường' , value: districtDetail.wardsCount ,
+                                    color: '#ae57ff' }); %>
+                                <%- include("../components/info-card.ejs", {title: 'Tổng số điểm quảng cáo' , value: districtDetail.spotsCount , 
+                                    color: '#00B285' }); %>
+                                <%- include("../components/info-card.ejs", {title: 'Tổng số bảng quảng cáo' , value: districtDetail.boardsCount , 
+                                    color: '#D59633' }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="container-listbar d-flex flex-row" style="gap: 15px">
+                        <!-- Left Bar -->
+                        <div class="d-inline-block list-bar">
+                            <div class="title py-2">QUẬN / HUYỆN</div>
+                            <!-- List District -->
+                            <div class="list-district scroll">
+                                <% districts.forEach(district=> { %>
+                                    <a href="/so/locations-detail?quan=<%=district.districtID%>" style="text-decoration: none">
+                                        <div class="district-box d-flex <% if (district.districtID === districtID) {%>active<% } %>">
+                                            <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">
+                                                <%=district.districtName%>
+                                            </span>
+                                            <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                                        </div>
+                                    </a>
+                                <% });%>
+                            </div>
+                            <a href="/so/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
+                        </div>
+                        <!-- Table -->
+                        <div class="container-fluid d-inline-block ps-0" style="width: 80%; padding: 0; margin: 0">
+                            <table data-toggle="table" data-search="true" data-pagination="true"
+                                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
+                                data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
+                                class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+                                <thead>
+                                    <tr>
+                                    <th data-align="center" data-field="index" data-sortable="true" data-width-unit="%" data-width="25">
+                                        Mã Phường
+                                    </th>
+                                    <th data-align="center" data-field="username" data-sortable="true" data-width-unit="%" data-width="25">
+                                        Tên Phường
+                                    </th>
+                                    <th data-align="center" data-field="district" data-sortable="true" data-width-unit="%"  data-width="20">
+                                        Số điểm đặt
+                                    </th>
+                                    <th data-align="center" data-field="ward" data-sortable="true" data-width-unit="%" data-width="20">
+                                        Số bảng quảng cáo
+                                    </th>
+                                    <th data-align="center" data-field="actions">
+                                        Hành động
+                                    </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% wards.forEach(ward => { %>
+                                    <tr>
+                                        <td>
+                                        <%= ward.wardID %>
+                                        </td>
+                                        <td>
+                                        <%= ward.wardName %>
+                                        </td>
+                                        <td>
+                                        <%= ward.spotsCount %>
+                                        </td>
+                                        <td>
+                                        <%= ward.boardsCount %>
+                                        </td>
+                                        <td>
+                                        <div
+                                            class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
+                                            <a href="javascript:" class="mx-3 bg-transparent">
+                                            <img src="/images/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(ward) %>'))">
+                                            </a>
+                                            <a href="javascript:" class="mx-3 bg-transparent">
+                                            <img src="/images/remove.svg" onclick="deleteWard(JSON.parse('<%= JSON.stringify(ward) %>'))" alt="remove-icon">
+                                            </a>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>  
+        </div>
+        <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header pb-0 border-0 position-relative text-center justify-content-center">
+                        <button type="button"
+                            class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title pb-2 fs-4 fw-semibold text-center text-uppercase">Sửa Tên Phường</h5>
+                    </div>
+                    <div class="modal-body pt-1 pb-2 border-0">
+                        <form>
+                            <div class="mb-3">
+                                <label for="wardID" class="col-form-label mb-1">
+                                    Mã Phường (<span class="text-danger">*</span>)
+                                </label>
+                                <input type="text" class="form-control" id="wardID" name="wardID" placeholder="Mã phường"
+                                    required="required">
+                            </div>
+                            <div class="mb-3">
+                                <label for="wardName" class="col-form-label mb-1">
+                                    Tên Phường (<span class="text-danger">*</span>)
+                                </label>
+                                <input type="text" class="form-control" id="wardName" name="wardName"
+                                    placeholder="Tên phường" required="required">
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <button class="btn" style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc;"
+                                    data-bs-dismiss="modal" type="button">
+                                    Hủy
+                                </button>
+                                <button type="button" class="btn" onclick="updateWard()"
+                                    style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
+    </main>
+    <!-- Modal add -->
+    <script defer type="module">
+        import createModal from '/js/modal.js';
+
+        const options = {
+            id: 'addModal-qlphuong',
+            title: 'Tạo Phường mới',
+            form: {
+                id: 'addModal-ward',
+                method: 'POST',
+                action: JSON.parse('<%- JSON.stringify(url) %>'),
+                components: [
+                    {
+                        id: 'wardID',
+                        label: 'Mã Phường',
+                        required: true,
+                        type: 'input',
+                        inputType: 'text',
+                        placeholder: 'Mã phường'
+                    },
+                    {
+                        id: 'wardName',
+                        label: 'Tên Phường',
+                        required: true,
+                        type: 'input',
+                        inputType: 'text',
+                        placeholder: 'Tên phường'
+                    },
+                ],
+                buttons: [
+                    { type: 'button', label: 'Hủy', color: '#e84747', dismiss: true },
+                    { type: 'submit', label: 'Xác nhận', color: '#3c77ff', dismiss: true },
+                ],
+            }
+        }
+        createModal(options);
+    </script>
+
+    <script defer>
+        const alertPlaceholder = document.getElementById('alertConfirm')
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+            ].join('')
+
+            alertPlaceholder.append(wrapper)
+        }
+        const deleteWard = async (ward) => {
+            if(ward.spotsCount > 0 || ward.boardsCount > 0)
+                appendAlert('KHÔNG THỂ XÓA PHƯỜNG. Vì phường này có tồn tại Điểm đặt / Bảng quảng cáo', 'danger');
+            else{
+                try {
+                    const response = await fetch(`/so/locations-detail/${ward.wardID}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    });
+                } catch (error) {
+                    console.error('Error during DELETE request:', error.message);
+                } finally {
+                    location.reload();
+                }
+            }
+        }
+        const showEditModal = async (ward) => {
+            const modal = document.getElementById('editModal');
+            const wardIDInput = document.getElementById('wardID');
+            const wardNameInput = document.getElementById('wardName');
+
+            wardIDInput.value = ward.wardID;
+            wardIDInput.setAttribute("disabled", "");
+
+            wardNameInput.value = ward.wardName;
+
+            const modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show($('main'));
+        }   
+        const updateWard = async () => {
+            const wardID = document.getElementById('wardID').value;
+            const wardName = document.getElementById('wardName').value;
+
+            const dataToUpdate = {
+                wardName: wardName,
+            };
+
+            try {
+                const response = await fetch(`/so/locations-detail/${wardID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToUpdate)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to update user: ${response.status}`);
+                }
+
+                
+                // Handle success, if needed
+            } catch (error) {
+                console.error(`Error updating user: ${error.message}`);
+            } finally {
+                location.reload();
+            }
+        }
+    </script>
+</body>
+
+
+</html>

@@ -201,13 +201,6 @@ export const getSingleLocation = async (locationID) => {
                 }
             },
             {
-                $match: {
-                    wardID: "P0101",
-                    locationType: "LCT06",
-                    adsForm: "HT001"
-                }
-            },
-            {
                 $project: {
                     _id: 0,
                     adsForm: 1,
@@ -324,13 +317,6 @@ export const getLocationFromDistricts = async (districtID) => {
                 }
             },
             {
-                $match: {
-                    wardID: "P0101",
-                    locationType: "LCT06",
-                    adsForm: "HT001"
-                }
-            },
-            {
                 $project: {
                     _id: 0,
                     adsForm: 1,
@@ -427,13 +413,6 @@ export const getLocationFromWard = async (wardID) => {
                 }
             },
             {
-                $match: {
-                    wardID: "P0101",
-                    locationType: "LCT06",
-                    adsForm: "HT001"
-                }
-            },
-            {
                 $project: {
                     _id: 0,
                     adsForm: 1,
@@ -503,16 +482,27 @@ export const getAdsCategoryByID = async (locationID) => {
                 $lookup: {
                     from: 'adscategory',
                     localField: 'adsForm',
-                    foreignField: 'formID',
+                    foreignField: 'CategoriesID',
                     as: 'adsform'
                 }
             },
             {
+                $unwind: {
+                    path: '$adsform',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
                 $project: {
-
+                    _id: 0,
+                    adsForm: 1,
+                    adsFormName: '$adsform.CategoriesName',
+                    adsFormDescription: '$adsform.description'
                 }
             }
-        ]
+        ];
+
+        return await Location.aggregate(option);
     } catch (error) {
         throw new Error(error);
     }

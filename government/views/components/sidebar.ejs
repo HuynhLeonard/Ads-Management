@@ -59,7 +59,7 @@
   }
 
   .sidebar-logo {
-    height: 20px;
+    width: 40%;
     opacity: 0;
     transition: 0.3s;
   }
@@ -168,14 +168,14 @@ width: 72px; */
 <div class="sidebar-inner">
   <header class="sidebar-header">
     <a href="#" type="button" class="sidebar-burger" id="closing"></a>
-    <img src="/assets/blocklord-logo.png" class="sidebar-logo" />
+    <img src="/assets/logo.png" class="sidebar-logo" />
   </header>
   <nav class="sidebar-nav">
-    <a href="#" type="button">
+    <a href="/department" type="button" class="Shome">
       <img src="/assets/icon-home.svg" />
       <span>Trang chủ</span>
     </a>
-    <a href="#" type="button" class="submenu-btn" id="submenu-btn">
+    <a href="#" type="button" class="submenu-btn" id="submenu-btn" class="Stk">
       <img src="/assets/icon-levels.svg" />
       <span style="animation-delay: 0.1s">Thống kê</span>
       <img
@@ -185,7 +185,7 @@ width: 72px; */
       />
     </a>
     <nav class="submenu" id="submenu">
-      <a href="#" type="button" class="sub-item">
+      <a href="/api/test" type="button" class="sub-item">
         <span style="animation-delay: 0.1s">Danh sách quận huyện</span>
       </a>
       <a href="#" type="button" class="sub-item">
@@ -198,7 +198,7 @@ width: 72px; */
         <span style="animation-delay: 0.4s">Báo cáo</span>
       </a>
     </nav>
-    <a href="#" type="button">
+    <a href="#" type="button" class="Spc">
       <img src="/assets/icon-pointat.svg" />
       <span style="animation-delay: 0.2s">Phân công</span>
     </a>
@@ -240,5 +240,10 @@ width: 72px; */
     } else {
       document.body.classList.toggle("open");
     }
+  }
+
+  if (!document.body.classList.contains("open")) {
+    const home = document.querySelector(".home");
+    home.disabled = true;  
   }
 </script>

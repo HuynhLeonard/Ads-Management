@@ -1,117 +1,458 @@
 <!DOCTYPE html>
 <html lang="vi">
-
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%- title %></title>
     <%- include("./components/head.ejs"); %>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
-    <script defer src="/js/index/map.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
     <style>
-			.mapboxgl-ctrl-top-left {
-				left: 5rem !important;
-			}
+      .mapboxgl-ctrl-top-left {
+        left: 5rem !important;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link
-        rel="stylesheet"
-        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-        type="text/css"/>
-<header></header>
-<aside class="position-absolute z-3 h-100">
-    <!-- <%- include('./components/sidebar.ejs'); %> -->
-</aside>
-<main class="container-fluid d-flex bg-light p-0">
-    <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
-    <!--Login form-->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-modal="true" role="dialog">
-        <div class="modal-dialog modal-dialog-centered ">
-            <div class="modal-content rounded-4">
-                <div class="modal-header border-0 pb-0 mt-2 mb-2">
-                    <h5 class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3">Đăng nhập</h5>
-                </div>
-                <form id="loginForm" method="post" action="">
-                    <div class="modal-body border-0">
-                        <% if (messages.error) { %>
-                            <div class="alert alert-danger">
-                                <%= messages.error %>
-                            </div>
-                        <% } %>
-                        <div class="mb-3 form-floating">
-                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập" value="<% if (username) { %><%= username %><% } %>" 
-                                   name="username" required>
-                            <label for="username" class="form-label">Tên đăng nhập<span
-                                        class="text-danger">*</span></label>
-                        </div>
-                        <div class="mb-3 form-floating position-relative">
-                            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"
-                                   name="password" value="<%= password %>" required>
-                            <i id="ico-pass"
-                               class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
-                               style="cursor: pointer" onclick="togglePassword()"></i>
-                            <label for="password" class="form-label">
-                                Mật khẩu <span class="text-danger">*</span>
-                            </label>
-                        </div>
-                        <div class="form-check mx-auto">
-                            <input type="checkbox" id="rememberPass" class="form-check-input" name="rememberPass"/>
-                            <label for="rememberPass">Ghi nhớ mật khẩu</label>
-                        </div>
+  <body>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css" />
+    <header></header>
+    <aside class="position-absolute z-3 h-100">
+      <%- include('./components/sidebar.ejs'); %>
+    </aside>
+    <main class="container-fluid d-flex bg-light p-0">
+      <div id="map" style="position: absolute; width: 100%; top: 0; bottom: 0"></div>
 
-                    </div>
-                    <div class="modal-footer d-flex justify-content-around bg-transparent border-0">
-                        <button class="btn w-100" style="min-width: 6.5rem; color: #fff; background-color: #0d6efd"
-                                type="submit">
-                            Đăng nhập
-                        </button>
-                        <!-- Forgot password button -->
-                        <div class="w-100 mt-0 text-end">
-                            <button type="button" class="btn btn-link text-decoration-none text-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#forgotPassModal">
-                                Quên mật khẩu?
-                            </button>
-                        </div>
-                        <div class="col-md-12 shadow text-center border" style="width: 80%;">
-                            <a class="btn btn-lg btn-google d-flex align-items-center justify-content-center"
-                               href="/auth/google" style="font-size: 18px;">
-                                <img src="https://img.icons8.com/color/20/000000/google-logo.png" class="me-2">
-                                Đăng nhập bằng Google
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
+      <!-- Search bar -->
+      <div id="search-bar" class="position-absolute top-0 start-0 z-index-3" style="margin: 1.25rem 6.25rem;">
+        <div class="input-group" style="width: 23.5rem">
+          <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="close-search-btn" id="search-input" />
+          <button class="btn btn-light" type="button" id="close-search-btn">
+            <i class="fa fa-times"></i>
+          </button>
         </div>
-    </div>
-    <script>
-			document.addEventListener('DOMContentLoaded', function () {
-				var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
-					keyboard: false
-				})
-				myModal.show();
-			})
-			const togglePassword = () => {
-				const password = document.getElementById('password');
-				// change icon
-				const eyeIcon = document.getElementById('ico-pass')
-				if (eyeIcon.classList.contains('bi-eye-slash')) {
-					eyeIcon.classList.replace('bi-eye-slash', 'bi-eye')
-				} else {
-					eyeIcon.classList.replace('bi-eye', 'bi-eye-slash')
-				}
-				if (password.type === 'password') {
-					password.type = 'text';
-				} else {
-					password.type = 'password';
-				}
-			}
-    </script>
-</main>
-</body>
 
+        <!-- Result box -->
+        <div class="result-box">
+
+        </div>
+      </div>
+      <!--Login modal form-->
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content rounded-4">
+            <div class="modal-header border-0 pb-0 mt-2 mb-2">
+              <h5 class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3">Đăng nhập</h5>
+            </div>
+            <form id="loginForm" method="post" action="/">
+              <div class="modal-body border-0">
+                <% if (message.error) { %>
+                <div class="alert alert-danger">
+                  <%= message.error %>
+                </div>
+                <% } %>
+                <div id="reset-password-success" class="alert alert-success" hidden>Cập nhật mật khẩu thành công</div>
+                <div class="mb-3 form-floating">
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    placeholder="Nhập tên đăng nhập"
+                    value="<% if (username) { %><%= username %><% } %>"
+                    name="username"
+                    required />
+                  <label for="username" class="form-label">Tên đăng nhập<span class="text-danger">*</span></label>
+                </div>
+                <div class="mb-3 form-floating position-relative">
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Nhập mật khẩu"
+                    name="password"
+                    value="<%= password %>"
+                    required />
+                  <i
+                    id="ico-pass"
+                    class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
+                    style="cursor: pointer"
+                    onclick="togglePassword()"></i>
+                  <label for="password" class="form-label"> Mật khẩu <span class="text-danger">*</span> </label>
+                </div>
+                <div class="form-check mx-auto">
+                  <input type="checkbox" id="rememberPass" class="form-check-input" name="rememberPass" />
+                  <label for="rememberPass">Ghi nhớ mật khẩu</label>
+                </div>
+              </div>
+              <div class="modal-footer d-flex justify-content-around bg-transparent border-0">
+                <button
+                  class="btn w-100"
+                  style="min-width: 6.5rem; color: #fff; background-color: #0d6efd"
+                  type="submit">
+                  Đăng nhập
+                </button>
+                <!-- Forgot password button -->
+                <div class="w-100 mt-0 text-end">
+                  <button
+                    type="button"
+                    class="btn btn-link text-decoration-none text-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#forgotPassModal">
+                    Quên mật khẩu?
+                  </button>
+                </div>
+                <div class="col-md-12 shadow text-center border" style="width: 80%">
+                  <a
+                    class="btn btn-lg btn-google d-flex align-items-center justify-content-center"
+                    href="/auth/google"
+                    style="font-size: 18px">
+                    <img src="https://img.icons8.com/color/20/000000/google-logo.png" class="me-2" />
+                    Đăng nhập bằng Google
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--Forgot password modal form-->
+      <div class="modal fade" id="forgotPassModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content rounded-4">
+            <div class="modal-header border-0 pb-0 mt-2 mb-2 position-relative">
+              <button
+                type="button"
+                class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                data-bs-target="#loginModal"
+                data-bs-toggle="modal"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+              <h5 class="modal-title pb-2 mx-auto text-center fw-bold text-uppercase fs-3">Quên mật khẩu</h5>
+            </div>
+            <form id="forgotPassForm">
+              <div class="modal-body border-0">
+                <div id="forgot-password-error" class="alert alert-danger" hidden>Có lỗi xảy ra</div>
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    id="username1"
+                    class="form-control"
+                    placeholder="Nhập tên đăng nhập"
+                    name="username"
+                    required />
+                  <label for="username1" class="form-label"
+                    >Tên đăng nhập/Email<span class="text-danger">*</span></label
+                  >
+                </div>
+              </div>
+            </form>
+            <div class="modal-footer d-flex justify-content-around bg-transparent border-0">
+              <button
+                class="btn w-100"
+                style="min-width: 6.5rem; color: #fff; background-color: #0d6efd"
+                onclick="forgotPassHandler(event)">
+                Gửi mã xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Verify code modal form-->
+      <div class="modal fade" id="verifyCodeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content rounded-4">
+            <div class="modal-header pb-3 border-0 position-relative text-center justify-content-center">
+              <button
+                type="button"
+                class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                data-bs-target="#loginModal"
+                data-bs-toggle="modal"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+              <h5 class="modal-title mx-auto pb-2 text-center fw-bold text-uppercase fs-3">Xác nhận mã</h5>
+            </div>
+            <div class="modal-body border-0">
+              <form id="verifyCodeForm" method="post">
+                <div id="forgot-password-success" class="alert alert-success" hidden>
+                  Mã xác nhận đã được gửi đến email của bạn
+                </div>
+                <div id="verify-code-error" class="alert alert-danger" hidden>Mã xác nhận không hợp lệ</div>
+                <div class="form-floating">
+                  <input type="text" id="otp" class="form-control" placeholder="Nhập mã OTP" name="otp" required />
+                  <label for="otp" class="form-label">Mã xác nhận<span class="text-danger">*</span></label>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer d-flex flex-row justify-content-around bg-transparent border-0">
+              <button
+                class="btn flex-fill"
+                style="min-width: 6.5rem; color: #f7fafc; background-color: #e84747"
+                data-bs-target="#forgotPassModal"
+                data-bs-toggle="modal"
+                data-bs-dismiss="modal">
+                Quay lại
+              </button>
+              <button
+                class="btn flex-fill"
+                style="min-width: 6.5rem; color: #f7fafc; background-color: #60c98b"
+                onclick="verifyCodeHandler(event)">
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Reset password modal form-->
+      <div class="modal fade" id="resetPassModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content rounded-4">
+            <div class="modal-header pb-3 border-0 position-relative text-center justify-content-center">
+              <button
+                type="button"
+                class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                data-bs-target="#loginModal"
+                data-bs-toggle="modal"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+              <h5 class="modal-title mx-auto pb-2 text-center fw-bold text-uppercase fs-3">Đặt lại mật khẩu</h5>
+            </div>
+            <div class="modal-body border-0">
+              <form id="resetPassForm" method="post">
+                <div id="verify-code-success" class="alert alert-success" hidden>Mã xác nhận hợp lệ</div>
+                <div id="reset-password-error" class="alert alert-danger" hidden>Cập nhật mật khẩu thất bại</div>
+                <div class="mb-3 form-floating">
+                  <input
+                    type="password"
+                    id="password1"
+                    class="form-control"
+                    placeholder="Nhập mật khẩu mới"
+                    name="password1"
+                    required />
+                  <label for="password1" class="form-label">Mật khẩu mới<span class="text-danger">*</span></label>
+                </div>
+                <div class="form-floating">
+                  <input
+                    type="password"
+                    id="password2"
+                    class="form-control"
+                    placeholder="Nhập lại mật khẩu mới"
+                    name="password2"
+                    required />
+                  <label for="password2" class="form-label"
+                    >Nhập lại mật khẩu mới<span class="text-danger">*</span></label
+                  >
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer d-flex flex-row justify-content-around bg-transparent border-0">
+              <button
+                class="btn flex-fill"
+                style="min-width: 6.5rem; color: #f7fafc; background-color: #e84747"
+                data-bs-target="#verifyCodeModal"
+                data-bs-toggle="modal"
+                data-bs-dismiss="modal">
+                Quay lại
+              </button>
+              <button
+                class="btn flex-fill"
+                style="min-width: 6.5rem; color: #f7fafc; background-color: #60c98b"
+                onclick="resetPassHandler(event)">
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        <!--auto trigger modal form-->
+        document.addEventListener('DOMContentLoaded', function () {
+          var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+            keyboard: false
+          })
+          myModal.show()
+        })
+        //const loginHandler = () => {
+        //  const username = document.getElementById('username').value
+        //  const password = document.getElementById('password').value
+        //  if (username === 'admin') {
+        //    window.location.href = '/so'
+        //  } else if (username === 'quan') {
+        //    window.location.href = '/quan'
+        //  } else if (username === 'phuong') {
+        //    window.location.href = '/phuong'
+        //  } else {
+        //    alert('Sai tên đăng nhập hoặc mật khẩu')
+        //  }
+        //}
+        const togglePassword = () => {
+          const password = document.getElementById('password')
+          // change icon
+          const eyeIcon = document.getElementById('ico-pass')
+          if (eyeIcon.classList.contains('bi-eye-slash')) {
+            eyeIcon.classList.replace('bi-eye-slash', 'bi-eye')
+          } else {
+            eyeIcon.classList.replace('bi-eye', 'bi-eye-slash')
+          }
+          if (password.type === 'password') {
+            password.type = 'text'
+          } else {
+            password.type = 'password'
+          }
+        }
+
+        const forgotPassHandler = async (event) => {
+          event.preventDefault()
+          const username = document.getElementById('username1').value
+
+          if (!username) {
+            return alert('Vui lòng nhập tên đăng nhập hoặc email')
+          }
+
+          const response = await fetch('/forgot-password', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username })
+          })
+
+          if (response.status === 200) {
+            const msg = await response.json()
+            // dismiss forgot password modal
+            const forgotPassModal = bootstrap.Modal.getInstance(document.getElementById('forgotPassModal'))
+            forgotPassModal.hide()
+
+            // show verify code modal
+            const verifyCodeModal = new bootstrap.Modal(document.getElementById('verifyCodeModal'), {
+              keyboard: false
+            })
+            verifyCodeModal.show()
+
+            const forgotPassSuccess = document.getElementById('forgot-password-success')
+            forgotPassSuccess.innerText = msg.message
+            forgotPassSuccess.hidden = false
+
+            // after 3s, hide alert
+            setTimeout(() => {
+              forgotPassSuccess.hidden = true
+            }, 3000)
+
+            // store username in local storage
+            localStorage.setItem('username', username)
+          } else {
+            const error = await response.json()
+            document.getElementById('forgot-password-error').innerText = error.message
+            document.getElementById('forgot-password-error').hidden = false
+            setTimeout(() => {
+              document.getElementById('forgot-password-error').hidden = true
+            }, 3000)
+          }
+        }
+
+        const verifyCodeHandler = async (event) => {
+          event.preventDefault()
+          const otp = document.getElementById('otp').value
+          const username = localStorage.getItem('username')
+          if (!otp) {
+            return alert('Vui lòng nhập mã xác nhận')
+          }
+
+          const response = await fetch('/verify-code', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ otp, username })
+          })
+
+          if (response.status === 200) {
+            // console.assert('OTP is valid');
+            const msg = await response.json()
+            // dismiss verify code modal
+            const verifyCodeModal = bootstrap.Modal.getInstance(document.getElementById('verifyCodeModal'))
+            verifyCodeModal.hide()
+
+            // show reset password modal
+            const resetPassModal = new bootstrap.Modal(document.getElementById('resetPassModal'), {
+              keyboard: false
+            })
+            resetPassModal.show()
+
+            const verifyCodeSuccess = document.getElementById('verify-code-success')
+            verifyCodeSuccess.innerText = msg.message
+            verifyCodeSuccess.hidden = false
+
+            // after 3s, hide alert
+            setTimeout(() => {
+              verifyCodeSuccess.hidden = true
+            }, 3000)
+          } else {
+            // console.error('OTP is invalid');
+            const error = await response.json()
+            document.getElementById('verify-code-error').innerText = error.message
+            document.getElementById('verify-code-error').hidden = false
+            setTimeout(() => {
+              document.getElementById('verify-code-error').hidden = true
+            }, 3000)
+          }
+        }
+
+        const resetPassHandler = async (event) => {
+          event.preventDefault()
+          const password1 = document.getElementById('password1').value
+          const password2 = document.getElementById('password2').value
+          const username = localStorage.getItem('username')
+          if (!password1 || !password2) {
+            return alert('Vui lòng nhập mật khẩu mới')
+          }
+
+          if (password1 !== password2) {
+            return alert('Mật khẩu không khớp')
+          }
+
+          const response = await fetch('/reset-password', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: password1, username })
+          })
+
+          if (response.status === 200) {
+            // console.assert('OTP is valid');
+            const msg = await response.json()
+            // dismiss reset password modal
+            const resetPassModal = bootstrap.Modal.getInstance(document.getElementById('resetPassModal'))
+            resetPassModal.hide()
+
+            // show login modal
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+              keyboard: false
+            })
+            loginModal.show()
+
+            const resetPassSuccess = document.getElementById('reset-password-success')
+            resetPassSuccess.innerText = msg.message
+            resetPassSuccess.hidden = false
+
+            // after 3s, hide alert
+            setTimeout(() => {
+              resetPassSuccess.hidden = true
+            }, 3000)
+          } else {
+            // console.error('OTP is invalid');
+            const error = await response.json()
+            document.getElementById('reset-password-error').innerText = error.message
+            document.getElementById('reset-password-error').hidden = false
+            setTimeout(() => {
+              document.getElementById('reset-password-error').hidden = true
+            }, 3000)
+          }
+        }
+      </script>
+    </main>
+  </body>
 </html>

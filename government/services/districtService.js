@@ -21,7 +21,7 @@ export const createNewDistrict = async(districtData) => {
 // Done
 export const getDistrictByID = async(districtID) => {
     try {
-        const district = await District.find({districtID: districtID});
+        const district = await District.findOne({districtID: districtID});
         
         return district;
     } catch (error) {

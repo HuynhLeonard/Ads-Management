@@ -1,0 +1,191 @@
+h1 {
+    text-align: center;
+}
+
+.container {
+    margin-block-start: 20px;
+    margin-block-end: 20px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+#special {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item {
+    width: 45%;
+}
+
+.container span {
+    color: red;
+    font-weight: bold;
+}
+
+#must {
+    color: red;
+    font-weight: bold;
+}
+
+.item-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%; /* Full width */
+  padding: 9px; /* Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+    resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="text"],
+select,
+button {
+  padding: 9px; /* Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="email"],
+select,
+textarea {
+width: 100%; /* Full width */
+padding: 9px; /* Some padding */
+border: 1px solid #ccc; /* Gray border */
+border-radius: 4px; /* Rounded borders */
+box-sizing: border-box; /* Make sure that padding and width stays in place */
+margin-top: 6px; /* Add a top margin */
+margin-bottom: 16px; /* Bottom margin */
+resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="number"] {
+width: 100%; /* Full width */
+padding: 9px; /* Some padding */
+border: 1px solid #ccc; /* Gray border */
+border-radius: 4px; /* Rounded borders */
+box-sizing: border-box; /* Make sure that padding and width stays in place */
+margin-top: 6px; /* Add a top margin */
+margin-bottom: 16px; /* Bottom margin */
+resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="file"] {
+    font-size: unset;
+    width: 100%; /* Full width */
+    /* padding: 12px; Some padding */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 6px; /* Add a top margin */
+    margin-bottom: 16px; /* Bottom margin */
+    resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+.input-group {
+    margin-top: 6px; /* Add a top margin */
+    resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+    margin-bottom: -15px !important;
+}
+
+.captcha-input {
+    margin-bottom: -10px;
+}
+
+.submit {
+    margin: 0 auto;
+    background-color: #0058bc;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    margin-top: 10px;
+}
+
+.submit:hover {
+    background-color: rgb(125, 240, 255);
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.image {
+    width: 45%;
+}
+
+.formContent {
+    width: 50%;
+}
+
+.addDetail, .adsDetail, .sizeDetail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.addDetail .item-container, .adsDetail .item-container, .sizeDetail .item-container {
+    width: 48%;
+}
+
+.image {
+    border: 2px dashed black;
+    border-radius: 15px;
+    background-color: white;
+    position: relative;
+    height: 100%;
+}
+
+.image img {
+    display: block;
+    margin: 0 auto;
+}
+
+.image button {
+    background-color: gainsboro;
+    border-radius: 10px;
+    display: block;
+    margin: 30px auto;
+}
+
+.image div {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    color: burlywood;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.button button {
+    margin: 0 15px;
+}
+
+.button button[type = "submit"] {
+    width: 20%;
+    border-radius: 10px;
+}
+
+.button button[type = "button"] {
+    width: 20%;
+    border-radius: 10px;
+}
