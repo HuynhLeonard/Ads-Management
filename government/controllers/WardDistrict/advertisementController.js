@@ -230,33 +230,36 @@ const showDetail = async (req, res, isEdit) => {
   }
 };
 
-//?category
+//?category=Location
+//?category=Board
 const showAdd = (req, res) => {
+  // http://localhost:3000/district
 	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	let title = '- Thêm ' + (category === 'location' ? 'điểm đặt' : 'bảng quảng cáo');
+	let title = '- Thêm ' + (category === 'Location' ? 'điểm đặt' : 'bảng quảng cáo');
 	if (role === 'district') {
 		title = 'Quận ' + title;
 	}
 	if (role === 'ward') {
 		title = 'Phường ' + title;
 	}
-	res.render(`${category}-new`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
+	res.render(`add${category}`, {url: req.originalUrl, title});
 }
 
 
 // check later
+// ?category=Location
 const showModify = (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	let title = 'Chỉnh sửa ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
-	if (role === 'quan') {
+	let title = 'Chỉnh sửa ' + (category === 'Location' ? 'điểm đặt' : 'bảng quảng cáo');
+	if (role === 'district') {
 		title = 'Quận ' + title;
 	}
-	if (role === 'phuong') {
+	if (role === 'ward') {
 		title = 'Phường ' + title;
 	}
-	res.render(`${category}-modify`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
+	res.render(`modify${category}`, {url: req.originalUrl, title});
 }
 // ..................
 
