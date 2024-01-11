@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-MAPBOX_TOKEN = 'pk.eyJ1IjoibGVvbmFyZGh1eW5oIiwiYSI6ImNscDNxdzNmZzB6dG0ya3M1MGt2MTVreHEifQ.WiaFF1ZoklZy7vMDLcPJ5g';
+const MAPBOX_TOKEN = 'pk.eyJ1IjoibGVvbmFyZGh1eW5oIiwiYSI6ImNscDNxdzNmZzB6dG0ya3M1MGt2MTVreHEifQ.WiaFF1ZoklZy7vMDLcPJ5g';
 const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
 
 const mapboxVersion = 'v2.9.1';
@@ -14,6 +14,7 @@ const COLORS = {
 };
 
 const userData = document.getElementById('user-data').innerText;
+console.log(userData);
 
 const formatMapFeature = (feature) => {
   const { properties, text } = feature
@@ -52,7 +53,7 @@ function generateSpotHTML(spot) {
   if(position == 2) href = `/ward/license/create?spotID=${spot.spotID}`
   
   return `<div class="card">
-            <img src="${spot.spotImage[0]}" class="card-img-top img-fluid" alt="...">
+            <img src="${spot.images[0]}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
               <h6 class="card-title fw-bold">${spot.spotName}</h6>
               <p class="card-text">${spot.spotTypeName}</p>
@@ -66,10 +67,10 @@ function generateSpotHTML(spot) {
 
 async function getSpotsData() {
   try {
-    // const districtID = userData.split(',')[0];
-    // const wardID = userData.split(',')[1];
+    const districtID = userData.split(',')[0];
+    const wardID = userData.split(',')[1];
     // rewrite the data in backend
-    const spots = await fetch(`http://localhost:3000/api/map/locations`, {
+    const spots = await fetch(`http://localhost:3000/api/map/locations?districtID=${districtID}&wardID=${wardID}`, {
         method: 'GET',
         headers: new Headers(),
         mode: 'cors'

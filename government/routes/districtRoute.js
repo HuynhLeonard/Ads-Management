@@ -10,7 +10,7 @@ router.get("*", (req, res, next) => {
 
 // route trang chu
 router.get("/", (req, res) => {
-    res.render("District/index");
+    controller.indexController.show(req,res);
 });
 
 // lay thong tin officer (:username)
@@ -28,7 +28,7 @@ router.delete("/locations/:districtID");
 router.patch("/locations/:districtID");
 
 // nhóm bảng quảng cáo
-router.get("/advertisements");
+router.get("/advertisements", (req,res) => controller.adsController.show(req,res));
 router.get("/advertisements/new", (req, res) => {
     res.render("add");
 });

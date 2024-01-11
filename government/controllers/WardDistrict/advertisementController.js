@@ -110,7 +110,7 @@ const show = async (req, res) => {
     }
 
     // render later
-    res.render('test', {
+    res.render('ads', {
         url: req.originalUrl,
         title,
         category,
@@ -118,7 +118,6 @@ const show = async (req, res) => {
         checkboxData,
         tableHeads,
         tableData,
-        toolbars: createToolbar(role),
     })
 }
 
