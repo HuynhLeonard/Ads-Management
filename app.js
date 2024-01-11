@@ -1,24 +1,23 @@
-import express from 'express';
-import path from 'path';
+import express from "express";
+import path from "path";
 // create 2 servers
-import cors from 'cors';
-import dotenv from 'dotenv';
-import http from 'http';
-import mongoose from 'mongoose';
+import cors from "cors";
+import dotenv from "dotenv";
+import http from "http";
+import mongoose from "mongoose";
 const __dirname = path.resolve();
 
-dotenv.config(path.join(__dirname, '.env'));
+dotenv.config(path.join(__dirname, ".env"));
 
 const citizenApp = express();
 
-citizenApp.use(express.static(path.join(__dirname, 'citizen/public')))
+citizenApp.use(express.static(path.join(__dirname, "citizen/public")));
 citizenApp.use(express.json());
-citizenApp.get("/", )
-
+citizenApp.get("/");
 
 const citizenServer = http.createServer(citizenApp);
 citizenServer.listen(process.env.CITIZENPORT, () => {
-    // console.log(`Citizen App is running on http://localhost:${process.env.CITIZENPORT}`);
+  // console.log(`Citizen App is running on http://localhost:${process.env.CITIZENPORT}`);
 });
 
 // ======================================================================================
@@ -43,11 +42,13 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import * as imgurController from './government/services/imgurService.js';
 
+
 const governmentApp = express();
 governmentApp.use(express.json());
 governmentApp.use(express.urlencoded({ extended: false }));
 governmentApp.use(flash());
 governmentApp.use(cors());
+
 governmentApp.set('views', path.join(__dirname, 'government','views'));
 governmentApp.set('view engine', 'ejs');
 console.log(`${governmentApp.get('views')}`);
@@ -129,7 +130,10 @@ mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mon
     .then(() => {
         console.log('Connect to Database');
     })
+
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
-    console.log(`Government App is running on http://localhost:${process.env.GOVERNMENT_PORT}`);
-})
+  console.log(
+    `Government App is running on http://localhost:${process.env.GOVERNMENT_PORT}`
+  );
+});
