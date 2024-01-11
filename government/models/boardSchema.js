@@ -11,7 +11,7 @@ const boardSchema = new mongoose.Schema({
         required: true
     },
     images: {
-        type: String,
+        type: Array,
         required: true
     },
     width: {
@@ -22,14 +22,16 @@ const boardSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    spot: {
+    locationID: {
         type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
         required: true
     },
     licenseNumber: {
         type: String,
-        required: true,
-        default: null
     }
 });
 

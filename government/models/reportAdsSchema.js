@@ -10,7 +10,7 @@ const ReportAdsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    boardID: {
+    objectID: {
         type: String,
         required: true
     },
@@ -30,7 +30,7 @@ const ReportAdsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    reporterPhone: {
+    phoneNumber: {
         type: String,
         required: true
     },
@@ -44,10 +44,14 @@ const ReportAdsSchema = new mongoose.Schema({
     },
     solution: {
         type: String
+    },
+    officer: {
+        type: String
     }
-
     
 });
 
-const Report = mongoose.model('reports', ReportSchema);
+// save with a custom number, also datetime format here
+
+const Report = mongoose.model('reports', ReportAdsSchema);
 export default Report;

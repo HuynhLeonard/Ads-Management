@@ -14,8 +14,18 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    name: {
+        type: String
+    },
+    phone: {
+        type: String
+    },
+    dob: {
+        type: Date || String
+    },
+    // 3 roles: admin, department, district, ward
     position: {
-        type: String,
+        type: Number,
         required: true
     },
     districtID: {
