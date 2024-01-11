@@ -175,6 +175,80 @@ class RequestService {
                 }
         }
     }
+
+    async create(data) {
+        try {
+            const newRequest = new this.model(data);
+            await newRequest.save();
+            return { message: `${this.model.modelName} created successfully` }
+        } catch (error) {
+            throw new Error('Error creating data.')
+        }
+    }
+    
+    async updateById(id, newData) {
+        try {
+            await this.model.findOneAndUpdate({requestID: id}, {$set: newData});
+            return { message: `${this.model.modelName} updated successfully` }
+        } catch (error) {
+            throw new Error('Error creating data.')
+        }
+    }
+
+    async deleteById(id) {
+        try {
+            await this.model.findOneAndDelete({requestID: id});
+            return { message: `${this.model.modelName} delete successfully` }
+        } catch (error) {
+            throw new Error('Error creating data.')
+        }
+    }
+
+    async getAll() {
+        try {
+            return await this.model.aggregate(this.buildQueryOption());
+        } catch (error) {
+            throw new Error('Error creating data.')
+        }
+    }
+
+    async getSingle(id) {
+        try {
+            const options = this.buildQueryOption();
+            options.push({
+                $match: {
+                    requestID: id
+                }
+            });
+
+            const data = await this.model.aggregate(options);
+            return data[0];
+        } catch (error) {
+            throw new Error('Error getting data.')
+        }
+    }
+
+    async getByStatus(status) {
+        try {
+            const options = this.buildQueryOption();
+            options.push({
+                $match: {
+                    status: status
+                }
+            });
+            return await this.model.aggregate(options);
+        } catch (error) {
+            throw new Error('Error getting data.')
+        }
+    }
+
+    async updateStatus(id, status) {
+        try {
+            await this.model.findOneAndUpdate({requestID: id}, {status: status});
+        } catch (error) {
+            throw new Error('Error updating status')
+        }
+    }
 }
 
 export default new RequestService();
