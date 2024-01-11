@@ -1,5 +1,5 @@
 import express from "express";
-
+import controller from "../controllers/WardDistrict/main.js";
 const router = express.Router();
 
 router.get("*", (req, res, next) => {
@@ -10,12 +10,12 @@ router.get("*", (req, res, next) => {
 
 // route trang chu
 router.get("/", (req, res) => {
-    res.render("District/index");
+    controller.indexController.show(req,res);
 });
 
 // lay thong tin officer (:username)
-router.get("/officer/:username");
-
+router.get("/officer/:username", (req,res) => controller.infoController.getInfo(req,res));
+router.post('/officer/:username', (req, res) => controller.infoController.updateInfo(req, res));
 //nhóm report
 router.get("/reports");
 router.get("/reports/:reportID");
@@ -28,7 +28,7 @@ router.delete("/locations/:districtID");
 router.patch("/locations/:districtID");
 
 // nhóm bảng quảng cáo
-router.get("/advertisements");
+router.get("/advertisements", (req,res) => controller.adsController.show(req,res));
 router.get("/advertisements/new", (req, res) => {
     res.render("add");
 });
