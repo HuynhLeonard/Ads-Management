@@ -29,9 +29,8 @@ router.patch("/locations/:districtID");
 
 // nhóm bảng quảng cáo
 router.get("/advertisements", (req,res) => controller.adsController.show(req,res));
-router.get("/advertisements/new", (req, res) => {
-    res.render("add");
-});
+// /advertisements/new?category=Location
+router.get("/advertisements/new", (req, res) => controller.adsController.showAdd(req,res));
 router.post("/advertisements/new");
 router.get("/advertisements/:id");
 router.get("/advertisements/edit/:id");
