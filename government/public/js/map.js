@@ -55,8 +55,8 @@ function generateSpotHTML(spot) {
   return `<div class="card">
             <img src="${spot.images[0]}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
-              <h6 class="card-title fw-bold">${spot.spotName}</h6>
-              <p class="card-text">${spot.spotTypeName}</p>
+              <h6 class="card-title fw-bold">${spot.locationName}</h6>
+              <p class="card-text">${spot.locationTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
               <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
@@ -401,16 +401,18 @@ mapboxScript.onload = async function() {
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
+        const place = res.items.find((item) => item.resultType === 'place');
         let address = res.items[0].address.label;
         address = address.replace(', Hồ Chí Minh, Việt Nam', '');
         const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                  <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
                                   <p class="fw-light" style="font-size: 15px;">${address}</p>`;
         const divElement = document.createElement('div');
         
         divElement.innerHTML = innerHtmlContent;
         divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
         
-        if (window.location.pathname.startsWith('/so')) {
+        if (window.location.pathname.startsWith('/department')) {
           const assignBtn = document.createElement('div');
 
           assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
@@ -422,7 +424,6 @@ mapboxScript.onload = async function() {
         .setDOMContent(divElement)
         .addTo(map);
       });
-
   });
 
   // Change the cursor to grab when user drag the map
