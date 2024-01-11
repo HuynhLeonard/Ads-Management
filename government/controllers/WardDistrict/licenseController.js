@@ -25,10 +25,18 @@ const add = async (req, res) => {
 
 const deleteRequest = async (req, res) => {
     try {
-        const id = req.param.id;
+        const id = req.params.id;
+        const role = String(req.originalUrl.split("/")[1]);
         await deleteLicenseRequest(id);
-        res.status(200).json("Delete license request success");
+        res.redirect(`${role}/license`);
     } catch (error) {
         res.status(500).json("Getting error when delete license request");
     }
+};
+
+export default {
+    show,
+    showDetail,
+    add,
+    deleteRequest,
 };
