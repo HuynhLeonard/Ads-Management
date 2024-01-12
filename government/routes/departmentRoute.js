@@ -1,4 +1,6 @@
 import express from "express";
+import controller from "../controllers/WardDistrict/main.js";
+
 const router = express.Router();
 
 router.get("*", (req, res, next) => {
@@ -25,7 +27,7 @@ router.get("/", (req, res) => {
 // nhom quang cao (diem dat)
 router.get("/advertisements");
 router.get("/advertisements/new", (req, res) => {
-    res.render("add");
+    controller.adsController.showAdd(req,res);
 });
 // query: category, lng, lat
 router.post("/advertisements/new");
