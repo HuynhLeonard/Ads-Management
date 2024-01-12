@@ -5,8 +5,8 @@ export const createBoardType = async (boardTypeData) => {
     try {
         const newData = new BoardType(boardTypeData);
 
-        const savedData = await newData.save();
-        return savedData;
+        await newData.save();
+        return { message: 'Board type created successfully' };
     } catch (error) {
         throw new Error('Error')
     }

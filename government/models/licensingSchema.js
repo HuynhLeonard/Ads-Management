@@ -64,6 +64,10 @@ const LicensingShema = new mongoose.Schema({
     },
     content: {
         type: String
+    },
+    // gia hạn giấy phép
+    extendForBoard: {
+        type: String,
     }
 });
 

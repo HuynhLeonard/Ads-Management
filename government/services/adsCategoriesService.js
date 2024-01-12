@@ -9,7 +9,7 @@ export const createCategories = async (newData) => {
             const newCategory = new AdsCategories(data);
             await newCategory.save();
             
-            return newCategory;
+            return { message: 'Ads form created successfully' };
         } else {
             return {message: 'Message create successfully'};
         }
@@ -21,8 +21,7 @@ export const createCategories = async (newData) => {
 // Done
 export const getAllCategories = async () => {
     try {
-        const categories = await AdsCategories.find();
-        return categories;
+        return await AdsCategories.find();
     } catch (error) {
         throw new Error('Error happened when finding categories.')
     }
@@ -52,10 +51,9 @@ export const modifyCategories = async (CategoriesID, updateData) => {
     }
 };
 
-export const deleteCategorires = async (req,res,next) => {
+export const deleteCategorires = async (id) => {
     try {
-        const categoryID = req.params.id;
-        await AdsCategories.findOneAndDelete({CategoriesID: categoryID});
+        await AdsCategories.findOneAndDelete({CategoriesID: id});
         return {message: 'Categories deleted successfully'};
     } catch (error) {
         throw new Error('Error happened when delete category.');
