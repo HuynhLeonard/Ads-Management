@@ -282,6 +282,18 @@ body {
     }
 }
 
+@media only screen and (max-width: 1220px) {
+    .ads-slider {
+        aspect-ratio: 9/7;
+    }
+    .title {
+        font-size: 19px;
+    }
+    .detail, .address, .place-name {
+        font-size: 12px;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
     .ads-slider {
         aspect-ratio: 9/7;
@@ -305,7 +317,7 @@ body {
         font-size: 8px !important;
         padding: 0.4em 1.3em !important;
     }
-    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
         width: 20px;
         height: 20px;
     }
@@ -348,7 +360,7 @@ body {
         font-size: 6px !important;
         padding: 0.2em 1.1em !important;
     }
-    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
         width: 10px;
         height: 10px;
     }
@@ -375,7 +387,7 @@ body {
         font-size: 4px !important;
         padding: 0.1em 1em !important;
     }
-    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
         width: 10px;
         height: 10px;
     }
@@ -387,3 +399,4 @@ body {
         bottom: 0.2rem;
     }
 }
+
