@@ -33,7 +33,7 @@ const show = async (req,res) => {
     });
 
     // lấy số lượng tất cả officer
-    const totalOfficer = tableData.length;
+    const totalOfficers = tableData.length;
     // Các officer đã được assigned
     const numberOfAssignedOfficers = tableData.filter((officer) => officer.isAssigned).length
     // lấy tất cả phường, quận
