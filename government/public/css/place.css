@@ -254,6 +254,59 @@ body {
     justify-content: space-around;
 }
 
+.reports-info {
+    margin: 0 auto;
+    background-color: #fff;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.reports-wrapper {
+    position: relative;
+    max-width: 40rem;
+}
+
+.reports-slider {
+    display: flex;
+    aspect-ratio: 12/5.5;
+
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0);
+    border-radius: 10px;
+}
+
+.reports-slider .reports {
+    flex: 1 0 100%;
+    scroll-snap-align: start;
+    object-fit: cover;
+}
+
+.reports-nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.reports-nav a {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #000;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+
+.reports-nav a:hover {
+    opacity: 1;
+}
+
 @media only screen and (max-width: 1500px) {
     .ads-slider {
         aspect-ratio: 11/7;
@@ -282,9 +335,24 @@ body {
     }
 }
 
+@media only screen and (max-width: 1220px) {
+    .ads-slider {
+        aspect-ratio: 9/7;
+    }
+    .title {
+        font-size: 19px;
+    }
+    .detail, .address, .place-name {
+        font-size: 12px;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
     .ads-slider {
         aspect-ratio: 9/7;
+    }
+    .reports-slider {
+        aspect-ratio: 13/7;
     }
     .title {
         font-size: 19px;
@@ -305,31 +373,34 @@ body {
         font-size: 8px !important;
         padding: 0.4em 1.3em !important;
     }
-    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
         width: 20px;
         height: 20px;
     }
-    .ads-nav a, .slider-nav a {
+    .ads-nav a, .slider-nav a, .reports-nav a {
         width: 0.4rem;
         height: 0.4rem;
     }
-    .slider-nav, .ads-nav {
+    .slider-nav, .ads-nav, .reports-nav {
         bottom: 0.8rem;
     }
 }
 
 @media only screen and (max-width: 992px) {
+    .reports-slider {
+        aspect-ratio: 12/7;
+    }
     .title {
         font-size: 17px;
     }
     .detail, .address, .place-name {
         font-size: 10px;
     }
-    .ads-nav a, .slider-nav a {
+    .ads-nav a, .slider-nav a, .reports-nav a {
         width: 0.3rem;
         height: 0.3rem;
     }
-    .slider-nav, .ads-nav {
+    .slider-nav, .ads-nav, .reports-nav {
         bottom: 0.6rem;
     }
 }
@@ -337,6 +408,9 @@ body {
 @media only screen and (max-width: 768px) {
     .ads-slider {
         aspect-ratio: 8/7;
+    }
+    .reports-slider {
+        aspect-ratio: 9/7;
     }
     .title {
         font-size: 15px;
@@ -348,15 +422,15 @@ body {
         font-size: 6px !important;
         padding: 0.2em 1.1em !important;
     }
-    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
         width: 10px;
         height: 10px;
     }
-    .ads-nav a, .slider-nav a {
+    .ads-nav a, .slider-nav a, .reports-nav a {
         width: 0.2rem;
         height: 0.2rem;
     }
-    .slider-nav, .ads-nav {
+    .slider-nav, .ads-nav, .reports-nav {
         bottom: 0.4rem;
     }
 }
@@ -375,15 +449,15 @@ body {
         font-size: 4px !important;
         padding: 0.1em 1em !important;
     }
-    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
         width: 10px;
         height: 10px;
     }
-    .ads-nav a, .slider-nav a {
+    .ads-nav a, .slider-nav a, .reports-nav a {
         width: 0.1rem;
         height: 0.1rem;
     }
-    .slider-nav, .ads-nav {
+    .slider-nav, .ads-nav, .reports-nav {
         bottom: 0.2rem;
     }
 }
