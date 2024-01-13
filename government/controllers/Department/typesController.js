@@ -26,10 +26,6 @@ const handleCategory = async (category, service, idKey, nameKey, descKey) => {
     return {tableHeads: tableHeads[category], tableData};
 };
 
-const createForm = async (service, formName, type, desc) => {
-
-}
-
 // ?category='ads || report'
 const show = async (req,res) => {
     const category = req.query.category || '';
@@ -50,7 +46,7 @@ const show = async (req,res) => {
             tableData = tbData;
             title = category === 'ads' ? 'Sở - Loại Hình Quảng Cáo' : 'Sở - Loại Hình Báo Cáo';
         } else {
-            req.flash('error', error.message);
+            res.status(404);
             return res.render('error', {
                 title: '404',
                 message: error.message
@@ -58,6 +54,7 @@ const show = async (req,res) => {
         }
         res.render('/department/types', {
             title: title,
+            category,
             tableHeads,
             tableData
         })
@@ -75,11 +72,10 @@ const showDetail = async (req,res) => {
 
 // ?category='ads || report'
 const add = async (req,res) => {
-    const category = req.params.category;
+    const category = req.params.category || '';
     const newData = req.body;
 
     try {
-        if(category === 'ads' || category === 'report'){
             switch(category){
                 case 'ads':
                     const newAds = {
@@ -89,18 +85,20 @@ const add = async (req,res) => {
                     const messageAds = await adsCategoriesService.createCategories(newAds);
 
                     req.flash('success', messageAds);
-
+                    break;
                 case 'report':
                     const newReport = {
                         reportTypeName: newData.reportTypeName,
                         reportTypeDes: newData.reportTypeDes
                     }
                     const messageReport = await reportTypeService.createReportType(newReport);
-
                     req.flash('success', messageReport);
+                    break;
+                default:
+                    req.flash('error', 'Không tìm thấy trang');
+                    return res.redirect(req.originalUrl);
             }
-            res.redirect('/department/typesController');
-        }
+            return res.redirect(req.originalUrl);
     } catch (error) {
         req.flash('error', error.message);
         return res.status(500).json({ message: error.message });
