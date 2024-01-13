@@ -1,7 +1,7 @@
+import * as districtService from '../../services/districtService.js';
 import emailService from '../../services/emailService.js';
 import * as userService from "../../services/userService.js";
 import * as wardService from '../../services/wardService.js';
-import { hashPassword, comparePassword } from '../../services/passwordService.js';
 //import * as locationService from '../../services/districtService.js'
 // hàm lấy tất cả phường của 1 quận
 // :id
@@ -13,21 +13,41 @@ const show = async (req,res) => {
     const tableData = officers.map((officer) => {
         return {
             username: officer.username,
+            email: officer.email,
+            district: officer.districtName || '',
+            ward: officer.wardName || '',
+            districtID: officer.districtID,
+            wardID: officer.wardID,
+
             // các thông tin còn lại
-            position: 'Cán bộ quận/Cán bộ phường/Chưa phân công ',
+            position: officer.position === 1 ? 'Cán bộ Quận' : officer.position === 2 ? 'Cán bộ Phường' : 'Chưa phân công',
             // isAssigned =>
-            isAssigned: true,
+            isAssigned: officer.position !== 0,
             actions: {
                 edit: true,
                 remove: true,
                 info: true,
             }
+            
         }
     });
 
     // lấy số lượng tất cả officer
+    const totalOfficer = tableData.length;
     // Các officer đã được assigned
+    const numberOfAssignedOfficers = tableData.filter((officer) => officer.isAssigned).length
     // lấy tất cả phường, quận
+    const districts = await districtService.getAllDistricts();
+    const wards = await wardService.getAllWard();
+    res.render('/department/assign', {
+        title: 'Sở - Phân công',
+        tableHeads,
+        tableData,
+        totalOfficers,
+        numberOfAssignedOfficers,
+        districts,
+        wards
+    });
 }
 
 const getWards = async (req,res) => {
@@ -78,7 +98,6 @@ const addOfficer = async (req,res) => {
     let password = randomPassword();
     emailService.sendNewPassword(data.email, password);
 
-    password = await hashPassword(password);
     const newUser = {
         username: data.username,
         email: data.email,
