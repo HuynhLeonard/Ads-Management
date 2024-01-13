@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Agbalumo">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" href="./place.css">
+    <link rel="stylesheet" href="/css/place.css">
     <title>Place popup</title>
 </head>
 <body>
@@ -31,12 +31,12 @@
             <div class="place-name">Quân Chủng Hải Quân - Trung Tâm Văn Phòng Thương Mại Hải Quân</div>
             <div class="address">15 Đường Lê Thánh Tôn, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh</div>
             <div class="butn">
-                <button class="place-btn raw-color">Xem các báo cáo</button>
+                <button class="place-btn raw-color view-reports">Xem các báo cáo</button>
                 <button class="place-btn raw-color">Báo cáo vi phạm</button>
-                <button class="place-btn raw-color">Bảng quảng cáo</button>
+                <button class="place-btn raw-color view-ads">Bảng quảng cáo</button>
             </div>
         </section>
-        <section class="ads-info">
+        <section class="ads-info fade">
             <div class="ads-wrapper">
                 <div class="ads-slider">
                     <div class="ads" id="ads_1">
@@ -96,10 +96,10 @@
                 <a href="#ads_3"></a>
             </div>
         </section>
-        <section class="reports-info">
+        <section class="reports-info fade">
             <div class="reports-wrapper">
                 <div class="reports-slider">
-                    <div class="reports" id="report_1">
+                    <div class="reports" id="reports_1">
                         <div class="detail">
                             <div class="data">
                                 <div class="title">Hình thức báo cáo 1</div>
@@ -110,7 +110,6 @@
                             </div>
                             <div class="butn">
                                 <button class="info-btn">Thông tin chi tiết</button>
-                                <button class="report-btn">Báo cáo vi phạm</button>
                             </div>
                         </div>
                     </div>
@@ -126,7 +125,6 @@
                             </div>
                             <div class="butn">
                                 <button class="info-btn">Thông tin chi tiết</button>
-                                <button class="report-btn">Báo cáo vi phạm</button>
                             </div>
                         </div>
                     </div>
@@ -142,7 +140,6 @@
                             </div>
                             <div class="butn">
                                 <button class="info-btn">Thông tin chi tiết</button>
-                                <button class="report-btn">Báo cáo vi phạm</button>
                             </div>
                         </div>
                 </div>
@@ -154,5 +151,6 @@
             </div>
         </section>
     </section>
+    <script src="/js/place.js"></script>
 </body>
 </html>
