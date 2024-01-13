@@ -9,7 +9,7 @@ body {
     width: 35vw;
     height: 100%;
 
-    background-color: wheat;
+    background-color: #08a5a0;
     border: 3px solid black;
     border-radius: 13px;
     padding-bottom: 20px;
@@ -72,6 +72,7 @@ body {
     padding: 20px;
 
     position: relative;
+    color: white;
 }
 
 .place-info button {
@@ -80,8 +81,30 @@ body {
     margin: 0 auto;
 }
 
+.place-btn {
+    --color: #f0520e;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 400;
+    font-size: 12px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+}
+
+.raw-color {
+    color: white;
+}
+
 .report-btn {
-    --color: #f55a4c;
+    --color: #ff3838;
     padding: 0.8em 1.7em;
     background-color: transparent;
     border-radius: .3em;
@@ -116,7 +139,7 @@ body {
     z-index: 1;
 }
 
-.report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after {
+.report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
     content: '';
     display: block;
     width: 30px;
@@ -129,30 +152,29 @@ body {
     transition: 1s ease;
 }
 
-.report-btn::before, .info-btn::before {
+.report-btn::before, .info-btn::before, .place-btn::before {
     top: -1em;
     left: -1em;
 }
 
-.report-btn::after, .info-btn::after {
+.report-btn::after, .info-btn::after, .place-btn::after {
     left: calc(100% + 1em);
     top: calc(100% + 1em);
 }
 
-.report-btn:hover::before, .report-btn:hover::after, .info-btn:hover::before, .info-btn:hover::after {
+.report-btn:hover::before, .report-btn:hover::after, .info-btn:hover::before, .info-btn:hover::after, .place-btn:hover::before, .place-btn:hover::after {
     height: 410px;
     width: 410px;
 }
 
-.report-btn:hover, .info-btn:hover {
+.report-btn:hover, .info-btn:hover, .place-btn:hover {
     color: rgb(10, 25, 30);
+    font-weight: bold;
 }
 
-.report-btn:active, .info-btn:active {
+.report-btn:active, .info-btn:active, .place-btn:active {
     filter: brightness(.8);
 }
-
-
 
 .title {
     font-size: 25px;
@@ -171,7 +193,7 @@ body {
 
 .ads-info {
     margin: 0 auto;
-    background-color: white;
+    background-color: #fff;
     width: 80%;
     border: 2px solid black;
     border-radius: 10px;
@@ -365,4 +387,3 @@ body {
         bottom: 0.2rem;
     }
 }
-
