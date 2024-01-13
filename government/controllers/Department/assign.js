@@ -5,6 +5,31 @@ import { hashPassword, comparePassword } from '../../services/passwordService.js
 //import * as locationService from '../../services/districtService.js'
 // hàm lấy tất cả phường của 1 quận
 // :id
+const show = async (req,res) => {
+    const officers = await userService.getAllOfficer();
+    // table
+    const tableHeads = ['STT', 'Tên Đăng Nhập', 'Chức vụ', 'Quận', 'Phường'];
+    // gọi hàm lấy table data 
+    const tableData = officers.map((officer) => {
+        return {
+            username: officer.username,
+            // các thông tin còn lại
+            position: 'Cán bộ quận/Cán bộ phường/Chưa phân công ',
+            // isAssigned =>
+            isAssigned: true,
+            actions: {
+                edit: true,
+                remove: true,
+                info: true,
+            }
+        }
+    });
+
+    // lấy số lượng tất cả officer
+    // Các officer đã được assigned
+    // lấy tất cả phường, quận
+}
+
 const getWards = async (req,res) => {
     const districtID = req.params.id;
     try {
