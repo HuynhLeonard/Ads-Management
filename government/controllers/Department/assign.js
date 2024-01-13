@@ -1,27 +1,18 @@
-// assign là:
-// 1. Tạo tài khoản cán bộ
-// 2. Xem toàn bộ cán bộ 
-// 3. Xóa 1 cán bộ
-// 4. ......
-
 import emailService from '../../services/emailService.js';
 import * as userService from "../../services/userService.js";
 import * as wardService from '../../services/wardService.js';
+import { hashPassword, comparePassword } from '../../services/passwordService.js';
 //import * as locationService from '../../services/districtService.js'
 // hàm lấy tất cả phường của 1 quận
 // :id
 const getWards = async (req,res) => {
     const districtID = req.params.id;
     try {
-        const district = await wardService.getWardOfDistrict(districtID);
-        return res.status(200).json({
-            district
-        })
+        const wards = await wardService.getWardOfDistrict(districtID);
+        return res.json(wards)
     } catch (error) {
         return res.status(500).json({ error: 'Error getting wards' });
     }
-
-    // => json
 }
 
 // :username
@@ -29,12 +20,13 @@ const deleteAccount = async (req,res) => {
     const username = req.params.username;
 
     try {
-        const result = await userService.deleteUserByUsername(username);
+        const {message} = await userService.deleteUserByUsername(username);
         return res.status(200).json({
-            result
+            message: message
         })
     } catch (error) {
-        return res.status(500).json({ error: 'Error update officer' });
+        req.flash('error', error.message);
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -44,17 +36,13 @@ const updateOfficer = async (req,res) => {
     const updateData = req.body;
 
     try {
-        const updateUser = await userService.updateOfficer(username, updateData);
-
-        if(!updateUser) {
-            return res.status(404).json({error: 'Officer is existed'})
-        }
-
+        const {message} = await userService.updateOfficer(username, updateData);
         return res.status(200).json({
-            updateUser
+            message: message
         })
     } catch (error) {
-        return res.status(500).json({ error: 'Error update officer' });
+        req.flash('error', error.message);
+        return res.status(500).json({ message: error.message });
     }
 
 }
@@ -62,22 +50,26 @@ const updateOfficer = async (req,res) => {
 // username, email
 const addOfficer = async (req,res) => {
     const data = req.body;
-    const password = randomPassword();
+    let password = randomPassword();
+    emailService.sendNewPassword(data.email, password);
 
+    password = await hashPassword(password);
     const newUser = {
         username: data.username,
         email: data.email,
-        status: 0,
-        password: password
+        position: 0,
+        password: password,
+        districtID: '',
+        wardID: ''
     }
     try {
-        const result = await userService.createUser(newUser);
-        await emailService.sendNewPassword(data.email, password);
-        return res.status(200).json({
-            result
-        });
+        const message = await userService.createUser(newUser);
+        
+        req.flash('success', message);
+        res.redirect('/department/assign');
     } catch (error) {
-        return res.status(500).json({ error: 'Error add officer' });
+        req.flash('error', error.message);
+        res.redirect('/department/assign');
     }
 }
 
