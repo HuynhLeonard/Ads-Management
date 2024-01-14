@@ -53,7 +53,7 @@ export const getAllWard = async() => {
 
 export const getWardOfDistrict = async(districtID) => {
     try {
-        const wards = await Ward.findOne({districtID: districtID});
+        const wards = await Ward.find({districtID: districtID});
         
         return wards;
     } catch (error) {
