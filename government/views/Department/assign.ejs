@@ -35,7 +35,7 @@
           <thead>
             <tr>
               <th data-align="center" data-field="index" data-sortable="true" data-width-unit="%" data-width="5">
-                No.
+                STT
               </th>
               <th data-align="center" data-field="username" data-sortable="true" data-width-unit="%" data-width="15">
                 Tên tài khoản
@@ -261,7 +261,7 @@
       const modal = document.getElementById('editModal');
       // put data into modal
       const modalTitle = modal.querySelector('.modal-title');
-      modalTitle.textContent = `CẤP QUYỀN CHO ${account.username}`;
+      modalTitle.textContent = `CẤP QUYỀN CHO CÁN BỘ ${account.username}`;
 
       const districtSelect = modal.querySelector('#districtSelect');
       // remove all options
@@ -328,7 +328,7 @@
     const updateAccount = async () => {
       const districtSelect = document.getElementById('districtSelect').value;
       const wardSelect = document.getElementById('wardSelect').value;
-      const username = document.getElementById('username-edit').innerText.replace('CẤP QUYỀN CHO ', '');
+      const username = document.getElementById('username-edit').innerText.replace('CẤP QUYỀN CHO CÁN BỘ', '');
 
       const position = (wardSelect === "") ? 1 : 2;
 
