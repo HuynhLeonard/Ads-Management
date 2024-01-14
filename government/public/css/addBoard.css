@@ -1,3 +1,7 @@
+body {
+    font-family: "Montserrat";
+}
+
 h1 {
     text-align: center;
 }
@@ -17,6 +21,11 @@ h1 {
 
 .item {
     width: 45%;
+}
+
+label {
+    color: #08a5a0;
+    font-size: 20px;
 }
 
 .container span {
@@ -181,11 +190,93 @@ form {
 }
 
 .button button[type = "submit"] {
+    background-color: #19bf2b;
     width: 20%;
     border-radius: 10px;
 }
 
 .button button[type = "button"] {
+    background-color: #ed2d2d;
     width: 20%;
     border-radius: 10px;
+}
+
+@media only screen and (max-width: 1200px) {
+    label {
+        font-size: 18px;
+    }
+
+    input {
+        font-size: 15px;
+    }
+
+    .button button {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    label {
+        font-size: 15px;
+    }
+
+    input {
+        font-size: 10px;
+    }
+
+    .button button {
+        font-size: 8px;
+    }
+
+    .button {
+        margin-top: 10px;
+    }
+
+    img {
+        width: 95%;
+    }
+
+    .image div {
+        font-size: 18px;
+    }
+
+    .image button {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+    input {
+        font-size: 7px;
+    }
+
+    .button button {
+        font-size: 5px;
+    }
+
+    .button {
+        margin-top: 5px;
+    }
+
+    img {
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .image div {
+        padding: 5px 0;
+        font-size: 16px;
+    }
+
+    .image button {
+        font-size: 10px;
+    }
 }

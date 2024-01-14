@@ -50,6 +50,15 @@ governmentApp.use(flash());
 governmentApp.use(cors());
 
 governmentApp.set('views', path.join(__dirname, 'government','views'));
+
+governmentApp.locals.generateDetailLink = ({id, linkDetails}) => {
+    const { basePath, category } = linkDetails
+    if (category) {
+        return `${basePath}/${id}?category=${category}`
+    }
+    return `${basePath}/${id}`
+}
+
 governmentApp.set('view engine', 'ejs');
 console.log(`${governmentApp.get('views')}`);
 
@@ -110,6 +119,7 @@ import apiRoute from "./government/routes/apiRoutes.js";
 import districtRoute from './government/routes/districtRoute.js';
 import { setHeaders } from './government/routes/apiRoutes.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
+governmentApp.use('/department', departmentRoute);
 governmentApp.use('/district', checkAuth, districtRoute);
 // governmentApp.get('/api/location/', (req,res) => {
 //     api
@@ -133,7 +143,7 @@ mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mon
 
 const governmentServer = http.createServer(governmentApp);
 governmentServer.listen(process.env.GOVERNMENT_PORT, () => {
-  console.log(
-    `Government App is running on http://localhost:${process.env.GOVERNMENT_PORT}`
-  );
+    console.log(
+        `Government App is running on http://localhost:${process.env.GOVERNMENT_PORT}`
+    );
 });

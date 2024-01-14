@@ -1,3 +1,7 @@
+body {
+    font-family: "Montserrat";
+}
+
 h1 {
     text-align: center;
 }
@@ -170,22 +174,23 @@ form {
     color: burlywood;
 }
 
-.btn {
+.button {
     display: flex;
     justify-content: center;
+    margin-top: 30px;
 }
 
-.btn button {
+.button button {
     margin: 0 15px;
 }
 
-.btn button[type = "submit"] {
+.button button[type = "submit"] {
     background-color: #19bf2b;
     width: 20%;
     border-radius: 10px;
 }
 
-.btn button[type = "button"] {
+.button button[type = "button"] {
     background-color: #ed2d2d;
     width: 20%;
     border-radius: 10px;

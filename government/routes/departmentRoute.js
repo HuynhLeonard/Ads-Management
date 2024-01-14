@@ -1,4 +1,7 @@
 import express from "express";
+import controller from "../controllers/WardDistrict/main.js";
+import controllerAPI from "../controllers/Department/main.js";
+
 const router = express.Router();
 
 router.get("*", (req, res, next) => {
@@ -22,10 +25,31 @@ router.get("/", (req, res) => {
 // router.delete("/location-detail/:wardID");
 // router.patch("/location-detail/:wardID");
 
+// nhom assign
+router.get('/assign', (req, res) => {
+    controllerAPI.assignController.show(req, res);
+  });
+  
+  router.delete('/assign/:username', (req, res) => {
+    controllerAPI.assignController.deleteAccount(req, res);
+  })
+  
+  router.patch('/assign/:username', (req, res) => {
+    controllerAPI.assignController.updateOfficer(req, res);
+  })
+  
+  router.post('/assign', (req, res) => {
+    controllerAPI.assignController.addOfficer(req, res);
+  });
+
+  router.get('/getWards/:id', async (req, res) => {
+    await controllerAPI.assignController.getWards(req, res);
+  })
+
 // nhom quang cao (diem dat)
 router.get("/advertisements");
 router.get("/advertisements/new", (req, res) => {
-    res.render("add");
+    controller.adsController.showAdd(req,res);
 });
 // query: category, lng, lat
 router.post("/advertisements/new");

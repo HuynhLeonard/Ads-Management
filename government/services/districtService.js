@@ -3,16 +3,8 @@ import District from "../models/districtSchema.js";
 // Done
 export const createNewDistrict = async(districtData) => {
     try {
-        const data = districtData;
-        const districtID = districtData.districtID;
-        const existed = await District.findOne({districtID});
-        if(!existed){
-            const newDistrict = new District(data);
-            await newDistrict.save();
-            return newDistrict;
-        } else {
-            return {message: 'District ID has existed'};
-        }
+        await District.create(data);
+        return { message: 'District created successfully' };
     } catch (error) {
         throw new Error('Error happen when creating district.');
     }
@@ -64,5 +56,19 @@ export const deleteDistrict = async(districtID) => {
 
     } catch (error) {
         throw new Error('Error happened when delete district.');
+    }
+};
+
+export const getIDByName = async (districtName) => {
+    try {
+        const district = await District.findOne({districtName: districtName});
+
+        if(!district) {
+            return null
+        }
+
+        return district.districtID;
+    } catch (error) {
+        throw new Error('Error getting data.')
     }
 }

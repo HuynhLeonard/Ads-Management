@@ -147,3 +147,37 @@ export const getDistrictDetail = async (districtID) => {
         throw new Error('Error getting all districts.')
     }
 }
+
+export const getDistrictWardName = async (lat, lng) => {
+  const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey=${process.env.REVERSE_GEOCODING_API}&lang=vi`;
+
+  try {
+    const res = await fetch(api);
+    const data = await res.json();
+    let districtName = data.items[0].address.city.replace('Quận ', '').trim();
+    let wardName = data.items[0].address.district.replace('Phường ', '').trim();
+    if (districtName.length === 1) {
+      districtName = '0' + districtName;
+    }
+    if (wardName.length === 1) {
+      wardName = '0' + wardName;
+    }
+    let address = data.items[0].address.label;
+    console.log(address);
+    address = address.slice(0, address.indexOf(', Phường')).split(',');
+    if(address.length == 2){
+      address = (address[0] == 'To Go') ? address[1].slice(1) : address.join(',');
+    } else {
+      address = address[0];
+    }
+
+    const  districtID = (await districtService.getIDByName(districtName)) || '';
+    // console.log(districtName, districtID);
+    const wardID = (await wardService.getIDByName(wardName)) || '';
+    // console.log(wardName, wardID);
+
+    return { address, districtName, wardName, districtID, wardID };
+  } catch (error) {
+    throw new Error(`Error getting district and ward name: ${error.message}`);
+  }
+}

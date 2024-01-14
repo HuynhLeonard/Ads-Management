@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibGVvbmFyZGh1eW5oIiwiYSI6ImNscDNxdzNmZzB6dG0ya3M1MGt2MTVreHEifQ.WiaFF1ZoklZy7vMDLcPJ5g';
-const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
+const reverseGeoCodingApiKey = 'dxfL1wVD_bvA7kpYlaIcKZduqFOw6YJLtB4fHUMoyqM';
+// const reverseGeoCodingApiKey = 'iFRNmnpm9tPfPuSWFtpk3VDDI3xKUuNDxy0EHKjJlF4'
 
 const mapboxVersion = 'v2.9.1';
 const mapboxScript = document.createElement('script');
@@ -396,7 +397,7 @@ mapboxScript.onload = async function() {
     }
     marker.setLngLat(e.lngLat).addTo(map);
 
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=10`;
 
     fetch(api)
       .then((res) => res.json())
@@ -415,7 +416,7 @@ mapboxScript.onload = async function() {
         if (window.location.pathname.startsWith('/department')) {
           const assignBtn = document.createElement('div');
 
-          assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+          assignBtn.innerHTML = `<a href="/department/advertisements/new?category=Location&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
           divElement.appendChild(assignBtn);
           divElement.setAttribute('class', 'p-2');
         }

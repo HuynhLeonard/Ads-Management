@@ -53,7 +53,7 @@ export const getAllWard = async() => {
 
 export const getWardOfDistrict = async(districtID) => {
     try {
-        const wards = await Ward.findOne({districtID: districtID});
+        const wards = await Ward.find({districtID: districtID});
         
         return wards;
     } catch (error) {
@@ -103,3 +103,15 @@ export const countAllOfDistrict = async (districtID) => {
         throw new Error(`Error get wards of count documents: ${error.message}`)
     }
 };
+
+export const getIDByName = async (wardName) => {
+    try {
+        const ward = await Ward.findOne({ wardName }, { _id: 0, wardID: 1 })
+        if (!ward) {
+            return null
+        }
+        return ward.wardID
+    } catch (error) {
+        throw new Error(`Error getting ward by name: ${error.message}`)
+    }
+}

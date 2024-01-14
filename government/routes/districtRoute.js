@@ -17,9 +17,13 @@ router.get("/", (req, res) => {
 router.get("/officer/:username", (req,res) => controller.infoController.getInfo(req,res));
 router.post('/officer/:username', (req, res) => controller.infoController.updateInfo(req, res));
 //nhóm report
-router.get("/reports");
+router.get("/reports", (req,res) => {
+    controller.reportController.show(req,res);
+});
 router.get("/reports/:reportID");
-router.post("/reports/:reportID");
+router.post("/reports/:reportID", (req,res) => {
+    controller.reportController.updateReport(req,res);
+});
 
 //nhom them diem dat vao quan
 router.get("/locations");

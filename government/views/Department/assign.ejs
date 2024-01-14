@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include('../components/head.ejs') %>
+</head>
+
+<body>
+  <header></header>
+  <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <div class="row"><%- include('../components/sidebar.ejs') %></div>
+    <div class="container-fluid vw-100 pt-1">
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+
+        <!-- Title -->
+        <div class="d-block">
+          <h2 class="fw-bolder text-uppercase">PHÂN CÔNG TÀI KHOẢN</h2>
+        </div>
+        <!-- Select -->
+        <div class="container-fluid mt-3 ps-0">
+          <div class="d-flex flex-row align-items-center gap-2 position-relative">
+            <div class="d-flex flex-row align-items-center gap-2 position-relative">
+              <%- include("../components/info-card.ejs", { title: "Số lượng tài khoản", value: totalOfficers, color: "#00b285" }); %>
+              <%- include("../components/info-card.ejs", { title: "Đã phân công", value: numberOfAssignedOfficers, color: "#d59633" }); %>
+
+            </div>
+          </div>
+        </div>
+        <!-- Table -->
+        <% const keys = Object.keys(tableData[0] || {}); %>
+        <table id="table" data-toggle="table" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary" data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi" class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+          <thead>
+            <tr>
+              <th data-align="center" data-field="index" data-sortable="true" data-width-unit="%" data-width="5">
+                STT
+              </th>
+              <th data-align="center" data-field="username" data-sortable="true" data-width-unit="%" data-width="15">
+                Tên tài khoản
+              </th>
+              <th data-align="center" data-field="position" data-sortable="true">
+                Chức vụ
+              </th>
+              <th data-align="center" data-field="district" data-sortable="true" data-width-unit="%" data-width="25">
+                Quận
+              </th>
+              <th data-align="center" data-field="ward" data-sortable="true" data-width-unit="%" data-width="25">
+                Phường
+              </th>
+              <th data-align="center" data-field="actions">
+                Hành động
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tableData.forEach(function(account, index) { %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= account.username %></td>
+              <td><%= account.position %></td>
+              <td><%= account.district !== '' ? account.district : '' %></td>
+              <td><%= account.ward !== '' ? account.ward : '' %></td>
+              <td>
+                <div class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
+                  <% if (!account.isAssigned) { %>
+                  <button type="button" class="btn btn-success border-0 text-wrap text-center" onclick="showEditModal(JSON.parse('<%= JSON.stringify(account) %>'))" style="width: 70%; background-color: #60c98b;">Phân công
+                  </button>
+                  <% } else { %>
+                  <a href="javascript:" class="mx-3 bg-transparent" onclick="showEditModal(JSON.parse('<%= JSON.stringify(account) %>'))">
+                    <img src="/images/edit.svg" alt="edit-icon">
+                  </a>
+                  <a role="button" class="text-decoration-none mx-3 remove-button" href="#" value="<%= account.username %>">
+                    <img src="/images/remove.svg" alt="remove-icon" class="bg-transparent">
+                  </a>
+                  <% } %>
+                </div>
+              </td>
+            </tr>
+
+            <% }); %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    
+    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="min-width: 600px">
+        <div class="modal-content">
+          <div class="modal-header pb-3 border-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-1 pb-2 border-0">
+            <h5 class="modal-title pb-2 text-center fw-bold fs-4" id="username-edit">
+              CẤP QUYỀN CHO <span style="color: #355ded;">username</span>
+            </h5>
+            <form>
+              <div class="d-flex justify-content-between">
+                <div class="mb-3 d-flex justify-content-between flex-fill">
+                  <label for="maloai-lhqc" class="col-form-label mb-1">Quận:</label>
+                  <div class="dropdown justify-content-end px-1" style="height: 2.2rem;">
+                    <select class="form-select" aria-label="Default select example" style="min-width: 6.5rem;" id="districtSelect" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur(); changeWards(this.value);'>
+                      <option value="selectedDistrict" selected>
+                        accountDistrict
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between flex-fill">
+                  <label for="loai-lhqc" class="col-form-label mb-1">Phường:</label>
+                  <div class="dropdown justify-content-end px-1" style="height: 2.2rem;">
+                    <select class="form-select" id="wardSelect" aria-label="Ward selector" style="min-width: 6.5rem;" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                      <option value="selectedWard" selected>
+                        accountWard
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer pt-1 d-flex justify-content-around border-0" style="background-color: #f7fafc">
+            <button type="button" class="btn" data-bs-dismiss="modal" style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
+              Hủy
+            </button>
+            <button type="button" class="btn" onclick="updateAccount()" style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
+  </main>
+  <!-- Modal add -->
+  <script defer type="module">
+    import createModal from '/js/modal.js';
+
+    const options = {
+      id: 'addModal-lhqc',
+      title: 'Tạo tài khoản',
+      form: {
+        id: 'addModal-pc',
+        method: 'POST',
+        action: JSON.parse('<%- JSON.stringify(url) %>'),
+        components: [{
+            id: 'username',
+            label: 'Tên tài khoản',
+            required: true,
+            type: 'input',
+            inputType: 'text',
+            placeholder: 'Tên tài khoản'
+          },
+          {
+            id: 'email',
+            label: 'Email',
+            required: true,
+            type: 'input',
+            inputType: 'email',
+            placeholder: 'Email'
+          },
+        ],
+        buttons: [{
+            type: 'button',
+            label: 'Hủy',
+            color: '#e84747',
+            dismiss: true
+          },
+          {
+            type: 'submit',
+            label: 'Xác nhận',
+            color: '#3c77ff',
+            dismiss: true
+          },
+        ],
+      }
+    }
+    createModal(options);
+  </script>
+
+  <script defer type="module">
+    import {
+      ezBSAlert
+    } from '/js/customizedModal.js';
+    const confirmDelete = async (e, username) => {
+      e.preventDefault();
+      ezBSAlert({
+        type: "confirm",
+        messageText: "Bạn có chắc muốn xóa tài khoản này không?",
+        alertType: 'danger',
+      }).done(async function(e) {
+        if (e) {
+          await deleteAccount(username);
+        }
+      });
+    }
+
+    const deleteAccount = async (username) => {
+      console.log(`/department/assign/${username}`);
+      try {
+        const response = await fetch(`/department/assign/${username}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any additional headers as needed
+          },
+        });
+
+        const {
+          message
+        } = await response.json();
+        if (!response.ok) throw new Error(message);
+
+        console.log(message);
+        appendAlert(message, 'success');
+      } catch (error) {
+        console.error('Error during DELETE request:', error.message);
+        appendAlert(error.message, 'danger');
+      }
+      $('.alert').on('closed.bs.alert', function() {
+        location.reload();
+      });
+    };
+
+    const alertPlaceholder = document.getElementById('alertConfirm')
+    const appendAlert = (message, type) => {
+      const wrapper = document.createElement('div')
+      wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+      ].join('')
+
+      alertPlaceholder.append(wrapper)
+    }
+
+    $("#table").on('click', '.remove-button', function(e) {
+      e.preventDefault();
+      const username = $(this).attr('value');
+      confirmDelete(e, username);
+    });
+  </script>
+  <script defer>
+    const appendAlert1 = (message, type) => {
+      const wrapper = document.createElement('div')
+      wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+      ].join('')
+
+      document.getElementById('alertConfirm').append(wrapper)
+    }
+
+    const showEditModal = (account) => {
+      const modal = document.getElementById('editModal');
+      // put data into modal
+      const modalTitle = modal.querySelector('.modal-title');
+      modalTitle.textContent = `CẤP QUYỀN CHO CÁN BỘ ${account.username}`;
+
+      const districtSelect = modal.querySelector('#districtSelect');
+      // remove all options
+      districtSelect.innerHTML = '';
+      const emptyOption = document.createElement('option');
+      emptyOption.value = '';
+      emptyOption.textContent = 'Chọn quận';
+      districtSelect.appendChild(emptyOption); // Add an empty option
+      const districts = JSON.parse('<%- JSON.stringify(districts) %>');
+      // add options
+      districts.forEach((district) => {
+        const option = document.createElement('option');
+        option.value = district.districtID;
+        option.textContent = `${district.districtName}`;
+
+        if (district.districtID == account.districtID)
+          option.selected = true;
+        districtSelect.appendChild(option);
+      });
+      const selectedDistrict = (account.districtID === "") ? "none" : account.districtID;
+
+      changeWards(selectedDistrict);
+
+      // show modal
+      const modalInstance = new bootstrap.Modal(modal);
+      modalInstance.show($('main'));
+    }
+
+    const changeWards = async (selectedDistrict) => {
+      try {
+        // Use fetch for better handling of asynchronous requests
+        const response = await fetch(`/department/getWards/${selectedDistrict}`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const wards = await response.json();
+        //console.log(wards);
+
+        let wardSelectTag = document.getElementById('wardSelect');
+        wardSelectTag.innerHTML = '';
+        const emptyOption = document.createElement('option');
+        emptyOption.value = '';
+        emptyOption.textContent = 'Chọn phường';
+        wardSelectTag.appendChild(emptyOption); // Add an empty option
+
+        if (wards.length === 0) {
+          emptyOption.textContent = 'Không có phường';
+          return;
+        }
+
+        wards.forEach((ward) => {
+          const option = document.createElement('option');
+          option.value = ward.wardID;
+          option.textContent = `${ward.wardName}`;
+          wardSelectTag.appendChild(option);
+        });
+      } catch (error) {
+        console.error(`Error in changeWards: ${error.message}`);
+      }
+    };
+
+    const updateAccount = async () => {
+      const districtSelect = document.getElementById('districtSelect').value;
+      const wardSelect = document.getElementById('wardSelect').value;
+      const username = document.getElementById('username-edit').innerText.replace('CẤP QUYỀN CHO CÁN BỘ', '');
+
+      const position = (wardSelect === "") ? 1 : 2;
+
+      const dataToUpdate = {
+        position: position,
+        districtID: districtSelect,
+        wardID: wardSelect
+      };
+
+      try {
+        const response = await fetch(`/department/assign/${username}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dataToUpdate)
+        });
+
+        const {
+          message
+        } = await response.json();
+        console.log(message);
+
+        if (!response.ok) {
+          throw new Error(`Failed to update user: ${message}`);
+        }
+
+        // close edit modal
+        document.getElementById('editModal').querySelector('.btn-close').click();
+
+        appendAlert1(message, 'success');
+
+        // Handle success, if needed
+      } catch (error) {
+        console.error(`Error updating user: ${error.message}`);
+        appendAlert1(error.message, 'danger');
+      }
+      $('.alert').on('closed.bs.alert', function() {
+        location.reload();
+      });
+
+    }
+  </script>
+
+</body>
+
+</html>
