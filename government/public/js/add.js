@@ -4,6 +4,30 @@ const orText = dropArea.querySelector(".or");
 const button = dropArea.querySelector("button");
 const input = dropArea.querySelector("input");
 let isExisted = false;
+let numOfFile = 0;
+
+let imageDiv = document.createElement("div");
+imageDiv.classList.add("slider");
+
+let navDiv = document.createElement("div");
+navDiv.classList.add("slider-nav");
+
+let imageWrapper = document.createElement("div");
+imageWrapper.appendChild(imageDiv);
+imageWrapper.classList.add("slider-wrapper");
+
+imageWrapper.style.marginLeft = "10px";
+imageWrapper.style.marginRight = "10px";
+imageWrapper.style.marginBottom = "50px";
+
+let navWrapper = document.createElement("div");
+navWrapper.appendChild(navDiv);
+navWrapper.classList.add("slider-nav");
+
+let container = document.createElement("div");
+container.appendChild(imageWrapper);
+container.appendChild(navWrapper);
+container.classList.add("image-section");
 
 button.addEventListener("click", () => {
     input.click();
@@ -15,7 +39,6 @@ input.addEventListener("change", (e) => {
 });
 
 function showFile(files) {
-    let imageDiv = document.createElement("div");
     let check = true;
     for (let i = 0; i < files.length; i++) {
         let file = files[i];
@@ -26,13 +49,15 @@ function showFile(files) {
             fileReader.onload = () => {
                 let fileUrl = fileReader.result;
                 let imgTag = document.createElement("img");
+                let navTag = document.createElement("a");
                 imgTag.src = fileUrl;
-                imgTag.style.width = "100%";
-                imgTag.style.marginTop = "10px";
-                imgTag.style.marginBottom = "10px";
+                imgTag.setAttribute("id", numOfFile);
+                navTag.href = "#" + numOfFile;
                 imageDiv.appendChild(imgTag);
+                navWrapper.appendChild(navTag);
             };
             fileReader.readAsDataURL(file);
+            numOfFile += 1;
         } else {
             alert("Đây không phải là một file ảnh");
             dragText.textContent = "Kéo và thả để tải hình ảnh lên";
@@ -40,16 +65,17 @@ function showFile(files) {
             break;
         }
     }
+
     if (check) {
         if (!isExisted) {
             dropArea.innerHTML = "";
-            dropArea.appendChild(imageDiv);
+            dropArea.appendChild(container);
             dropArea.appendChild(dragText);
             dropArea.appendChild(orText);
             dropArea.appendChild(button);
             isExisted = true;
         } else {
-            dropArea.appendChild(imageDiv);
+            dropArea.appendChild(container);
             dropArea.appendChild(dragText);
             dropArea.appendChild(orText);
             dropArea.appendChild(button);
@@ -69,7 +95,6 @@ dropArea.addEventListener("dragleave", (event) => {
 
 dropArea.addEventListener("drop", (event) => {
     event.preventDefault();
-    let imageDiv = document.createElement("div");
     dragText.textContent = "Kéo và thả để tải hình ảnh lên";
     const file = event.dataTransfer.files[0];
     let fileType = file.type;
@@ -80,28 +105,31 @@ dropArea.addEventListener("drop", (event) => {
         fileReader.onload = () => {
             let fileUrl = fileReader.result;
             let imgTag = document.createElement("img");
+            let navTag = document.createElement("a");
             imgTag.src = fileUrl;
-            imgTag.style.width = "100%";
-            imgTag.style.marginTop = "10px";
-            imgTag.style.marginBottom = "10px";
+            imgTag.setAttribute("id", numOfFile);
+            navTag.href = "#" + numOfFile;
             imageDiv.appendChild(imgTag);
+            navWrapper.appendChild(navTag);
         };
         fileReader.readAsDataURL(file);
+        numOfFile += 1;
     } else {
         check = false;
         alert("Đây không phải là một file ảnh");
         dragText.textContent = "Kéo và thả để tải hình ảnh lên";
     }
+
     if (check) {
         if (!isExisted) {
             dropArea.innerHTML = "";
-            dropArea.appendChild(imageDiv);
+            dropArea.appendChild(container);
             dropArea.appendChild(dragText);
             dropArea.appendChild(orText);
             dropArea.appendChild(button);
             isExisted = true;
         } else {
-            dropArea.appendChild(imageDiv);
+            dropArea.appendChild(container);
             dropArea.appendChild(dragText);
             dropArea.appendChild(orText);
             dropArea.appendChild(button);
