@@ -1,3 +1,7 @@
+body {
+    font-family: "Montserrat";
+}
+
 h1 {
     text-align: center;
 }
@@ -17,6 +21,10 @@ h1 {
 
 .item {
     width: 45%;
+}
+
+label {
+    color: #08a5a0;
 }
 
 .container span {
@@ -181,11 +189,13 @@ form {
 }
 
 .button button[type = "submit"] {
+    background-color: #19bf2b;
     width: 20%;
     border-radius: 10px;
 }
 
 .button button[type = "button"] {
+    background-color: #ed2d2d;
     width: 20%;
     border-radius: 10px;
 }
