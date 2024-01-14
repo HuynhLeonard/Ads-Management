@@ -1,5 +1,6 @@
 import * as districtService from '../../services/districtService.js';
 import emailService from '../../services/emailService.js';
+import { hashPassword } from '../../services/passwordService.js';
 import * as userService from "../../services/userService.js";
 import * as wardService from '../../services/wardService.js';
 //import * as locationService from '../../services/districtService.js'
@@ -39,7 +40,7 @@ const show = async (req,res) => {
     // lấy tất cả phường, quận
     const districts = await districtService.getAllDistricts();
     const wards = await wardService.getAllWard();
-    res.render('/department/assign', {
+    res.render('Department/assign', {
         title: 'Sở - Phân công',
         tableHeads,
         tableData,
@@ -54,7 +55,7 @@ const getWards = async (req,res) => {
     const districtID = req.params.id;
     try {
         const wards = await wardService.getWardOfDistrict(districtID);
-        return res.json(wards)
+        res.json(wards)
     } catch (error) {
         return res.status(500).json({ error: 'Error getting wards' });
     }
@@ -97,7 +98,7 @@ const addOfficer = async (req,res) => {
     const data = req.body;
     let password = randomPassword();
     emailService.sendNewPassword(data.email, password);
-
+    password = await hashPassword(password)
     const newUser = {
         username: data.username,
         email: data.email,
@@ -108,7 +109,6 @@ const addOfficer = async (req,res) => {
     }
     try {
         const message = await userService.createUser(newUser);
-        
         req.flash('success', message);
         res.redirect('/department/assign');
     } catch (error) {
@@ -128,4 +128,4 @@ const randomPassword = () => {
     return password;
 }
 
-export default {addOfficer, getWards, deleteAccount, randomPassword, updateOfficer};
+export default {addOfficer, getWards, deleteAccount, randomPassword, updateOfficer, show};

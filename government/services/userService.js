@@ -4,14 +4,8 @@ import {comparePassword, hashPassword} from '../services/passwordService.js';
 
 export const createUser = async (userData) => {
     try {
-        const newUser = new User(userData);
-
-        newUser.password = await hashPassword(newUser.password);
-
-        await newUser.save();
-
-        return newUser;
-        // return {message: 'User created successfully'};
+        await User.create(userData);
+        return {message: 'User created successfully'};
     } catch (error) {
         throw new Error('Error');
     }
