@@ -2,6 +2,11 @@ body {
     font-family: "Montserrat";
 }
 
+label {
+    color: #08a5a0;
+    font-size: 20px;
+}
+
 h1 {
     text-align: center;
 }
