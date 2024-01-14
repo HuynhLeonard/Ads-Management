@@ -395,7 +395,7 @@ export const getReportByOfficerRole = async (officerRole) => {
                     _id: 0,
                     reportID: 1,
                     objectID: 1,
-                    reportTypeName: '$htbc.reportTypeName',
+                    reportType: '$htbc.reportTypeName',
                     reporterName: 1,
                     reporterEmail: 1,
                     sendTime: 1,

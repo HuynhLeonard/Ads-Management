@@ -1,7 +1,7 @@
 import adsController from './advertisementController.js';
 import infoController from './infoController.js';
 // import licenseController from './licenseController.js';
-// import reportController from './reportController.js';
+import reportController from './reportController.js';
 const indexController = {
 	show: (req, res) => {
 		const role = String(req.originalUrl.split('/')[1]);
@@ -12,6 +12,7 @@ const indexController = {
 export default {
     adsController,
     infoController,
-    indexController
+    indexController,
+	reportController
 }
 
