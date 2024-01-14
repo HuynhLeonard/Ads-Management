@@ -1,5 +1,6 @@
 const dropArea = document.querySelector(".drag-area");
 const dragText = dropArea.querySelector(".dragText");
+const orText = dropArea.querySelector(".or");
 const button = dropArea.querySelector("button");
 const input = dropArea.querySelector("input");
 let isExisted = false;
@@ -44,11 +45,13 @@ function showFile(files) {
             dropArea.innerHTML = "";
             dropArea.appendChild(imageDiv);
             dropArea.appendChild(dragText);
+            dropArea.appendChild(orText);
             dropArea.appendChild(button);
             isExisted = true;
         } else {
             dropArea.appendChild(imageDiv);
             dropArea.appendChild(dragText);
+            dropArea.appendChild(orText);
             dropArea.appendChild(button);
         }
     }
@@ -94,11 +97,13 @@ dropArea.addEventListener("drop", (event) => {
             dropArea.innerHTML = "";
             dropArea.appendChild(imageDiv);
             dropArea.appendChild(dragText);
+            dropArea.appendChild(orText);
             dropArea.appendChild(button);
             isExisted = true;
         } else {
             dropArea.appendChild(imageDiv);
             dropArea.appendChild(dragText);
+            dropArea.appendChild(orText);
             dropArea.appendChild(button);
         }
     }
