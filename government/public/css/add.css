@@ -195,3 +195,84 @@ form {
     width: 20%;
     border-radius: 10px;
 }
+
+@media only screen and (max-width: 1200px) {
+    label {
+        font-size: 18px;
+    }
+
+    input {
+        font-size: 15px;
+    }
+
+    .button button {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    label {
+        font-size: 15px;
+    }
+
+    input {
+        font-size: 10px;
+    }
+
+    .button button {
+        font-size: 8px;
+    }
+
+    .button {
+        margin-top: 10px;
+    }
+
+    img {
+        padding: 60px 0;
+        width: 100%;
+    }
+
+    .image div {
+        font-size: 18px;
+    }
+
+    .image button {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+    input {
+        font-size: 7px;
+    }
+
+    .button button {
+        font-size: 5px;
+    }
+
+    .button {
+        margin-top: 5px;
+    }
+
+    img {
+        padding: 80px 0;
+        width: 100%;
+    }
+
+    .image div {
+        padding: 5px 0;
+        font-size: 14px;
+    }
+
+    .image button {
+        font-size: 10px;
+    }
+}
