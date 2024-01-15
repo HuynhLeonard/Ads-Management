@@ -25,10 +25,10 @@
           console.log(removeUrl)
         %>
         <% if (tableRow.actions.edit) { %>
-        <%- include('./edit_button.ejs', {target: '#editModal-' + i}) %>
+        <%- //include('./edit_button.ejs', {target: '#editModal-' + i}) %>
         <% } %>
         <% if (tableRow.actions.remove) { %>
-        <%- include('./remove_button.ejs', {url: removeUrl, removeHandler: 'removeHandler'}) %>
+        <%-// include('./remove_button.ejs', {url: removeUrl, removeHandler: 'removeHandler'}) %>
         <% } %>
         <% if (tableRow.actions.info) { %>
           <a href='<%= infoUrl || "javascript:"%>' class="text-decoration-none">

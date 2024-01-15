@@ -94,7 +94,7 @@ export const showModifyForm = (req, res) => {};
 
 export const addNewSpot = async (req, res) => {
     const { locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned} = req.body;
-    const locationID = 'LCT100';
+    const locationID = 'LC102'
     const data = {locationID,locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned}
     try {
         await locationService.createNewLocation(data);

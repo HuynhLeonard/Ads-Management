@@ -48,12 +48,12 @@ const LocationSchema = new mongoose.Schema({
     }
 });
 
-LocationSchema.pre('save', async function(next){
-    const location = this;
-    const count = await LocationSchema.countDocuments();
-    location.locationID = 'LC' + String(count + 1).padStart(3,'0');
-    next();
-});
+// LocationSchema.pre('save', async function(next){
+//     const location = this;
+//     const count = await LocationSchema.countDocuments();
+//     location.locationID = 'LC' + String(count + 1).padStart(3,'0');
+//     next();
+// });
 
 const Location = mongoose.model('locations', LocationSchema);
 export default Location;

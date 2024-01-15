@@ -91,11 +91,18 @@ button.addEventListener("click", () => {
 
 input.addEventListener("change", (e) => {
     const files = e.target.files;
+    console.log(files);
     showFile(files);
 });
 
 function showFile(files) {
     let check = true;
+    let imgLinks = [];
+    for (let i = 0; i < files.length; i++) {
+        // create object URL to use as src for img element
+        imgLinks.push(URL.createObjectURL(files[i]))
+    }
+    console.log(imgLinks);
     for (let i = 0; i < files.length; i++) {
         let file = files[i];
         let fileType = file.type;
@@ -192,3 +199,5 @@ dropArea.addEventListener("drop", (event) => {
         }
     }
 });
+
+console.log(input.files);
