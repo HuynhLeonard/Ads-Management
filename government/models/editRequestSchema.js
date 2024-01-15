@@ -34,4 +34,11 @@ const EditRequestSchema = new mongoose.Schema({
     }
 });
 
+EditRequestSchema.pre('save', async function(next){
+    const editReq = this;
+    const count = await EditRequestSchema.countDocuments();
+    editReq.requestID = 'CS' + String(count + 1).padStart(3,'0');
+    next();
+});
+
 export default mongoose.model("EditRequest", EditRequestSchema);

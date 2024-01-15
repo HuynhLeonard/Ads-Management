@@ -71,4 +71,11 @@ const LicensingShema = new mongoose.Schema({
     }
 });
 
+LicensingShema.pre('save', async function(next){
+    const license = this;
+    const count = await LicensingShema.countDocuments();
+    license.requestID = 'LS' + String(count + 1).padStart(3,'0');
+    next();
+});
+
 export default mongoose.model("LicensingRequest", LicensingShema);

@@ -51,6 +51,13 @@ const ReportAdsSchema = new mongoose.Schema({
     
 });
 
+ReportAdsSchema.pre('save', async function(next){
+    const rpAds = this;
+    const count = await ReportAdsSchema.countDocuments();
+    rpAds.reportID = 'BC' + String(count + 1).padStart(3,'0');
+    next();
+});
+
 // save with a custom number, also datetime format here
 
 const Report = mongoose.model('reports', ReportAdsSchema);
