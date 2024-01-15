@@ -44,7 +44,7 @@
     <%- include('./components/sidebar.ejs'); %>
     <div class="container">
       <h1>Tạo điểm đặt quảng cáo mới</h1>
-      <form action="" method="POST">
+      <form action="" method="">
           <div class="image drag-area">
             <img src="/assets/addImage.jpg" alt="">
             <div class="dragText">Kéo và thả để tải hình ảnh lên</div>
@@ -121,6 +121,7 @@
                   placeholder="Tên phường của điểm đặt"
                   disabled
                 />
+                <input type="text" class="form-control" id="ward" hidden />
               </div>
               <div class="item-container">
                 <div class="item-title">
@@ -133,6 +134,7 @@
                   placeholder="Tên quận của điểm đặt"
                   disabled
                 />
+                <input type="text" class="form-control" id="district" hidden />
               </div>
             </div>
   
@@ -176,7 +178,7 @@
             </div>
 
             <div class="button">
-              <button type="submit">Xác nhận</button>
+              <button type="submit" id="submitBtn">Xác nhận</button>
               <button type="button">Hủy và thoát</button>
             </div>
           </div>
@@ -186,23 +188,24 @@
     <script defer>
       const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
       const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
-      const spottypeInput = document.getElementById('spotTypeName');
-      const adsformInput = document.getElementById('adsFormName');
+      const spottypeInput = document.getElementById('locationtype');
+      const adsformInput = document.getElementById('adCategory');
       const spottypeIdInput = document.getElementById('spotType');
       const adsformIdInput = document.getElementById('adsForm');
 
-      const districtInput = document.getElementById('districtName');
-      const wardInput = document.getElementById('wardName');
+      const districtInput = document.getElementById('district-field');
+      const wardInput = document.getElementById('ward-field');
       const districtIdInput = document.getElementById('district');
       const wardIdInput = document.getElementById('ward');
 
       spottypeInput.addEventListener('change', (e) => {
-        const spottype = spottypes.find(type => type.typeName == spottypeInput.value);
-        spottypeIdInput.value = spottype.typeID;
+        const spottype = spottypes.find(type => type.locationTypeName == spottypeInput.value);
+        spottypeIdInput.value = spottype.locationTypeID;
       });
+
       adsformInput.addEventListener('change', (e) => {
-        const adsform = adsforms.find(form => form.formName == adsformInput.value);
-        adsformIdInput.value = adsform.formID;
+        const adsform = adsforms.find(form => form.CategoriesName == adsformInput.value);
+        adsformIdInput.value = adsform.CategoriesID;
       });
       
 
@@ -218,10 +221,125 @@
           e.preventDefault();
           e.target.parentElement.hidden = true;
           if (e.target.parentElement.id == 'alert-success') {
-            window.location.href = '/so';
+            window.location.href = '/department';
           }
         });
       });
+    </script>
+    <!-- upload picture -->
+    <script defer>
+
+      const submitHandler = async (e) => {
+        e.preventDefault();
+        const districts = JSON.parse('<%- JSON.stringify(other.districts) %>');
+        const wards = JSON.parse('<%- JSON.stringify(other.wards) %>');
+        
+        console.log(districts);
+        console.log(wards);
+        
+
+        districtName = `Quận ${districtInput.value}`;
+        console.log(districtName)
+        const district = districts.find(district => district.districtName == districtName);
+        console.log(district);
+        districtIdInput.value = (district) ? district.districtID : '';
+        console.log(districtIdInput.value)
+
+
+        wardName = `Phường ${wardInput.value}`;
+        console.log(wardName)
+        const ward = wards.find(ward => ward.wardName == wardName && ward.districtID == districtIdInput.value);
+        wardIdInput.value = (ward) ? ward.wardID : '';
+        console.log(ward);
+
+        // get data
+        const spotName = document.getElementById('name-field').value;
+        const longitude = document.getElementById('long-field').value;
+        const latitude = document.getElementById('lat-field').value;
+        const address = document.getElementById('address-field').value;
+        const wardID = document.getElementById('ward').value;
+        const districtID = document.getElementById('district').value;
+        const spotType = document.getElementById('spotType').value;
+        const adsForm = document.getElementById('adsForm').value;
+        const planned = document.getElementById('planned').value;
+
+        if(spotName == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN ĐIỂM ĐẶT mới.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(longitude == '' || latitude == '' || address == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng chọn TỌA ĐỘ ĐIỂM ĐẶT trên bản đồ ở TRANG CHỦ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(districtID == '' || wardID == ''){
+          document.getElementById('warning-text').textContent = "Khu vực (Quận / Phường) bạn chọn không nằm trong quyền quản lý của chúng tôi, vui lòng trờ về TRANG CHỦ chọn điểm mới.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const spottypeList = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+        const adsformList = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+
+        const spotTypeName = document.getElementById('locationtype').value.trim();
+        if(spotTypeName == '' || !(spottypeList.some(type => type.locationTypeName === spotTypeName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI VỊ TRÍ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const adsFormName = document.getElementById('adCategory').value.trim();
+        if(adsFormName == '' || !(adsformList.some(form => form.CategoriesName === adsFormName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng HÌNH THỨC QUẢNG CÁO.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(planned != 'Đã quy hoạch' && planned != 'Chưa quy hoạch'){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng THÔNG TIN QUY HOẠCH.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const data = {
+          locationName: spotName,
+          longitude: longitude,
+          latitude: latitude,
+          address: address,
+          wardID: wardID,
+          districtID: districtID,
+          locationType: spotType,
+          adsForm: adsForm,
+          planned: (planned == 'Đã quy hoạch') ? 1 : 0,
+        };
+
+        const url = '<% url %>'
+        const result = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+        
+        console.log(result);
+        if (result.status == 200) {
+          document.getElementById('alert-success').hidden = false;
+          // clear all input
+          document.querySelectorAll('input').forEach((input) => {
+            input.value = '';
+          });
+        } else {
+          document.getElementById('alert-danger').hidden = false;
+        }
+
+        loader.style.display = 'none';
+      }
+
+      document.getElementById('submitBtn').addEventListener('click', submitHandler);
     </script>
   </body>
 </html>

@@ -92,12 +92,25 @@ export const showAddForm = async (req, res) => {
 
 export const showModifyForm = (req, res) => {};
 
-export const addNewSpot = async (req, res) => {};
+export const addNewSpot = async (req, res) => {
+    const { locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned} = req.body;
+    const locationID = 'LCT100';
+    const data = {locationID,locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned}
+    try {
+        await locationService.createNewLocation(data);
+        res.status(200).json({ message: 'Điểm đặt mới đã được thêm thành công' })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Lỗi server' })
+    }
+};
 
 export const addNewBoard = async (req, res) => {};
 
 export const performAdd = async (req, res) => {};
 
 export default {
-    showAddForm
+    showAddForm,
+    addNewBoard,
+    addNewSpot
 }
