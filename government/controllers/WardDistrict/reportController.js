@@ -1,43 +1,43 @@
-import * as userService from "../../services/userService.js";
-import * as reportService from "../../services/reportService.js";
-import * as districtService from "../../services/districtService.js";
-import * as wardService from "../../services/wardService.js";
-import emailService from "../../services/emailService.js";
 import * as boardService from "../../services/boardService.js";
+import * as districtService from "../../services/districtService.js";
+import emailService from "../../services/emailService.js";
+import * as locationDetailService from "../../services/location-detailService.js";
 import * as locationService from "../../services/locationService.js";
-import * as locationDetailService from "../../services/location-detailService.js"
+import * as reportService from "../../services/reportService.js";
+import * as userService from "../../services/userService.js";
+import * as wardService from "../../services/wardService.js";
 
 const convertDate = (date) => {
-    const dateObject = new Date(date);
-    const day = dateObject.getDate().toString().padStart(2,'0');
-    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
-    const year = dateObject.getFullYear();
+	const dateObject = new Date(date);
+	const day = dateObject.getDate().toString().padStart(2, '0');
+	const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+	const year = dateObject.getFullYear();
 
-    return `${day}/${month}/${year}`;
+	return `${day}/${month}/${year}`;
 };
 
-const show = async (req,res) => {
-    const role = String(req.originalUrl.split('/')[1]);
-    let title = role === 'district' ? 'Quận - Báo Cáo' : 'Phường - Báo Cáo'
+const show = async (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
+	let title = role === 'district' ? 'Quận - Báo Cáo' : 'Phường - Báo Cáo'
 
-    const officerRole = await userService.getRoleByUsername(req.user.username);
-    let roleName = '';
-    if(role === 'district') {
-        roleName = await districtService.getDistrictByID(officerRole);
-        roleName = roleName.districtName;
-    }
+	const officerRole = await userService.getRoleByUsername(req.user.username);
+	let roleName = '';
+	if (role === 'district') {
+		roleName = await districtService.getDistrictByID(officerRole);
+		roleName = roleName.districtName;
+	}
 
-    const data = await reportService.getReportByOfficerRole(officerRole);
-    console.log('report type service');
-    console.log(data);
-    
-    const roleData = {
+	const data = await reportService.getReportByOfficerRole(officerRole);
+	console.log('report type service');
+	console.log(data);
+
+	const roleData = {
 		district: {
 			tableHeads: ['ID', 'Điểm đặt/ Quảng Cáo', 'Loại hình báo cáo', 'Phường'
 				, 'Họ tên người gửi', 'Email', 'Thời điểm gửi', 'Tình Trạng'],
 			tableData: await Promise.all(data.map(async (item) => {
 				let wardName = item.wardName;
-			
+
 				if (item.objectID.includes('AD')) {
 					const lat = item.objectID.split(':')[1];
 					const lng = item.objectID.split(':')[0].replace('AD', '');
@@ -103,10 +103,11 @@ const show = async (req,res) => {
 					}
 				}
 			}),
-		)	},
+			)
+		},
 	}
 
-    let roleInfo = roleData[role];
+	let roleInfo = roleData[role];
 	// remove empty object
 	roleInfo.tableData = roleInfo.tableData.filter(item => Object.keys(item).length !== 0);
 
@@ -114,14 +115,14 @@ const show = async (req,res) => {
 
 	if (!roleInfo) {
 		res.status(404);
-		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+		return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } });
 	}
 
 	// console.log(roleInfo);
 	let wardsOfDistrict = []
 	if (role === 'district') {
 		wardsOfDistrict = await wardService.getWardOfDistrict(officerRole)
-		wardsOfDistrict = wardsOfDistrict.map((ward) =>{
+		wardsOfDistrict = wardsOfDistrict.map((ward) => {
 			return {
 				name: `Phường ${ward.wardName}`,
 				status: roleInfo.tableData.some(item => item.ward === ward.wardName)
@@ -133,51 +134,104 @@ const show = async (req,res) => {
 
 	// console.log(wardsOfDistrict);
 
-	res.render('reports', {url: req.originalUrl, title: title, ...roleInfo});
+	res.render('reports', { url: req.originalUrl, title: title, ...roleInfo });
 }
 
 // :id
-const updateReport = async (req,res) => {
-    const reportID = req.params.id;
-    const dataToUpdate = req.body;
-    const role = String(req.originalUrl.split('/')[1]);
+const updateReport = async (req, res) => {
+	const reportID = req.params.id;
+	const dataToUpdate = req.body;
+	const role = String(req.originalUrl.split('/')[1]);
 
-    const reportInfo = await reportService.getSingleReport(reportID);
-    let officer = await userService.getRoleByUsername(dataToUpdate.officerName);
+	const reportInfo = await reportService.getSingleReport(reportID);
+	let officer = await userService.getRoleByUsername(dataToUpdate.officerName);
 
-    if(role === 'district') {
-        officer = await districtService.getDistrictByID(officer);
-        officer = {
-            ward: '',
-            district: officer.districtName
-        }
-    } else {
-        officer = await wardService.getWard(officer);
-        const district = await districtService.getDistrictByID(officer.districtID);
-        officer = {
-            ward: officer.wardName,
-            district: district.districtName
-        }
-    };
+	if (role === 'district') {
+		officer = await districtService.getDistrictByID(officer);
+		officer = {
+			ward: '',
+			district: officer.districtName
+		}
+	} else {
+		officer = await wardService.getWard(officer);
+		const district = await districtService.getDistrictByID(officer.districtID);
+		officer = {
+			ward: officer.wardName,
+			district: district.districtName
+		}
+	};
 
-    const emailData = {
-        reporterName: reportInfo.reporterName.toUpperCase(),
-        reporterEmail: reportInfo.reporterEmail,
-        officer: officer,
-        solution: dataToUpdate.solution
-    }
+	const emailData = {
+		reporterName: reportInfo.reporterName.toUpperCase(),
+		reporterEmail: reportInfo.reporterEmail,
+		officer: officer,
+		solution: dataToUpdate.solution
+	}
 
-    emailService.sendReportSolution(emailData);
+	emailService.sendReportSolution(emailData);
 
-    try {
-        const message = await reportService.updateReport(reportID, dataToUpdate);
-        res.redirect(`/${role}/reports`);
-    } catch (error) {
-        req.flash('error', error.message);
-    }
+	try {
+		const message = await reportService.updateReport(reportID, dataToUpdate);
+		res.redirect(`/${role}/reports`);
+	} catch (error) {
+		req.flash('error', error.message);
+	}
 };
 
+const showDetail = async (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
+	const reportID = req.params.id;
+	const dataFetch = await reportService.getSingleReport(reportID);
+	// console.log(dataFetch);
+	let title = role === 'district' ? 'Quận - Chi tiết báo cáo vi phạm' : 'Phường - Chi tiết báo cáo vi phạm';
+
+	const officerName = req.user.username;
+	// console.log(officerName);
+
+	if (dataFetch.objectID.includes('QC')) {
+		const boardDetail = await boardService.getSingleBoard(dataFetch.objectID);
+
+		dataFetch.spotAddress = boardDetail.spotAddress;
+		dataFetch.district = boardDetail.districtName;
+		dataFetch.ward = boardDetail.wardName;
+	}
+	if (dataFetch.objectID.includes('LC')) {
+		const spotDetail = await locationService.getSingleLocation(dataFetch.objectID);
+
+		dataFetch.spotAddress = spotDetail.address;
+		dataFetch.district = spotDetail.districtName;
+		dataFetch.ward = spotDetail.wardName;
+	}
+	if (dataFetch.objectID.includes('AD')) {
+		const addrDetail = await locationService.getLocationFromDistricts(dataFetch.objectID.split(':')[1], dataFetch.objectID.split(':')[0].replace('AD', ''));
+
+		dataFetch.spotAddress = addrDetail.address;
+		dataFetch.district = addrDetail.districtName;
+		dataFetch.ward = addrDetail.wardName;
+	}
+
+	const data = {
+		id: dataFetch.reportID,
+		phone: dataFetch.phoneNumber,
+		state: dataFetch.status,
+		objectID: dataFetch.objectID,
+		reportType: dataFetch.reportType,
+		sendTime: convertDate(dataFetch.sendTime),
+		name: dataFetch.reporterName,
+		email: dataFetch.reporterEmail,
+		content: dataFetch.reportInfo,
+		solution: dataFetch.solution,
+		imgUrls: [...dataFetch.reportImages],
+		officer: dataFetch.officer,
+		spotAddress: dataFetch.spotAddress,
+		spotDistrict: dataFetch.district,
+		spotWard: dataFetch.ward,
+	}
+	res.render('report-detail', { role, title, officerName, ...data });
+}
+
 export default {
-    updateReport,
-    show
+	updateReport,
+	show,
+	showDetail
 }
