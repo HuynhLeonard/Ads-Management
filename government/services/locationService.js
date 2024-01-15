@@ -6,6 +6,7 @@ import Ward from '../models/wardSchema.js';
 // Done
 export const createNewLocation = async (locationData) => {
     try {
+        console.log(locationData)                                                                                                                                                           
         const newLocation = new Location(locationData);
         const existedDistrict = await District.find({districtID: locationData.districtID});
         const existedWard = await Ward.find({wardID: locationData.wardID});
@@ -24,7 +25,7 @@ export const createNewLocation = async (locationData) => {
 
 // Done
 export const getAllLocation = async () => {
-    try {
+    try {                                                                                                   
         const option = [
             {
                 $lookup: {

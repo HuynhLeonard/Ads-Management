@@ -40,7 +40,7 @@ import passportConfig from './government/config/passport.js';
 import passport from 'passport';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import * as imgurController from './government/services/imgurService.js';
+import imgurController from './government/controllers/imgurController.js';
 
 
 const governmentApp = express();
@@ -126,7 +126,7 @@ governmentApp.use('/district', checkAuth, districtRoute);
 //         .getAllLocations(req.query.districtID, req.query.wardID)
 //         .then((location) => res.status(200).json(location));
 // });
-governmentApp.get('/imgur', imgurController.getAccessToken)
+governmentApp.get('/imgur', imgurController.getAccessToken);
 import userController from './government/controllers/userController.js'
 governmentApp.post('/test', userController.createUser);
 

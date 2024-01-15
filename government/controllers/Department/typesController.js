@@ -52,7 +52,7 @@ const show = async (req, res) => {
                 message: error.message
             })
         }
-        res.render('/department/types', {
+        res.render('Department/types', {
             title: title,
             category,
             tableHeads,
@@ -170,3 +170,13 @@ const modify = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export default {
+    add,
+    handleCategory,
+    add,
+    showDetail,
+    modify,
+    remove,
+    show
+}

@@ -75,4 +75,25 @@ router.get("/advertisements/:id");
 router.get("/advertisements/edit/:id");
 router.post("/advertisements");
 
+// nhom type
+router.get('/types', async (req, res) => {
+  await controllerAPI.typesController.show(req, res);
+});
+router.get('/types/:id', (req, res) => {
+  controllerAPI.typesController.showDetail(req, res);
+});
+
+// add data
+router.post('/types', async (req, res) => {
+  await controllerAPI.typesController.add(req, res);
+});
+
+// updata data
+router.post('/types/:id', async (req, res) => {
+  await controllerAPI.typesController.modify(req, res);
+});
+
+router.delete('/types/:id', async (req, res) => {
+  await controllerAPI.typesController.remove(req, res);
+});
 export default router;

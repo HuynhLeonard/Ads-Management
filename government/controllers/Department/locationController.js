@@ -125,24 +125,24 @@ controller.addWard = async (req, res) => {
 };
 
 controller.deleteWard = async (req, res) => {
-    const curDistrict = req.query.district;
+    const curDistrict = req.query.quan;
     const wardID = req.params.wardID;
     // console.log(districtID);
     try {
         if (wardID != null) {
             const message = await wardService.deleteWard(wardID);
             console.log(message);
-        res.redirect(`/department/locations-detail?district=${curDistrict}`);
+        res.redirect(`/department/locations-detail?quan=${curDistrict}`);
         }
     } catch (error) {
             console.log(error.message);
             req.flash('error', error.message);
-    res.redirect(`/department/locations-detail?district=${curDistrict}`);
+    res.redirect(`/department/locations-detail?quan=${curDistrict}`);
     }
 };
 
 controller.updateWard = async (req, res) => {
-    const curDistrict = req.query.district;
+    const curDistrict = req.query.quan;
     const wardID = req.params.wardID;
     const data = req.body;
 
