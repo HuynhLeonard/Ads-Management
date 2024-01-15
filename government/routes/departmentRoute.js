@@ -49,10 +49,12 @@ router.get('/assign', (req, res) => {
 // nhom quang cao (diem dat)
 router.get("/advertisements");
 router.get("/advertisements/new", (req, res) => {
-    controllerAPI.adsController.showAddForm(req,res)
+    controllerAPI.adsController.showAddForm(req,res);
 });
 // query: category, lng, lat
-router.post("/advertisements/new");
+router.post("/advertisements/new", (req,res) => {
+    controllerAPI.adsController.addNewSpot(req,res);
+});
 router.get("/advertisements/:id");
 router.get("/advertisements/edit/:id");
 router.post("/advertisements");

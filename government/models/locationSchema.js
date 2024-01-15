@@ -32,7 +32,7 @@ const LocationSchema = new mongoose.Schema({
     },
     images: {
         type: Array,
-        required: true
+        // required: true
     },
     planned: {
         type: Number,

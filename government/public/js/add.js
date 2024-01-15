@@ -44,11 +44,11 @@ if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined
       addr.value = address.split(',')[0] || ' '
       dist.value = res.items[0].address.city.replace('Quận ', '').trim() || ' '
       if (dist.value.length === 1) {
-        dist.value = '0' + dist.value
+        dist.value = dist.value
       }
       ward.value = res.items[0].address.district.replace('Phường ', '').trim() || ' '
       if (ward.value.length === 1) {
-        ward.value = '0' + ward.value
+        ward.value = ward.value
       }
     })
 }
