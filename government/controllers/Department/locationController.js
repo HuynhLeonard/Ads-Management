@@ -22,10 +22,10 @@ controller.findAllDistricts = async (req,res) => {
     const totalSpot = await locationService.countAll();
     const totalBoard = await boardService.countAll();
 
-    console.log(tableData);
-    console.log(totalWard);
-    console.log(totalSpot);
-    console.log(totalBoard)
+    // console.log(tableData);
+    // console.log(totalWard);
+    // console.log(totalSpot);
+    // console.log(totalBoard)
 
     return res.render('Department/locations', {
         tableData, totalBoard, totalSpot, totalWard,
@@ -35,7 +35,7 @@ controller.findAllDistricts = async (req,res) => {
 
 // ?district=id
 controller.locationsDetails = async (req,res) => {
-    let districtID = req.query.district;
+    let districtID = req.query.quan;
     console.log(districtID);
     let districtDetail = await locationDetailService.getDistrictDetail(districtID);
     console.log(districtDetail);
@@ -46,7 +46,7 @@ controller.locationsDetails = async (req,res) => {
     // console.log(districts);
     
     // quan ly phuong
-    res.render('./Department/location-detail', {
+    res.render('Department/location-detail', {
         districtID,
         districtDetail: districtDetail,
         wards,
@@ -58,8 +58,9 @@ controller.locationsDetails = async (req,res) => {
 controller.addDistrict = async (req,res) => {
     const data = {
         districtID: req.body.districtID,
-        districtName: req.body.districtname
+        districtName: req.body.districtName
     };
+    console.log(data);
     try {
         const message = await districtService.createNewDistrict(data);
         console.log(message);
@@ -103,23 +104,23 @@ controller.updateDistrict = async (req, res) => {
 };
 
 controller.addWard = async (req, res) => {
-    const curDistrict = req.query.district;
+    const curDistrict = req.query.quan;
     const data = {
         wardID: req.body.wardID,
         wardName: req.body.wardName,
         districtID: curDistrict,
     };
-    // console.log(data);
+    console.log(data);
 
     try {
         const message = await wardService.createNewWard(data);
         console.log(message);
         req.flash('success', message);
-        res.redirect(`/department/locations-detail?district=${curDistrict}`);
+        res.redirect(`/department/locations-detail?quan=${curDistrict}`);
     } catch (error) {
         console.log(error.message);
         req.flash('error', error.message);
-        res.redirect(`/department/locations-detail?district=${curDistrict}`);
+        res.redirect(`/department/locations-detail?quan=${curDistrict}`);
     }
 };
 

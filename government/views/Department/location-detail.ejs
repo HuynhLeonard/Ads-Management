@@ -41,7 +41,7 @@
                             <!-- List District -->
                             <div class="list-district scroll">
                                 <% districts.forEach(district=> { %>
-                                    <a href="/so/locations-detail?quan=<%=district.districtID%>" style="text-decoration: none">
+                                    <a href="/department/locations-detail?quan=<%=district.districtID%>" style="text-decoration: none">
                                         <div class="district-box d-flex <% if (district.districtID === districtID) {%>active<% } %>">
                                             <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">
                                                 <%=district.districtName%>
@@ -51,7 +51,7 @@
                                     </a>
                                 <% });%>
                             </div>
-                            <a href="/so/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
+                            <a href="/department/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
                         </div>
                         <!-- Table -->
                         <div class="container-fluid d-inline-block ps-0" style="width: 80%; padding: 0; margin: 0">
@@ -209,7 +209,7 @@
                 appendAlert('KHÔNG THỂ XÓA PHƯỜNG. Vì phường này có tồn tại Điểm đặt / Bảng quảng cáo', 'danger');
             else{
                 try {
-                    const response = await fetch(`/so/locations-detail/${ward.wardID}`, {
+                    const response = await fetch(`/department/locations-detail/${ward.wardID}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -244,7 +244,7 @@
             };
 
             try {
-                const response = await fetch(`/so/locations-detail/${wardID}`, {
+                const response = await fetch(`/department/locations-detail/${wardID}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'

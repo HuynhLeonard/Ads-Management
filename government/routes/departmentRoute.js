@@ -15,15 +15,31 @@ router.get("/", (req, res) => {
 });
 
 // nhom location (quan)
-router.get("/locations");
-router.post("/locations");
-router.delete("/locations/:districtID");
-router.patch("/locations/:districtID");
+router.get("/locations", (req,res) => {
+  controllerAPI.locationController.findAllDistricts(req,res);
+});
+router.post("/locations", (req,res) => {
+  controllerAPI.locationController.addDistrict(req,res);
+});
+router.delete("/locations/:districtID", (req,res) => {
+  controllerAPI.locationController.deleteDistrict(req,res);
+});
+router.patch("/locations/:districtID", (req,res) => {
+  controllerAPI.locationController.updateDistrict(req,res);
+});
 // phuong ben trong quan
-router.get("/location-detail");
-router.post("/location-detail");
-router.delete("/location-detail/:wardID");
-router.patch("/location-detail/:wardID");
+router.get("/locations-detail", (req,res) => {
+  controllerAPI.locationController.locationsDetails(req,res);
+});
+router.post("/locations-detail", (req,res) => {
+  controllerAPI.locationController.addWard(req,res);
+});
+router.delete("/locations-detail/:wardID", (req,res) => {
+  controllerAPI.locationController.deleteWard(req,res);
+});
+router.patch("/locations-detail/:wardID", (req,res) => {
+  controllerAPI.locationController.updateWard(req,res);
+});
 
 // nhom assign
 router.get('/assign', (req, res) => {

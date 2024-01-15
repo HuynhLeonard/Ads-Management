@@ -3,7 +3,7 @@ import District from "../models/districtSchema.js";
 // Done
 export const createNewDistrict = async(districtData) => {
     try {
-        await District.create(data);
+        await District.create(districtData);
         return { message: 'District created successfully' };
     } catch (error) {
         throw new Error('Error happen when creating district.');
