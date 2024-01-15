@@ -14,16 +14,16 @@ router.get("/", (req, res) => {
     res.render("Department/index");
 });
 
-// // nhom location (quan)
-// router.get("/locations");
-// router.post("/locations");
-// router.delete("/locations/:districtID");
-// router.patch("/locations/:districtID");
-// // phuong ben trong quan
-// router.get("/location-detail");
-// router.post("/location-detail");
-// router.delete("/location-detail/:wardID");
-// router.patch("/location-detail/:wardID");
+// nhom location (quan)
+router.get("/locations");
+router.post("/locations");
+router.delete("/locations/:districtID");
+router.patch("/locations/:districtID");
+// phuong ben trong quan
+router.get("/location-detail");
+router.post("/location-detail");
+router.delete("/location-detail/:wardID");
+router.patch("/location-detail/:wardID");
 
 // nhom assign
 router.get('/assign', (req, res) => {
@@ -49,7 +49,7 @@ router.get('/assign', (req, res) => {
 // nhom quang cao (diem dat)
 router.get("/advertisements");
 router.get("/advertisements/new", (req, res) => {
-    controller.adsController.showAdd(req,res);
+    controllerAPI.adsController.showAddForm(req,res)
 });
 // query: category, lng, lat
 router.post("/advertisements/new");

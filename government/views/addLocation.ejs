@@ -21,9 +21,25 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
+    <%- include('./components/head.ejs') %>
     <link rel="stylesheet" href="/css/add.css" />
     <title><%= title %></title>
   </head>
+  <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Điểm đặt quảng cáo được tạo thành công!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+  
+  <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Có lỗi xảy ra khi tạo điểm đặt quảng cáo!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+  
+  <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+
   <body>
     <%- include('./components/sidebar.ejs'); %>
     <div class="container">
@@ -125,13 +141,13 @@
                 <label for="locationtype">Loại vị trí</label>
                 <span id="reName">*</span>
               </div>
-              <input
-                type="text"
-                id="locationtype"
-                name="type"
-                placeholder="Loại vị trí của điểm đặt mới"
-                required
-              />
+              <input type="text" class="form-control" id="locationtype" list="spotTypeList" />
+                <input type="text" class="form-control" id="spotType" hidden />
+                <datalist id="spotTypeList" style="display: none;">
+                  <% other.spottypes.forEach((type)=> { %>
+                    <option value="<%= type.locationTypeName; %>"></option>
+                    <% }); %>
+                </datalist>
             </div>
   
             <div class="item-container">
@@ -139,27 +155,24 @@
                 <label for="adCategory">Hình thức quảng cáo</label>
                 <span id="reName">*</span>
               </div>
-              <input
-                type="text"
-                id="adCategory"
-                name="concept"
-                placeholder="Hình thức quảng cáo của điểm đặt"
-                required
-              />
+              <input type="text" class="form-control" id="adCategory" list="adsFormList" />
+                <input type="text" class="form-control" id="adsForm" hidden />
+                <datalist id="adsFormList" style="display: none;">
+                  <% other.adsforms.forEach((form)=> { %>
+                    <option value="<%= form.CategoriesName; %>"></option>
+                    <% }); %>
+                </datalist>
             </div>
   
             <div class="item-container">
               <div class="item-title">
-                <label for="qh-field">Thông tin quy hoạch</label>
+                <label for="planned">Thông tin quy hoạch</label>
               </div>
-              <input
-                type="text"
-                id="qh-field"
-                name="zoning"
-                placeholder="Thông tin quy hoạch của điểm đặt"
-                value="Chưa Quy Hoạch"
-                disabled
-              />
+              <input type="text" class="form-control" id="planned" value="Chưa quy hoạch" list="planList" />
+                <datalist id="planList" style="display: none;">
+                  <option value="Đã quy hoạch"></option>
+                  <option value="Chưa quy hoạch"></option>
+                </datalist>
             </div>
 
             <div class="button">
@@ -169,6 +182,46 @@
           </div>
       </form>
     </div>
-    <script src="/js/add.js"></script>
+    <script defer src="/js/add.js"></script>
+    <script defer>
+      const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+      const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+      const spottypeInput = document.getElementById('spotTypeName');
+      const adsformInput = document.getElementById('adsFormName');
+      const spottypeIdInput = document.getElementById('spotType');
+      const adsformIdInput = document.getElementById('adsForm');
+
+      const districtInput = document.getElementById('districtName');
+      const wardInput = document.getElementById('wardName');
+      const districtIdInput = document.getElementById('district');
+      const wardIdInput = document.getElementById('ward');
+
+      spottypeInput.addEventListener('change', (e) => {
+        const spottype = spottypes.find(type => type.typeName == spottypeInput.value);
+        spottypeIdInput.value = spottype.typeID;
+      });
+      adsformInput.addEventListener('change', (e) => {
+        const adsform = adsforms.find(form => form.formName == adsformInput.value);
+        adsformIdInput.value = adsform.formID;
+      });
+      
+
+      // trigger district + ward change event
+      document.addEventListener('DOMContentLoaded', (e) => {
+        districtInput.dispatchEvent(new Event('change'));
+        wardInput.dispatchEvent(new Event('change'));
+      });
+
+      // Hide alert on close
+      document.querySelectorAll('.btn-close').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.target.parentElement.hidden = true;
+          if (e.target.parentElement.id == 'alert-success') {
+            window.location.href = '/so';
+          }
+        });
+      });
+    </script>
   </body>
 </html>
