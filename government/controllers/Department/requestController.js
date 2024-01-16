@@ -1,11 +1,12 @@
-import * as IDGenerator from '../../services/IDGenerator.js';
 import * as boardService from '../../services/boardService.js';
-import { getBoardTypeByID } from '../../services/boardTypeService.js';
-import { getByID, updateByID } from '../../services/licensingRequestService.js';
-import { editRequestService, licensingRequestService } from '../../services/requestService.js';
-import * as spotService from '../../services/spotService.js';
+import { getSingleBoardType } from '../../services/boardTypeService.js';
+import * as IDCreate from '../../services/createIDService.js';
+import * as spotService from '../../services/locationService.js';
+import { RequestService } from '../../services/requestService.js';
 
 const controller = {};
+const instance2 = new RequestService('editRequest');
+const instance1 = new RequestService('licensingRequest');
 const convertDate = (date) => {
     const dateObject = new Date(date);
 
@@ -23,13 +24,14 @@ controller.show = async (req, res) => {
     let title = '';
     if (category === 'license') {
         tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Thời gian quảng cáo', 'Trạng thái'];
-        tableData = await licensingRequestService.getAll();
+        
+        tableData = await instance1.getAll();
         tableData = tableData.map(request => ({
             id: request.requestID,
-            point_id: request.spotID,
+            point_id: request.locationID,
             ward: request.wardName || 'N/A',
             district: request.districtName || 'N/A',
-            officer: request.officerUsername,
+            officer: request.officer,
             time: `${request.startDate.toLocaleDateString('vi-VN')} - ${request.endDate.toLocaleDateString('vi-VN')}`,
             status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
             actions: {
@@ -43,14 +45,14 @@ controller.show = async (req, res) => {
         title = 'Sở - Yêu cầu cấp phép';
     } else if (category === 'modify') {
         tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Tóm tắt chỉnh sửa', 'Trạng thái'];
-        tableData = await editRequestService.getAll();
+        tableData = await instance2.getAll();
         tableData = tableData.map(request => ({
             id: request.requestID,
             point_id: request.objectID,
             ward: request.wardName || 'N/A',
             district: request.districtName || 'N/A',
-            officer: request.officerUsername,
-            reason: request.reason,
+            officer: request.officer,
+            reason: request.editContent,
             status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
             actions: {
                 edit: false,
@@ -85,7 +87,7 @@ controller.show = async (req, res) => {
     });
 
     // console.log(statusCnt);
-    return res.render('./so/requests', { url: req.originalUrl, title, category, tableHeads, tableData, toolbars, statusCnt });
+    return res.render('./so/requests', { url: req.originalUrl, title, category, tableHeads, tableData, statusCnt });
 }
 
 controller.showDetail = async (req, res) => {
@@ -101,39 +103,38 @@ controller.showDetail = async (req, res) => {
     switch (category) {
         case 'license':
             // console.log('license');
-            data = await getByID(id);
-            let spotDetail = await spotService.getSpotByID(data.spotID);
-            const boardType = await getBoardTypeByID(data.boardType);
+            data = await instance1.getSingle(id);
+            let spotDetail = await spotService.getSingleLocation(data.locationID);
+            const boardType = await getSingleBoardType(data.boardType);
 
             // console.log(spotDetail);
             data = {
                 requestID: data.requestID,
-                spotID: data.spotID,
-                name: spotDetail.spotName,
+                spotID: data.locationID,
+                name: spotDetail.locationName,
                 address: `${spotDetail.address}, Phường ${spotDetail.wardName}, Quận ${spotDetail.districtName}`,
-                company: data.companyName,
-                phone: data.companyPhone,
-                email: data.companyEmail,
-                compAddr: data.companyAddress,
+                // company: data.companyName,
+                // phone: data.companyPhone,
+                // email: data.companyEmail,
+                // compAddr: data.companyAddress,
                 startTime: convertDate(data.startDate),
                 endTime: convertDate(data.endDate),
                 content: data.content,
-                boardTypeID: data.boardType,
-                boardType: boardType.typeName,
-                height: data.height,
-                width: data.width,
-                quantity: data.quantity,
-                state: data.status,
-                imgUrls: data.adsImages,
-                officerUsername: data.officerUsername,
+                // boardTypeID: data.boardType,
+                // boardType: boardType.typeName,
+                // height: data.height,
+                // width: data.width,
+                // quantity: data.quantity,
+                // state: data.status,
+                // imgUrls: data.adsImages,
+                officerUsername: data.officer,
                 ward: spotDetail.wardName,
                 district: spotDetail.districtName,
-                extendForBoard: data.extendForBoard,
             }
-            return res.render('./so/license-request-detail', { title, toolbars, ...data });
+            return res.render('./so/license-request-detail', { title, ...data });
         case 'modify':
             console.log('modify');
-            data = await editRequestService.getByID(id);
+            data = await instance2.getSingle(id);
             const type = data.objectID.startsWith('DD') ? 'spot' : 'board';
             if (data.requestTime !== undefined) {
                 data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
@@ -146,14 +147,14 @@ controller.requestProcessing = async (req, res) => {
     try {
         const { requestID, status } = req.body;
         console.log(requestID, status);
-        let { message } = await editRequestService.updateStatus(requestID, status);
+        let { message } = await instance2.updateById(requestID, status);
         console.log(`Message: ${message}`);
 
         if (status === 1) {
-            const { objectID, newInfo } = await editRequestService.getByID(requestID);
+            const { objectID, newInfo } = await instance2.getSingle(requestID);
             if (objectID.startsWith('DD')) {
                 const { spotID, address, latitude, longitude, wardID, districtID, spotType, adsForm, planned, spotName, spotImage } = newInfo;
-                await spotService.updateSpotByID(spotID, {
+                await spotService.updateLocation(spotID, {
                     address,
                     latitude,
                     longitude,
@@ -166,15 +167,15 @@ controller.requestProcessing = async (req, res) => {
                     spotImage
                 })
             } else {
-                const { boardID, boardType, spotID, height, width, quantity, image, licensingID } = newInfo;
-                await boardService.updateBoardByID(boardID, {
+                const { boardID, boardType, spotID, height, width, quantity, image, licensingNumber } = newInfo;
+                await boardService.updateBoard(boardID, {
                     boardType,
                     spotID,
                     height,
                     width,
                     quantity,
                     image,
-                    licensingID
+                    licensingNumber
                 });
             }
         }
@@ -192,9 +193,9 @@ controller.acceptLicense = async (req, res) => {
     const data = req.body;
     if (data.boardID != null) {
         try {
-            const response = await boardService.updateBoardByID(data.boardID, { licensingID: data.licensingID });
+            const response = await boardService.updateBoard(data.boardID, { licensingNumber: data.licensingNumber });
             if (response.message.trim() == 'Board updated successfully') {
-                const response1 = await updateByID(data.licensingID, { status: 1 });
+                const response1 = await instance1.updateById(data.licensingNumber, { status: 1 });
                 // console.log(response1);
             }
             res.redirect('/so/requests?category=license');
@@ -204,13 +205,12 @@ controller.acceptLicense = async (req, res) => {
             res.redirect('/so/requests?category=license');
         }
     } else {
-        data.boardID = await IDGenerator.getNewID('Board');
         // console.log(data);
-
+        data.boardID = await IDCreate.getNewID('Board');
         try {
-            const response = await boardService.createBoard(data);
+            const response = await boardService.createNewBoard(data);
             if (response.message.trim() == 'Board created successfully') {
-                const response1 = await updateByID(data.licensingID, { status: 1 });
+                const response1 = await instance1.updateById(data.licensingNumber, { status: 1 });
                 // console.log(response1);
             }
             res.redirect('/so/requests?category=license');
@@ -226,7 +226,7 @@ controller.acceptLicense = async (req, res) => {
 controller.rejectLicense = async (req, res) => {
     const requestID = req.params.id;
     try {
-        const response = await updateByID(requestID, { status: -1 });
+        const response = await instance1.updateById(requestID, { status: -1 });
         res.redirect('/so/requests?category=license');
     } catch (error) {
         console.log(`Error sending edit request: ${error.message}`);
