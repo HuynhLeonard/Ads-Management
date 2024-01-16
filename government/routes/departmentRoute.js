@@ -1,5 +1,4 @@
 import express from "express";
-import controller from "../controllers/WardDistrict/main.js";
 import controllerAPI from "../controllers/Department/main.js";
 
 const router = express.Router();
@@ -108,7 +107,7 @@ router.get('/requests/:id', (req, res) => {
   controllerAPI.requestController.showDetail(req, res);
 });
 
-router.post('/requests/:id', (req, res) => {
+router.post('/requestsProcessing', (req, res) => {
   controllerAPI.requestController.requestProcessing(req, res);
 })
 
