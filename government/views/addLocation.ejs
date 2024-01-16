@@ -228,35 +228,21 @@
     </script>
     <!-- upload picture -->
     <script defer>
-      let accessToken = null;
-
-      const getAccessToken = async () => {
-        const response = await fetch('/imgur');
-        const data = await response.json();
-        return data.accessToken;
-      }
-
       const upload2Imgur = async (files) => {
         const links = []
-        if (!accessToken) {
-          accessToken = await getAccessToken();
-        }
         console.log(files);
         for (let i = 0; i < files.length; i++) {
-          const formData = new FormData()
+          let formData = new FormData()
           formData.append('image', files[i])
-          const headers = new Headers()
-          headers.append('Authorization', 'Bearer ' + accessToken)
-          const response = await fetch('https://api.imgur.com/3/image', {
-            headers: headers,
+          const response = await fetch('/pic/posts', {
             method: 'POST',
             body: formData,
             redirect: 'follow'
           });
           const data = await response.json()
-          links.push(data.data.link);
+          links.push(data.message);
         }
-        return links;
+        return links
       }
 
       const submitHandler = async (e) => {
@@ -349,6 +335,7 @@
           locationType: spotType,
           adsForm: adsForm,
           planned: (planned == 'Đã quy hoạch') ? 1 : 0,
+          images: imgUrls
         };
 
         const url = '<% url %>'
