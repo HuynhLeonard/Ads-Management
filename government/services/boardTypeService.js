@@ -6,49 +6,51 @@ export const createBoardType = async (boardTypeData) => {
         const newData = new BoardType(boardTypeData);
 
         await newData.save();
-        return { message: 'Board type created successfully' };
+        return { message: "Board type created successfully" };
     } catch (error) {
-        throw new Error('Error')
+        throw new Error("Error");
     }
 };
 
 // Done
 export const getSingleBoardType = async (boardTypeID) => {
     try {
-        const boardType = await BoardType.find({boardTypeID: boardTypeID});
+        const boardType = await BoardType.findOne({ boardTypeID: boardTypeID });
 
-        if(!boardType) {
-            return {message: 'Invalid ID'};
+        if (!boardType) {
+            return { message: "Invalid ID" };
         } else {
             return boardType;
         }
-
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };
 
 // Done
 export const getAllBoardType = async () => {
     try {
-        const boardTypes = await BoardType.find().sort({boardTypeID: 1});
+        const boardTypes = await BoardType.find().sort({ boardTypeID: 1 });
 
         return boardTypes;
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };
 
 // Done
 export const updateBoardType = async (boardTypeID, updateData) => {
     try {
-        const updatedBoardType = await BoardType.findOneAndUpdate({boardTypeID: boardTypeID}, {
-            $set: updateData
-        });
+        const updatedBoardType = await BoardType.findOneAndUpdate(
+            { boardTypeID: boardTypeID },
+            {
+                $set: updateData,
+            }
+        );
 
-        return {message: 'Board type update successfully'};
+        return { message: "Board type update successfully" };
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };
 
@@ -56,11 +58,11 @@ export const updateBoardType = async (boardTypeID, updateData) => {
 export const deleteBoardType = async (boardTypeID) => {
     try {
         await BoardType.findOneAndDelete({
-            boardTypeID: boardTypeID
+            boardTypeID: boardTypeID,
         });
 
-        return {message: 'Board type delete successfully'};
+        return { message: "Board type delete successfully" };
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };

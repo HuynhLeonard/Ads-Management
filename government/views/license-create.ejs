@@ -65,6 +65,23 @@
     </style>
     <title>License</title>
   </head>
+  <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert"
+    style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert"
+      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
+      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+      <button type="button" class="btn-close"></button>
+  </div>
   <body>
     <aside><%- include('./components/sidebar.ejs') %></aside>
     <div class="container">
@@ -173,7 +190,7 @@
           />
         </div>
 
-        <div class="item-container col-md-4">
+        <div class="item-container">
           <div class="item-title">
             <label for="dccty" class="form-label">Địa chỉ điểm đặt</label>
             <span id="Dccty">*</span>
@@ -335,9 +352,11 @@
                   <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/super-build/translations/es.js"></script>
               -->
           <script>
+            var myEditor;
             // This sample still does not showcase all CKEditor&nbsp;5 features (!)
             // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-            CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
+            CKEDITOR.ClassicEditor
+              .create(document.getElementById("editor"), {
               // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
               toolbar: {
                 items: [
@@ -584,6 +603,13 @@
                 "TableOfContents",
                 "PasteFromOfficeEnhanced",
               ],
+            })
+            .then(editor => {
+              console.log('Editor is created');
+              myEditor = editor
+            })
+            .catch((err) => {
+              console.log(err.stack);
             });
           </script>
         </div>
@@ -595,9 +621,26 @@
     </div>
   </body>
   <script defer>
+    const upload2Imgur = async (files) => {
+      const links = []
+      console.log(files);
+      for (let i = 0; i < files.length; i++) {
+        let formData = new FormData()
+        formData.append('image', files[i])
+        const response = await fetch('/pic/posts', {
+          method: 'POST',
+          body: formData,
+          redirect: 'follow'
+        });
+        const data = await response.json()
+        links.push(data.message);
+      }
+      return links
+    }
+    
     const submitHandler = async (e) => {
       e.preventDefault();
-
+      console.log(myEditor.getData());
       // Check spot name.
       const spotNameInput = document.getElementById('diemqc').value.trim();
       const spotList = JSON.parse('<%- JSON.stringify(locations); %>');
@@ -608,7 +651,7 @@
       }
   
       // Check company name
-      const companyName = document.getElementById('tenty').value.trim();
+      const companyName = document.getElementById('tencty').value.trim();
       if(companyName == ''){
           document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN CÔNG TY";
           document.getElementById('alert-warning').hidden = false;
@@ -632,7 +675,7 @@
       }
   
       // Check company address
-      const companyAddress = document.getElementById('dccty').value.trim();
+      const companyAddress = document.getElementById('dcct').value.trim();
       if(companyAddress == ''){
           document.getElementById('warning-text').textContent = "Vui lòng nhập ĐỊA CHỈ công ty";
           document.getElementById('alert-warning').hidden = false;
@@ -642,6 +685,8 @@
       // Check startDate & EndDate
       const startDate = document.getElementById('startdate').value;
       const endDate = document.getElementById('enddate').value;
+      console.log(startDate);
+      console.log(endDate);
       const curDate = new Date();
       const sDate = new Date(startDate);
       if(startDate == '' || endDate == '' || startDate >= endDate || sDate <= curDate){
@@ -684,8 +729,8 @@
       }
   
       // Check content
-      const check = document.getElementById('editor');
-      const content = check.getData();
+      
+      const content = myEditor.getData();
       if(content == ''){
           document.getElementById('warning-text').textContent = "Vui lòng nhập NỘI DUNG QUẢNG CÁO.";
           document.getElementById('alert-warning').hidden = false;
@@ -699,10 +744,8 @@
       files.push(inputImage1.files);
       files.push(inputImage2.files);
   
-      loader.style.display = 'block'; // show loader
-  
-      const imgUrls = await upload2Imgur(files);
-      // console.log(imgUrls);
+      const imgUrls = await upload2Imgur(inputImage1.files);
+      console.log(imgUrls);
   
       // Check image
       if(imgUrls.length == 0){
@@ -714,26 +757,26 @@
       // ................................................
   
       const data = {
-        spotID: document.getElementById('spotID').value,
+        locationID: document.getElementById('bienqc').value,
         boardType: document.getElementById('boardType').value,
-        quantity: quantity,
-        height: height,
-        width: width,
-        adsImages: imgUrls,
+        quantity: Number.parseFloat(quantity),
+        height: Number.parseFloat(height),
+        width: Number.parseFloat(width),
+        images: imgUrls,
         content: content,
         companyName: companyName,
-        companyPhone: companyPhone,
+        phoneNumber: companyPhone,
         companyEmail: companyEmail,
         companyAddress: companyAddress,
         startDate: startDate,
         endDate: endDate,
-        officerUsername: '<%= user.username %>',
+        officer: '<%= user.username %>',
         extendForBoard: '',
       }
       const url = '<%= url %>';
       const requestUrl = url.replace('/create', '');
   
-      // console.log(data);
+      console.log(data);
       // console.log(requestUrl);
       const result = await fetch(requestUrl, {
         method: 'POST',
@@ -766,7 +809,7 @@
   
     boardTypeInput.addEventListener('change', (e) => {
       const boardType = boardTypes.find(type => type.typeName === boardTypeInput.value);
-      boardTypeID.value = boardType.typeID;
+      boardTypeID.value = boardType.boardTypeID;
     })
   
     document.getElementById('submitBtn').addEventListener('click', submitHandler);
