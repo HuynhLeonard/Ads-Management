@@ -1,5 +1,6 @@
 import editRequest from "../models/editRequestSchema.js";
 import licensingRequest from "../models/licensingSchema.js";
+import {request} from 'http'
 
 class RequestService {
     constructor(model) {
@@ -144,7 +145,6 @@ class RequestService {
         }
     }
 
-
     buildResult() {
         const commonProject = {
             _id: 0,
@@ -251,4 +251,7 @@ class RequestService {
     }
 }
 
-export default new RequestService();
+const licensingRequestService = new RequestService(licensingRequest);
+const editRequestService = new RequestService(editRequest);
+
+export {licensingRequestService, editRequestService};

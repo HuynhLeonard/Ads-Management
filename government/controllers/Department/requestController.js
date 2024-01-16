@@ -2,7 +2,7 @@ import * as boardService from '../../services/boardService.js';
 import { getSingleBoardType } from '../../services/boardTypeService.js';
 import * as IDCreate from '../../services/createIDService.js';
 import * as spotService from '../../services/locationService.js';
-import { RequestService } from '../../services/requestService.js';
+import {licensingRequestService, editRequestService} from '../../services/requestService.js';
 
 const controller = {};
 // const instance2 = new RequestService('editRequest');
@@ -25,7 +25,7 @@ controller.show = async (req, res) => {
     if (category === 'license') {
         tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Thời gian quảng cáo', 'Trạng thái'];
         
-        tableData = await RequestService.getAll();
+        tableData = await licensingRequestService.getAll();
         tableData = tableData.map(request => ({
             id: request.requestID,
             point_id: request.locationID,
@@ -45,7 +45,7 @@ controller.show = async (req, res) => {
         title = 'Sở - Yêu cầu cấp phép';
     } else if (category === 'modify') {
         tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Tóm tắt chỉnh sửa', 'Trạng thái'];
-        tableData = await instance2.getAll();
+        tableData = await editRequestService.getAll();
         tableData = tableData.map(request => ({
             id: request.requestID,
             point_id: request.objectID,
@@ -87,7 +87,7 @@ controller.show = async (req, res) => {
     });
 
     // console.log(statusCnt);
-    return res.render('./so/requests', { url: req.originalUrl, title, category, tableHeads, tableData, statusCnt });
+    return res.render('Department/requests', { url: req.originalUrl, title, category, tableHeads, tableData, statusCnt });
 }
 
 controller.showDetail = async (req, res) => {
@@ -103,10 +103,10 @@ controller.showDetail = async (req, res) => {
     switch (category) {
         case 'license':
             // console.log('license');
-            data = await instance1.getSingle(id);
+            data = await licensingRequestService.getSingle(id);
             let spotDetail = await spotService.getSingleLocation(data.locationID);
             const boardType = await getSingleBoardType(data.boardType);
-
+            console.log(data);
             // console.log(spotDetail);
             data = {
                 requestID: data.requestID,
@@ -121,7 +121,7 @@ controller.showDetail = async (req, res) => {
                 endTime: convertDate(data.endDate),
                 content: data.content,
                 // boardTypeID: data.boardType,
-                // boardType: boardType.typeName,
+                boardType: boardType.typeName,
                 // height: data.height,
                 // width: data.width,
                 // quantity: data.quantity,
@@ -131,15 +131,15 @@ controller.showDetail = async (req, res) => {
                 ward: spotDetail.wardName,
                 district: spotDetail.districtName,
             }
-            return res.render('./so/license-request-detail', { title, ...data });
+            return res.render('Department/license-request-detail', { title, data:data });
         case 'modify':
             console.log('modify');
             data = await instance2.getSingle(id);
-            const type = data.objectID.startsWith('DD') ? 'spot' : 'board';
+            const type = data.objectID.startsWith('LC') ? 'location' : 'board';
             if (data.requestTime !== undefined) {
                 data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
             }
-            return res.render('./so/edit-request-detail', { title, toolbars, id: req.params.id, type, ...data });
+            return res.render('Department/edit-request-detail', { title, toolbars, id: req.params.id, type, ...data });
     }
 }
 

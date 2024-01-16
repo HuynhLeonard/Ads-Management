@@ -11,11 +11,12 @@ import * as wardService from "../../services/wardService.js";
 // show all district in table and choose
 // category = Location || Board
 export const show = async (req, res) => {
-    const category = req.query.category || "";
-    // add table
-    let checkboxData = await districtService.getAllDistricts();
-    checkboxData = checkboxData.map((district) => `Quận ${district.districtName}`);
-    let current = 0;
+    const category = req.query.category || ''
+    let tableHeads = []
+    let tableData = []
+    let title = 'Sở - '
+
+    let current = 0
     try {
         switch (category) {
             // them diem dat
@@ -62,13 +63,14 @@ export const show = async (req, res) => {
                 current = 1;
                 break;
             default:
-                res.status(404).render();
+                res.status(404)
+                return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } })
         }
 
         let checkboxData = await districtService.getAllDistricts()
         checkboxData = checkboxData.map((district) => {
             return {
-                name: `Quận ${district.districtName}`,
+                name: `${district.districtName}`,
                 status: tableData.some(item => item.district === district.districtName)
             }
         });
@@ -84,7 +86,8 @@ export const show = async (req, res) => {
             current
         });
     } catch (error) {
-        res.status(500).render('error', { error: { status: 500, message: 'Lỗi server' } });
+        console.error(error)
+        return res.render('error', { error: 'Lỗi Server', title: 505 } )
     }
 };
 
@@ -321,5 +324,8 @@ export default {
     showAddForm,
     addNewBoard,
     addNewSpot,
-    addNew
+    addNew,
+    show,
+    showModifyForm,
+    performAdd
 }

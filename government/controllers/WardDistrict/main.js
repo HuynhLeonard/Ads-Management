@@ -1,5 +1,5 @@
 import adsController from './advertisementController.js';
-import infoController from './infoController.js';
+import infoController from '../Department/infoController.js';
 import licenseController from './licenseController.js';
 import reportController from './reportController.js';
 const indexController = {

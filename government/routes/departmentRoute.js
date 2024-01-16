@@ -98,4 +98,20 @@ router.post('/types/:id', async (req, res) => {
 router.delete('/types/:id', async (req, res) => {
   await controllerAPI.typesController.remove(req, res);
 });
+
+// nhom request
+router.get('/requests', (req, res) => {
+  controllerAPI.requestController.show(req, res);
+});
+
+router.get('/requests/:id', (req, res) => {
+  controllerAPI.requestController.showDetail(req, res);
+});
+
+router.post('/requests/:id', (req, res) => {
+  controllerAPI.requestController.requestProcessing(req, res);
+})
+
+router.post('/acceptlicense', (req, res) => controllerAPI.requestController.acceptLicense(req, res));
+router.post('/rejectlicense/:id', (req, res) => controllerAPI.requestController.rejectLicense(req, res));
 export default router;
