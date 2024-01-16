@@ -101,7 +101,7 @@ export const showDetail = async (req, res, isEdit) => {
 
     const getDataObject = category === 'Location' ? locationService.getSingleLocation : boardService.getSingleBoard
     const object = await getDataObject(ID)
-
+    console.log(object);
     const commonData = {
         url: req.originalUrl,
         title,
@@ -109,17 +109,17 @@ export const showDetail = async (req, res, isEdit) => {
     }
 
     if (isSpotCategory) {
-        const { spotName, address, wardName, districtName, locationTypeName, adsFormName, planned, spotImage } = object
+        const { locationName, address, wardName, districtName, locationtypeName, adsFormName, planned, images } = object
         const data = {
-            spotTitle: spotName,
+            spotTitle: locationName,
             spotId: ID,
             spotAddress: address,
             wardName,
             districtName,
-            locationTypeName,
+            locationtypeName,
             adsFormName,
             planned: planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
-            imgUrls: spotImage
+            imgUrls: images
         }
 
         var boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
@@ -136,9 +136,9 @@ export const showDetail = async (req, res, isEdit) => {
             let other = {}
             other.spottypes = (await locationTypeService.getAllLocationType()) || []
             other.adsforms = (await adsCategoryService.getAllCategories()) || []
-            res.render('spot-modify', { ...commonData, ...data, other })
+            res.render('modifyLocation', { ...commonData, ...data, other })
         } else {
-            res.render('spot-detail', {
+            res.render('detailLocation', {
                 ...commonData,
                 ...data,
                 boardsTableHeads,
@@ -174,9 +174,9 @@ export const showDetail = async (req, res, isEdit) => {
             let other = {};
             other.spots = (await locationService.getAllLocation()) || [];
             other.boardtypes = (await boardTypeService.getAllBoardType()) || [];
-            res.render('board-modify', { ...commonData, ...data, other })
+            res.render('modifyBoard', { ...commonData, ...data, other })
         } else {
-            res.render('board-detail', { ...commonData, ...data })
+            res.render('detailBoard', { ...commonData, ...data })
         }
     }
 };
@@ -327,5 +327,6 @@ export default {
     addNew,
     show,
     showModifyForm,
-    performAdd
+    performAdd,
+    showDetail
 }
