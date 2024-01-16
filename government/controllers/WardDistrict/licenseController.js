@@ -144,10 +144,10 @@ const showDetail = async (req, res) => {
     // console.log(data);
     let spotDetail = await getSingleLocation(data.locationID);
     const boardType = await getSingleBoardType(data.boardType);
-    // console.log(spotDetail);
+    console.log(boardType);
     data = {
         requestID: data.requestID,
-        loactionID: data.locationID,
+        locationID: data.locationID,
         name: spotDetail.locationName,
         address: `${spotDetail.address}, Phường ${spotDetail.wardName}, Quận ${spotDetail.districtName}`,
         company: data.companyName,
@@ -164,7 +164,7 @@ const showDetail = async (req, res) => {
         state: isOutDated(data.endDate) ? -2 : data.status,
         imgUrls: data.images,
     };
-    // console.log(data);
+    console.log(data);
 
     res.render("license-detail", {
         title,
