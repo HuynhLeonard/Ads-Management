@@ -20,6 +20,7 @@
     height: 100%;
     background: #048480;
     transition: width 0.4s;
+    z-index:10;
   }
 
   body.open .sidebar {
@@ -50,12 +51,12 @@
     height: 100px;
     display: grid;
     place-items: center;
-    background: url(./assets/icon-burger.svg) no-repeat center center;
+    background: url(/assets/icon-burger.svg) no-repeat center center;
     transition: 0.3s;
   }
 
   body.open .sidebar-burger {
-    background: url(./assets/icon-close.svg) no-repeat center center;
+    background: url(/assets/icon-close.svg) no-repeat center center;
   }
 
   .sidebar-logo {
