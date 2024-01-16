@@ -63,7 +63,9 @@ router.get('/assign', (req, res) => {
   })
 
 // nhom quang cao (diem dat)
-router.get("/advertisements");
+router.get("/advertisements", (req,res) => {
+  controllerAPI.adsController.show(req,res);
+});
 router.get("/advertisements/new", (req, res) => {
     controllerAPI.adsController.showAddForm(req,res);
 });
