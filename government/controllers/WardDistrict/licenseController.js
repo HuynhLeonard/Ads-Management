@@ -210,11 +210,13 @@ const showExtend = async (req, res) => {
 const add = async (req, res) => {
     try {
         const license = req.body;
+		console.log(license);
+		const role = String(req.originalUrl.split("/")[1]);
         license.status = 0;
+		license.requestID="LS002"
+		console.log(license);
         await createLicense(license);
-        res.status(200).json({
-            license,
-        });
+        res.redirect(`/${role}`);
     } catch (error) {
         res.status(500).json("Getting error when add new license request");
     }
