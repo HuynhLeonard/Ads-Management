@@ -1,6 +1,6 @@
 import adsController from './advertisementController.js';
 import infoController from './infoController.js';
-// import licenseController from './licenseController.js';
+import licenseController from './licenseController.js';
 import reportController from './reportController.js';
 const indexController = {
 	show: (req, res) => {
@@ -13,6 +13,7 @@ export default {
     adsController,
     infoController,
     indexController,
-	reportController
+	reportController,
+	licenseController
 }
 

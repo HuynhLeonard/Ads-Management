@@ -160,7 +160,7 @@ const showCreate = async (req, res) => {
 		}
 	});
 
-	let curLocation = {};
+	let curSpot = {};
 	if(req.query.locationID != null){
 		curSpot = await getSingleLocation(req.query.locationID);
 	}
@@ -169,7 +169,7 @@ const showCreate = async (req, res) => {
 
 	let boardtypes = await getAllBoardType();
 
-	res.render('license-create', {url: req.originalUrl, role, title, boardtypes, locations, curLocation});
+	res.render('license-create', {url: req.originalUrl, role, title, boardtypes, locations, curSpot});
 }
 
 const showExtend = async (req, res) => {

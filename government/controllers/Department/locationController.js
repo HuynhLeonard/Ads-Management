@@ -150,7 +150,7 @@ controller.updateWard = async (req, res) => {
     // console.log(data);
 
     try {
-        const message = await wardService.updateWardByID(wardID, data);
+        const message = await wardService.updateWard(wardID, data);
         console.log(message);
         res.redirect(`/so/locations-detail?quan=${curDistrict}`);
     } catch (error) {
