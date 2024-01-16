@@ -132,8 +132,8 @@ governmentApp.post('/test', userController.createUser);
 
 // ==============================================================================
 // test area
-import infoController from './government/controllers/WardDistrict/infoController.js';
-// governmentApp.get('/district/officer/:username', infoController.getInfo);
+import uploadingRoute from './government/routes/uploading.js';
+governmentApp.use('/pic', uploadingRoute);
 
 governmentApp.use(morgan('dev'))
 mongoose.connect('mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment?retryWrites=true&w=majority')

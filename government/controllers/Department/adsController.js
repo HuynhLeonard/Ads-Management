@@ -93,9 +93,9 @@ export const showAddForm = async (req, res) => {
 export const showModifyForm = (req, res) => {};
 
 export const addNewSpot = async (req, res) => {
-    const { locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned} = req.body;
-    const locationID = 'LC102'
-    const data = {locationID,locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned}
+    const { locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned, images} = req.body;
+    const locationID = 'LC103'
+    const data = {locationID,locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm,planned,images }
     try {
         await locationService.createNewLocation(data);
         res.status(200).json({ message: 'Điểm đặt mới đã được thêm thành công' })
