@@ -1,11 +1,12 @@
 import * as boardService from '../../services/boardService.js';
 import { getSingleBoardType } from '../../services/boardTypeService.js';
+import * as IDCreate from '../../services/createIDService.js';
 import * as spotService from '../../services/locationService.js';
 import { RequestService } from '../../services/requestService.js';
 
 const controller = {};
-const instance1 = new RequestService('editRequest');
-const instance2 = new RequestService('licensingRequest');
+const instance2 = new RequestService('editRequest');
+const instance1 = new RequestService('licensingRequest');
 const convertDate = (date) => {
     const dateObject = new Date(date);
 
@@ -27,7 +28,7 @@ controller.show = async (req, res) => {
         tableData = await instance1.getAll();
         tableData = tableData.map(request => ({
             id: request.requestID,
-            point_id: request.spotID,
+            point_id: request.locationID,
             ward: request.wardName || 'N/A',
             district: request.districtName || 'N/A',
             officer: request.officer,
@@ -166,7 +167,7 @@ controller.requestProcessing = async (req, res) => {
                     spotImage
                 })
             } else {
-                const { boardID, boardType, spotID, height, width, quantity, image, licensingID } = newInfo;
+                const { boardID, boardType, spotID, height, width, quantity, image, licensingNumber } = newInfo;
                 await boardService.updateBoard(boardID, {
                     boardType,
                     spotID,
@@ -174,7 +175,7 @@ controller.requestProcessing = async (req, res) => {
                     width,
                     quantity,
                     image,
-                    licensingID
+                    licensingNumber
                 });
             }
         }
@@ -194,7 +195,7 @@ controller.acceptLicense = async (req, res) => {
         try {
             const response = await boardService.updateBoard(data.boardID, { licensingNumber: data.licensingNumber });
             if (response.message.trim() == 'Board updated successfully') {
-                const response1 = await instance1.updateById(data.licensingID, { status: 1 });
+                const response1 = await instance1.updateById(data.licensingNumber, { status: 1 });
                 // console.log(response1);
             }
             res.redirect('/so/requests?category=license');
@@ -205,11 +206,11 @@ controller.acceptLicense = async (req, res) => {
         }
     } else {
         // console.log(data);
-
+        data.boardID = await IDCreate.getNewID('Board');
         try {
             const response = await boardService.createNewBoard(data);
             if (response.message.trim() == 'Board created successfully') {
-                const response1 = await updateByID(data.licensingID, { status: 1 });
+                const response1 = await instance1.updateById(data.licensingNumber, { status: 1 });
                 // console.log(response1);
             }
             res.redirect('/so/requests?category=license');
@@ -225,7 +226,7 @@ controller.acceptLicense = async (req, res) => {
 controller.rejectLicense = async (req, res) => {
     const requestID = req.params.id;
     try {
-        const response = await updateByID(requestID, { status: -1 });
+        const response = await instance1.updateById(requestID, { status: -1 });
         res.redirect('/so/requests?category=license');
     } catch (error) {
         console.log(`Error sending edit request: ${error.message}`);
