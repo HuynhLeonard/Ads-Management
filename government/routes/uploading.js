@@ -13,7 +13,7 @@ router.post('/posts', upload.single('image'), async (req, res) => {
     const file = req.file
     const imageName = generateFileName()
     console.log(file);
-    const urlLink = 'https://ads-hstl-demo.s3.ap-southeast-2.amazonaws.com/' + imageName;
+    const urlLink = 'https://htlhcmus.s3.ap-southeast-2.amazonaws.com/' + imageName;
     console.log(imageName);
     const fileBuffer = await sharp(file.buffer)
         .resize({ height: 1920, width: 1080, fit: "contain" })
