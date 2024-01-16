@@ -1,0 +1,90 @@
+<div class="container-fluid px-0">
+    <!--Main image-->
+    <div class="row position-relative">
+		<img id="mainImg" src="<%= imgUrls.length > 0 ? imgUrls[0] : '/images/placeholder.jpg' %>" class="img-fluid" alt="Current image" style="min-height: 28rem; object-fit: cover;">
+
+        <!--Thumbnails button-->
+        <div class="col-12 position-absolute my-auto d-flex justify-content-between h-100">
+            <button type="button" class="btn border-0" onclick="moveSlides('left')">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button type="button" class="btn border-0" onclick="moveSlides('right')">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+    </div>
+    <!--Thumbnails-->
+    <!--Show 3 thumbnails each time-->
+	<div id="sub-images">
+		<% if (imgUrls.length == 0) { %>
+			<% for (let i = 0; i < 1; i++) { %>
+				<div class="row thumbnails-item d-none mt-2">
+					<% for (let j = i; j < i + 3; j++) { %>
+						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
+							<img src="/images/placeholder.jpg" class="img-fluid" alt="Thumbnail <%= j %>" style="object-fit: cover; height: 10rem; width: 100%">
+						</div>
+					<% } %>
+				</div>
+			<% } %>
+		<% } else { %>
+		<% for (let i = 0; i < imgUrls.length; i++) { %>
+			<div class="row thumbnails-item d-none mt-2">
+				<% for (let j = i; j < i + 3; j++) { %>
+					<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
+						<img src="<%= imgUrls[j % imgUrls.length] %>" class="img-fluid" alt="Thumbnail <%= j %>" style="object-fit: cover; height: 10rem; width: 100%">
+					</div>
+				<% } %>
+			</div>
+		<% } } %>
+	</div>
+</div>
+
+<script>
+	const firstThreeThumbnails = document.querySelectorAll('.thumbnails-item')[0];
+	firstThreeThumbnails.classList.remove('d-none');
+
+	// active first img
+	document.querySelector('.thumbnails-item:not(.d-none)')
+			.children[0].children[0].classList.add('border', 'border-primary');
+
+	const changeMainImg = (img) => {
+		document.getElementById('mainImg').src = img.src;
+		// 	add border to img
+		document.querySelectorAll('img.border').forEach(img => {
+			img.classList.remove('border', 'border-primary');
+		});
+		img.classList.add('border', 'border-primary');
+	}
+
+	const moveSlides = (direction) => {
+		const thumbnails = document.querySelectorAll('.thumbnails-item');
+		const currentThumbnails = document.querySelector('.thumbnails-item:not(.d-none)');
+		const currentIndex = Array.from(thumbnails).indexOf(currentThumbnails);
+
+		// remove the border of current img
+		const currentImg = currentThumbnails.querySelector('img.border');
+		if (currentImg) {
+            currentImg.classList.remove('border', 'border-primary');
+        }
+
+		let newIndex = 0;
+		if (direction === 'left') {
+			newIndex = Math.max(currentIndex - 1, 0) % thumbnails.length;
+
+		} else {
+			newIndex = (currentIndex + 1) % thumbnails.length;
+		}
+		currentThumbnails.classList.add('d-none');
+		thumbnails[newIndex].classList.remove('d-none');
+
+		// change img to center
+		if (newIndex !== currentIndex) {
+			const centerImg = thumbnails[newIndex].children[1].children[0];
+			document.getElementById('mainImg').src = centerImg.src;
+			centerImg.classList.add('border', 'border-primary');
+		}
+	}
+
+	moveSlides('right');
+</script>

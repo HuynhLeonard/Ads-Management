@@ -73,7 +73,9 @@ router.get("/advertisements/new", (req, res) => {
 router.post("/advertisements/new", (req,res) => {
     controllerAPI.adsController.addNewSpot(req,res);
 });
-router.get("/advertisements/:id");
+router.get("/advertisements/:id", (req,res) => {
+  controllerAPI.adsController.showDetail(req,res);
+});
 router.get("/advertisements/edit/:id");
 router.post("/advertisements");
 
