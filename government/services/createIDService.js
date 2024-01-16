@@ -1,25 +1,25 @@
-import AdsForm from '../models/adsFormModel.js';
-import Board from '../models/boardModel.js';
-import BoardType from '../models/boardTypeModel.js';
-import EditRequest from '../models/editRequestModel.js';
-import LicensingRequest from '../models/licensingRequestModel.js';
-import Report from '../models/reportModel.js';
-import ReportType from '../models/reportTypeModel.js';
-import Spot from '../models/spotModel.js';
-import SpotType from '../models/spotTypeModel.js';
+import AdsForm from '../models/AdsCategoriesSchema.js';
+import Board from '../models/boardSchema.js';
+import BoardType from '../models/boardTypeSchema.js';
+import EditRequest from '../models/editRequestSchema.js';
+import LicensingRequest from '../models/licensingSchema.js';
+import Spot from '../models/locationSchema.js';
+import SpotType from '../models/locationTypeSchema.js';
+import Report from '../models/reportAdsSchema.js';
+import ReportType from '../models/reportTypeSchema.js';
 
 const id = {
     licensingRequests: 'requestID',
-    adsforms: 'formID',
+    adsforms: 'CategoriesID',
     boards: 'boardID',
-    spots: 'spotID',
+    spots: 'locationID',
     districts: 'districtID',
     wards: 'wardID',
     reports: 'reportID',
-    boardTypes: 'typeID',
+    boardTypes: 'boardTypeID',
     editRequests: 'requestID',
-    reportTypes: 'typeID',
-    spotTypes: 'typeID'
+    reportTypes: 'reportTypeID',
+    spotTypes: 'locationTypeID'
 };
 
 

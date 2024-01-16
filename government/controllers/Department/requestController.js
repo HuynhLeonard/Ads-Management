@@ -5,8 +5,8 @@ import * as spotService from '../../services/locationService.js';
 import { RequestService } from '../../services/requestService.js';
 
 const controller = {};
-const instance2 = new RequestService('editRequest');
-const instance1 = new RequestService('licensingRequest');
+// const instance2 = new RequestService('editRequest');
+// const instance1 = new RequestService('licensingRequest');
 const convertDate = (date) => {
     const dateObject = new Date(date);
 
@@ -25,7 +25,7 @@ controller.show = async (req, res) => {
     if (category === 'license') {
         tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Thời gian quảng cáo', 'Trạng thái'];
         
-        tableData = await instance1.getAll();
+        tableData = await RequestService.getAll();
         tableData = tableData.map(request => ({
             id: request.requestID,
             point_id: request.locationID,
