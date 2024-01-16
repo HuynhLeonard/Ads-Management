@@ -1,4 +1,3 @@
-import boardSchema from '../models/boardSchema.js';
 import Board from '../models/boardSchema.js';
 
 // check loi vi tri diem dat
@@ -18,107 +17,137 @@ export const getSingleBoard = async (boardID) => {
     try {
         const option = [
             {
-              $match: {
-                boardID: boardID,
-              }
+                $match: {
+                    boardID: boardID,
+                }
             },
             {
-              $lookup: {
-                from: 'locations',
-                localField: 'locationID',
-                foreignField: 'locationID',
-                as: 'spot',
-              }
+                $lookup: {
+                    from: 'locations',
+                    localField: 'locationID',
+                    foreignField: 'locationID',
+                    as: 'spot',
+                }
             },
             {
-              $lookup: {
-                from: 'licensingrequest',
-                localField: 'licenseNumber',
-                foreignField: 'requestID',
-                as: 'licensereq',
-              }
+                $lookup: {
+                    from: 'licensingrequest',
+                    localField: 'licenseNumber',
+                    foreignField: 'requestID',
+                    as: 'licensereq',
+                }
             },
             {
-              $lookup: {
-                from: 'boardtypes',
-                localField: 'boardModelType',
-                foreignField: 'boardTypeID',
-                as: 'boardtype',
-              }
+                $lookup: {
+                    from: 'boardtypes',
+                    localField: 'boardModelType',
+                    foreignField: 'boardTypeID',
+                    as: 'boardtype',
+                }
             },
             {
-              $lookup: {
-                from: 'locationtypes',
-                localField: 'spot.locationType',
-                foreignField: 'locationTypeID',
-                as: 'spottype',
-              }
+                $lookup: {
+                    from: 'locationtypes',
+                    localField: 'spot.locationType',
+                    foreignField: 'locationTypeID',
+                    as: 'spottype',
+                }
             },
             {
-              $lookup: {
-                from: 'adscategories',
-                localField: 'spot.adsForm',
-                foreignField: 'CategoriesID',
-                as: 'adsform',
-              }
+                $lookup: {
+                    from: 'adscategories',
+                    localField: 'spot.adsForm',
+                    foreignField: 'CategoriesID',
+                    as: 'adsform',
+                }
             },
             {
-              $unwind: {
-                path: '$spot',
-                preserveNullAndEmptyArrays: true
-              }
+                $lookup: {
+                    from: 'districts',
+                    localField: 'spot.districtID',
+                    foreignField: 'districtID',
+                    as: 'district'
+                }
             },
             {
-              $unwind: {
-                path: '$licensereq',
-                preserveNullAndEmptyArrays: true
-              }
+                $unwind: {
+                    path: '$district',
+                    preserveNullAndEmptyArrays: true
+                }
             },
             {
-              $unwind: {
-                path: '$boardtype',
-                preserveNullAndEmptyArrays: true
-              }
+                $lookup: {
+                    from: 'wards',
+                    localField: 'spot.wardID',
+                    foreignField: 'wardID',
+                    as: 'ward'
+                }
             },
             {
-              $unwind: {
-                path: '$spottype',
-                preserveNullAndEmptyArrays: true
-              }
+                $unwind: {
+                    path: '$ward',
+                    preserveNullAndEmptyArrays: true
+                }
             },
             {
-              $unwind: {
-                path: '$adsform',
-                preserveNullAndEmptyArrays: true
-              }
+                $unwind: {
+                    path: '$spot',
+                    preserveNullAndEmptyArrays: true
+                }
             },
             {
-              $project: {
-                boardID: 1,
-                locationID: 1,
-                spotName: '$spot.locationName',
-                spotAddress: '$spot.address',
-                authCompany: '$licensereq.companyName',
-                authCompanyPhone: '$licensereq.companyPhone',
-                authCompanyEmail: '$licensereq.companyEmail',
-                authCompanyAddress: '$licensereq.companyAddress',
-                startDate: '$licensereq.startDate',
-                endDate: '$licensereq.endDate',
-                boardModelType: 1,
-                boardTypeName: '$boardtype.typeName',
-                quantity: 1,
-                height: 1,
-                width: 1,
-                spotType: '$spot.locationType',
-                spotTypeName: '$spottype.locationTypeName',
-                adsForm: '$adsform.CategoriesID',
-                adsFormName: '$adsform.CategoriesName',
-                images: 1,
-                licenseNumber: 1,
-                content: '$licensereq.content'
-              }
+                $unwind: {
+                    path: '$licensereq',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$boardtype',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$spottype',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $unwind: {
+                    path: '$adsform',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    boardID: 1,
+                    locationID: 1,
+                    spotName: '$spot.locationName',
+                    spotAddress: '$spot.address',
+                    districtName: '$district.districtName',
+                    wardName: '$ward.wardName',
+                    authCompany: '$licensereq.companyName',
+                    authCompanyPhone: '$licensereq.companyPhone',
+                    authCompanyEmail: '$licensereq.companyEmail',
+                    authCompanyAddress: '$licensereq.companyAddress',
+                    startDate: '$licensereq.startDate',
+                    endDate: '$licensereq.endDate',
+                    boardModelType: 1,
+                    boardTypeName: '$boardtype.typeName',
+                    quantity: 1,
+                    height: 1,
+                    width: 1,
+                    spotType: '$spot.locationType',
+                    spotTypeName: '$spottype.locationTypeName',
+                    adsForm: '$adsform.CategoriesID',
+                    adsFormName: '$adsform.CategoriesName',
+                    images: 1,
+                    licenseNumber: 1,
+                    content: '$licensereq.content'
+                }
             }
-          ]
+        ]
         const board = await Board.aggregate(option);
         return board[0];
     } catch (error) {
@@ -249,9 +278,9 @@ export const getAllBoardsOfSpot = async (spotID) => {
                 width: 1,
                 quantity: 1
             }
-        } 
+        }
     ]
-    
+
     try {
         const boards = await Board.aggregate(option);
         return boards;
@@ -415,8 +444,8 @@ export const updateBoard = async (boardID, updatedData) => {
             { boardID: boardID },
             { $set: updatedData },
         );
-        
-        return {message: 'Board upated successfully'}
+
+        return { message: 'Board upated successfully' }
     } catch (error) {
         throw new Error(`Error updating board by ID: ${error.message}`);
     }
@@ -426,7 +455,7 @@ export const updateBoard = async (boardID, updatedData) => {
 export const deleteBoardByID = async (boardID) => {
     try {
         await Board.findOneAndDelete({ boardID: boardID });
-        return {message: 'Board deleted successfully.'}
+        return { message: 'Board deleted successfully.' }
     } catch (error) {
         throw new Error(`Error deleting board by ID: ${error.message}`);
     }
@@ -445,8 +474,8 @@ export const countAll = async () => {
 
 export const countDistrict = async (districtID) => {
     try {
-        const docs = Board.countDocuments({districtID: districtID});
-        
+        const docs = Board.countDocuments({ districtID: districtID });
+
         return docs
     } catch (error) {
         throw new Error(`Error get wards of count documents: ${error.message}`)
@@ -455,7 +484,7 @@ export const countDistrict = async (districtID) => {
 
 export const countByLocation = async (locationID) => {
     try {
-        return Board.countDocuments({locationID: locationID});
+        return Board.countDocuments({ locationID: locationID });
     } catch (error) {
         throw new Error("Error getting information!");
     }
@@ -463,7 +492,7 @@ export const countByLocation = async (locationID) => {
 
 export const countByWard = async (wardID) => {
     try {
-        return Board.countDocuments({wardID: wardID});
+        return Board.countDocuments({ wardID: wardID });
     } catch (error) {
         throw new Error('Error happen when getting information.');
     }

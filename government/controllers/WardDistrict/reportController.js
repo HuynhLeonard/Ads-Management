@@ -203,7 +203,7 @@ const showDetail = async (req, res) => {
 		dataFetch.ward = spotDetail.wardName;
 	}
 	if (dataFetch.objectID.includes('AD')) {
-		const addrDetail = await locationService.getLocationFromDistricts(dataFetch.objectID.split(':')[1], dataFetch.objectID.split(':')[0].replace('AD', ''));
+		const addrDetail = await locationDetailService.getDistrictWardName(dataFetch.objectID.split(':')[1], dataFetch.objectID.split(':')[0].replace('AD', ''));
 
 		dataFetch.spotAddress = addrDetail.address;
 		dataFetch.district = addrDetail.districtName;
