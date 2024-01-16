@@ -102,6 +102,15 @@
     transform: translateY(-1px);
     }
 
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: black;
+    }
+
     </style>
     <title>License</title>
   </head>
@@ -125,7 +134,9 @@
   <body>
     <aside><%- include('./components/sidebar.ejs') %></aside>
     <div class="container">
-        <button>Return</button>
+        <button>
+            <a href="/<%=role%>/license">Return</a>
+        </button>
       <h1>Yêu cầu cấp phép quảng cáo</h1>
       <form action="" class="row g-3">
         <div class="item-container col-md-6">
