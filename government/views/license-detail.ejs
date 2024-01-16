@@ -72,14 +72,14 @@
       <form action="" class="row g-3">
         <div class="item-container">
           <div class="item-title">
-            <label for="bienqc" class="form-label">ID điểm đặt</label>
+            <label for="bienqc" class="form-label">ID yêu cầu</label>
           </div>
           <input
             class="form-control"
             type="text"
             id="bienqc"
             name="bienqc"
-            value=<%=data.locationID%>
+            value=<%=data.requestID%>
             readonly
           />
         </div>
@@ -94,18 +94,12 @@
             type="text"
             id="diemqc"
             name="diemqc"
-            value=""
+            value=<%=data.locationID%>
             readonly
             autocomplete="on"
             list="spotList"
             required
           />
-          <datalist id="spotList" style="display: none;">
-            <% locations.forEach((spot) => { %>
-                <option value="<%= spot.name; %>"></option>
-            <% }); %>
-        </datalist>
-        </div>
 
         <div class="item-container">
           <div class="item-title">
@@ -122,12 +116,6 @@
             required
             list="boardTypeList"
           />
-          <input type="text" class="form-control" id="boardType" hidden />
-                        <datalist id="boardTypeList" style="display: none;">
-                            <% boardtypes.forEach((type)=> { %>
-                            <option value="<%= type.typeName; %>"></option>
-                            <% }); %>
-                        </datalist>
         </div>
 
         <div class="item-container col-md-4">
@@ -188,7 +176,7 @@
             type="text"
             id="dccty"
             name="dccty"
-            value=""
+            value=<%=data.address%>
             readonly
             required
           />
@@ -206,7 +194,7 @@
             type="text"
             id="tencty"
             name="tencty"
-            value=<%=data.companyName%>
+            value=<%=data.company%>
             readonly
             required
           />
@@ -222,7 +210,7 @@
             type="text"
             id="dcct"
             name="dcct"
-            value=<%=data.companyAddress%>
+            value=<%=data.compAddr%>
             readonly
             required
           />
@@ -238,7 +226,7 @@
             type="text"
             id="mailcty"
             name="mailcty"
-            value=<%=data.companyEmail%>
+            value=<%=data.email%>
             readonly
             required
           />
@@ -254,7 +242,7 @@
             type="number"
             id="sdtcty"
             name="sdtcty"
-            value=<%=data.phoneNumber%>
+            value=<%=data.phone%>
             readonly
             required
           />
@@ -272,7 +260,7 @@
             type="date"
             id="startdate"
             name="startdate"
-            value=<%=data.startDate%>
+            value=<%=data.startTime%>
             readonly
             required
           />
@@ -290,7 +278,7 @@
             type="date"
             id="enddate"
             name="enddate"
-            value=<%=data.endDate%>
+            value=<%=data.endTime%>
             readonly
             required
           />
@@ -309,6 +297,7 @@
             type="file"
             accept="image/*"
             required
+            src=<%=data.imgUrls[0]%>
           />
         </div>
 
@@ -326,6 +315,7 @@
             type="file"
             accept="image/*"
             required
+            src=<%=data.imgUrls[1]%>
           />
         </div>
 
@@ -336,7 +326,7 @@
           </div>
           <div id="container">
             <textarea>
-                <%= data.content%>
+                <%=data.content%>
             </textarea>
           </div>
         </div>
