@@ -1,18 +1,19 @@
-import { getReport } from "/js/request.js";
+import { getReport } from "./request.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const reportID = urlParams.get('id');
-const report = await getReport(reportID);
-// console.log(report);
+const data = await getReport(reportID);
+const report = data[0]
+console.log(report);
 
 //attach data to html
 document.getElementById("report-id").value = report.reportID;
 document.getElementById("spot-id").value = report.objectID;
 document.getElementById("status").value = report.status === 1 ? "Đã xử lý" : "Chờ xử lý";
 document.getElementById("sender-name").value = report.reporterName;
-document.getElementById("phone").value = report.reporterPhone;
+document.getElementById("phone").value = report.phoneNumber;
 document.getElementById("email").value = report.reporterEmail;
-document.getElementById("report-type").value = report.reportTypeName;
+document.getElementById("report-type").value = report.reportType;
 document.getElementById("solution").value = report.solution || "Chưa xử lý";
 const reportInfoHTML = new DOMParser().parseFromString(report.reportInfo, "text/html").body.firstElementChild;
 if (reportInfoHTML && reportInfoHTML.innerHTML)

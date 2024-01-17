@@ -1,6 +1,7 @@
 import District from '../models/districtSchema.js';
 import Ward from '../models/wardSchema.js';
-
+import * as districtService from '../services/districtService.js';
+import * as wardService from "../services/wardService.js";
 export const getAll = async ()=> {
     const option = [
         {
@@ -157,7 +158,7 @@ export const getDistrictWardName = async (lat, lng) => {
     let districtName = data.items[0].address.city.replace('Quận ', '').trim();
     let wardName = data.items[0].address.district.replace('Phường ', '').trim();
     if (districtName.length === 1) {
-      districtName = '0' + districtName;
+      districtName = districtName;
     }
     if (wardName.length === 1) {
       wardName = '0' + wardName;
@@ -170,10 +171,11 @@ export const getDistrictWardName = async (lat, lng) => {
     } else {
       address = address[0];
     }
-
-    const  districtID = (await districtService.getIDByName(districtName)) || '';
+    const check1 = 'Quận ' + districtName;
+    const check2 = 'Phường ' + wardName
+    const  districtID = (await districtService.getIDByName(check1)) || '';
     // console.log(districtName, districtID);
-    const wardID = (await wardService.getIDByName(wardName)) || '';
+    const wardID = (await wardService.getIDByName(check2)) || '';
     // console.log(wardName, wardID);
 
     return { address, districtName, wardName, districtID, wardID };

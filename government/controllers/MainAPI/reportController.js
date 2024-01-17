@@ -25,12 +25,12 @@ const verifyCaptcha = async (captcha) => {
 
 export const createReport = async (data) => {
   try {
-    const secretKey = '6LeRPU0pAAAAAEWCzWcYcBZ86hWCBm4-lvFuX35T';
-    if (!data.captcha) throw new Error('No captcha');
-    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${data.captcha}`;
-    const response = await fetch(verifyUrl);
-    const body = await response.json();
-    if (!body.success || body.score < 0.4) throw new Error('Captcha failed');
+    // const secretKey = '6LeRPU0pAAAAAEWCzWcYcBZ86hWCBm4-lvFuX35T';
+    // if (!data.captcha) throw new Error('No captcha');
+    // const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${data.captcha}`;
+    // const response = await fetch(verifyUrl);
+    // const body = await response.json();
+    // if (!body.success || body.score < 0.4) throw new Error('Captcha failed');
 
 
     return await apiService.createReport(data.report);

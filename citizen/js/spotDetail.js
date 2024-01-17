@@ -1,4 +1,4 @@
-import { getDetailSpot } from "/js/request.js";
+import { getDetailSpot } from "./request.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const spotID = urlParams.get("id");
@@ -61,7 +61,7 @@ $("#address").val(address);
 $("#ward").val(ward);
 $("#district").val(district);
 $("#spot-type").val(spotDetail.locationTypeName);
-$("#ads-type").val(spotDetail.adsFormName);
+$("#ads-type").val(spotDetail.adsFormNme);
 $("#status").val(spotDetail.status === 1 ? "Đã xử lý" : "Chờ xử lý");
 const table = $("#table");
 const boardData = spotDetail.boards.map((board) => ({

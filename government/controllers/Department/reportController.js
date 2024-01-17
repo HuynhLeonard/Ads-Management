@@ -79,7 +79,7 @@ controller.show = async (req, res) => {
     }
 
     const title = 'Sở - Quản lý danh sách các báo cáo vi phạm';
-    return res.render('./so/reports', { title, tableHeads, tableData, ...commonData })
+    return res.render('Department/reports', { title, tableHeads, tableData, ...commonData })
 }
 
 controller.showDetail = async (req, res) => {
@@ -126,7 +126,7 @@ controller.showDetail = async (req, res) => {
         spotWard: dataFetch.ward,
     }
     const title = 'Sở - Chi tiết báo cáo vi phạm'
-    return res.render('./so/report-detail', { title, detail, toolbars })
+    return res.render('Department/report-detail', { title, detail, toolbars })
 }
 
 controller.showStatistic = async (req, res) => {

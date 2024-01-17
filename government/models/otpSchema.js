@@ -10,7 +10,7 @@ const OTPSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    expirationTime: {
+    expiredTime: {
         type: Date,
         required: true
     }
