@@ -1,250 +1,78 @@
-<style>
-  * {
-    box-sizing: border-box;
-  }
+<!DOCTYPE html>
+<html>
+    <title>W3.CSS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <body style="font-family: Montserrat;">
+<!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block" style="display:none; z-index:10; background-color: #048480; width: 24rem; color: gainsboro;" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-xxlarge" onclick="w3_close()" style="color: gainsboro; text-align: center; margin-bottom: 15px;">
+            <img src="/logo.png" alt="logo" style="width: 70%;">
+            <i class='bx bx-x' style="font-size: 50px; position: relative; top: 10px;"></i>
+        </button>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-home w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Trang chủ</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-building-house w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Danh sách quận huyện</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-map w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Điểm đặt / bảng quảng cáo</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-spreadsheet w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Loại hình quảng cáo</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-comment-dots w3-xxlarge' ></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Yêu cầu quảng cáo</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bxs-report w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Danh sách báo cáo</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-signal-5 w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Thống kê báo cáo</span>
+        </a>
+        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
+            <i class='bx bx-user w3-xxlarge'></i>
+            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Phân công</span>
+        </a>
+    </div>
 
-  a {
-    background: transparent;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    text-decoration-line: none;
-  }
+    <!-- Page Content -->
+    <div class="w3-overlay" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
 
-  .sidebar {
-    position: fixed;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    width: 72px;
-    height: 100%;
-    background: #048480;
-    transition: width 0.4s;
-    z-index:10;
-  }
+    <button class="w3-xxlarge" onclick="w3_open()" style="background-color: #048480; width: 5rem; color: gainsboro;">
+    <div style="height: 100vh; background-color: #048480; background-color:#048480; display: flex; flex-flow: column; gap: 40px; padding-top: 20px;">
+            <i class='bx bx-menu'></i>
+            <i class='bx bx-home'></i>
+            <i class='bx bx-building-house'></i>
+            <i class='bx bx-map' ></i>
+            <i class='bx bx-spreadsheet'></i>
+            <i class='bx bx-comment-dots'></i>
+            <i class='bx bxs-report' ></i>
+            <i class='bx bx-signal-5'></i>
+            <i class='bx bx-user' ></i>
+    </div>
+    </button>
 
-  body.open .sidebar {
-    width: 260px;
-  }
+        <script>
+            function w3_open() {
+                document.getElementById("mySidebar").style.display = "block";
+                document.getElementById("myOverlay").style.display = "block";
+            }
 
-  .sidebar-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 350px;
-    height: inherit;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 10px;
-  }
-
-  .sidebar-header {
-    display: flex;
-    align-items: center;
-    height: 72px;
-    padding: 0 1.25rem 0 0;
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .sidebar-burger {
-    width: 100px;
-    height: 100px;
-    display: grid;
-    place-items: center;
-    background: url(/assets/icon-burger.svg) no-repeat center center;
-    transition: 0.3s;
-  }
-
-  body.open .sidebar-burger {
-    background: url(/assets/icon-close.svg) no-repeat center center;
-  }
-
-  .sidebar-logo {
-    width: 40%;
-    opacity: 0;
-    transition: 0.3s;
-  }
-
-  body.open .sidebar-logo {
-    opacity: 1;
-  }
-
-  .sidebar-nav {
-    padding-top: 10px;
-    flex: 1 1 auto;
-  }
-
-  .sidebar a {
-    display: flex;
-    gap: 25px;
-    align-items: center;
-    /* height: 50px;
-width: 72px; */
-    font-family: "Open Sans";
-    font-size: 16px;
-    font-weight: 200;
-    letter-spacing: 2px;
-    line-height: 1;
-    padding: 0 25px;
-  }
-
-  .sidebar-header a {
-    height: 50px;
-    width: 70px;
-  }
-
-  .sidebar-nav a {
-    height: 50px;
-    width: 100%;
-  }
-
-  .sidebar-nav a:hover {
-    background: #1e1e1e !important;
-  }
-
-  .sidebar-nav .submenu {
-    position: static;
-    display: none;
-  }
-
-  .Sdrop {
-    background: #08a5a0;
-    max-height: 500px;
-    width: max-content;
-    display: block !important;
-  }
-
-  .sidebar-nav .submenu a {
-    padding-left: 25px;
-    cursor: pointer;
-  }
-
-  .sidebar a > img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .dropdown {
-    transition: transform 0.4s;
-  }
-
-  .change {
-    transform: rotate(90deg);
-  }
-
-  .sidebar a > span {
-    color: #f9f9f9;
-    opacity: 0;
-    transition: 0.3s;
-  }
-
-  @keyframes appear {
-    0% {
-      opacity: 0;
-      translate: 0 10px;
-    }
-    100% {
-      opacity: 1;
-      translate: 0;
-    }
-  }
-
-  body.open .sidebar a > span {
-    opacity: 1;
-    animation: appear 0.3s both;
-  }
-
-  .sidebar-footer a {
-    height: 50px;
-    width: 100%;
-  }
-
-  .sidebar-footer a:hover {
-    background: #1e1e1e !important;
-  }
-</style>
-</head>
-
-<div class="sidebar">
-<div class="sidebar-inner">
-  <header class="sidebar-header">
-    <a href="#" type="button" class="sidebar-burger" id="closing"></a>
-    <img src="/assets/logo.png" class="sidebar-logo" />
-  </header>
-  <nav class="sidebar-nav">
-    <a href="/department" type="button" class="Shome">
-      <img src="/assets/icon-home.svg" />
-      <span>Trang chủ</span>
-    </a>
-    <a href="#" type="button" class="submenu-btn" id="submenu-btn" class="Stk">
-      <img src="/assets/icon-levels.svg" />
-      <span style="animation-delay: 0.1s">Thống kê</span>
-      <img
-        src="/assets/icon-dropdown.svg"
-        class="dropdown"
-        id="dropdown"
-      />
-    </a>
-    <nav class="submenu" id="submenu">
-      <a href="/department/locations" type="button" class="sub-item">
-        <span style="animation-delay: 0.1s">Danh sách quận huyện</span>
-      </a>
-      <a href="/department/types?category=ads" type="button" class="sub-item">
-        <span style="animation-delay: 0.2s">Loại hình quảng cáo</span>
-      </a>
-      <a href="/department/requests?category=license" type="button" class="sub-item">
-        <span style="animation-delay: 0.3s">Yêu cầu</span>
-      </a>
-      <a href="" type="button" class="sub-item">
-        <span style="animation-delay: 0.4s">Báo cáo</span>
-      </a>
-    </nav>
-    <a href="/department/assign" type="button" class="Spc">
-      <img src="/assets/icon-pointat.svg" />
-      <span style="animation-delay: 0.2s">Phân công</span>
-    </a>
-  </nav>
-  <footer class="sidebar-footer">
-    <a href="#" type="button">
-      <img src="/assets/icon-logout.svg" />
-      <span>Đăng xuất</span>
-    </a>
-  </footer>
-</div>
-</div>
-
-<script>
-  const show = document
-    .querySelector("#submenu-btn")
-    .addEventListener("click", showSubMenu);
-  function showSubMenu() {
-    if (
-      document.querySelector("#submenu").classList.contains("Sdrop") &&
-      document.querySelector("#dropdown").classList.contains("change")
-    ) {
-      document.querySelector("#submenu").classList.remove("Sdrop");
-      document.querySelector("#dropdown").classList.remove("change");
-    } else {
-      document.querySelector("#submenu").classList.add("Sdrop");
-      document.querySelector("#dropdown").classList.add("change");
-    }
-  }
-
-  const close = document
-    .querySelector("#closing")
-    .addEventListener("click", handleSideBar);
-  function handleSideBar() {
-    if (document.body.classList.contains("open")) {
-      document.body.classList.remove("open");
-      document.querySelector("#submenu").classList.remove("Sdrop");
-      document.querySelector("#dropdown").classList.remove("change");
-    } else {
-      document.body.classList.toggle("open");
-    }
-  }
-
-  if (!document.body.classList.contains("open")) {
-    const home = document.querySelector(".home");
-    home.disabled = true;  
-  }
-</script>
+            function w3_close() {
+                document.getElementById("mySidebar").style.display = "none";
+                document.getElementById("myOverlay").style.display = "none";
+            }
+        </script>
+    </body>
+</html>
