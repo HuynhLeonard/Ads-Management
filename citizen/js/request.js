@@ -54,24 +54,16 @@ export const getAccessToken = async () => {
 }
 
 const uploadOneImgur = async (file) => {
-  if (accessToken === "") {
-    accessToken = await getAccessToken();
-    accessToken = accessToken.accessToken;
-    console.log(accessToken);
-  }
   const formData = new FormData();
   formData.append('image', file);
-  const headers = new Headers();
-  headers.append('Authorization', `Bearer ${accessToken}`);
-
-  const res = await fetch('https://api.imgur.com/3/image', {
-    headers: headers,
+  const res = await fetch('http://localhost:3000/pic/posts', {
     method: 'POST',
     body: formData,
     redirect: 'follow',
   });
   const data = await res.json();
-  return data.data.link;
+  console.log(data);
+  return data.message;
 }
 
 export const upload2Imgur = async (files) => {
@@ -84,7 +76,7 @@ export const upload2Imgur = async (files) => {
   return links;
 }
 
-export const uploadReport = async (report, captcha) => {
+export const uploadReport = async (report) => {
   try {
     const res = await fetch(`${requestHostname}api/reports`, {
       method: 'POST',
@@ -92,7 +84,7 @@ export const uploadReport = async (report, captcha) => {
         ['Content-Type', 'application/json'],
       ],
       mode: 'cors',
-      body: JSON.stringify({report, captcha}),
+      body: JSON.stringify({report}),
     });
     if (res.status !== 200) throw new Error();
     return await res.json();

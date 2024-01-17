@@ -5,7 +5,7 @@ const boardID = urlParams.get('id');
 let boardDetail = await getDetailBoard(boardID);
 // console.log(boardDetail);
 
-const thumbnailsCarousel = boardDetail.image
+const thumbnailsCarousel = boardDetail.images
   .map((img) =>`<li class="splide__slide"><img src="${img}" alt="thumbnail"></li>`)
   .join("");
 document
@@ -15,7 +15,7 @@ document.getElementById("main-carousel").querySelector("ul.splide__list").innerH
 
 const thumbnail = new Splide("#thumbnail-carousel", {
   fixedHeight: "5rem",
-  perPage: Math.min(3, boardDetail.image.length),
+  perPage: Math.min(3, boardDetail.images.length),
   type: "loop",
   gap: 10,
   rewind: true,

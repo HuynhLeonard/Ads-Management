@@ -1,8 +1,8 @@
+import crypto from 'crypto';
 import express from 'express';
 import multer from 'multer';
-import crypto from 'crypto';
 import sharp from 'sharp';
-import { uploadFile, deleteFile, getObjectSignedUrl } from './s3.js'
+import { uploadFile } from './s3.js';
 
 const router = express.Router();
 const storage = multer.memoryStorage();

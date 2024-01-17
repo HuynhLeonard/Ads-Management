@@ -39,9 +39,11 @@ const show = async (req, res) => {
 				let wardName = item.wardName;
 
 				if (item.objectID.includes('AD')) {
+					console.log('check here');
 					const lat = item.objectID.split(':')[1];
 					const lng = item.objectID.split(':')[0].replace('AD', '');
 					const location = await locationDetailService.getDistrictWardName(lat, lng);
+					console.log(location);
 					const districtID = location.districtID;
 
 					// if districtID is not equal to officerRole, then return empty object
@@ -139,12 +141,14 @@ const show = async (req, res) => {
 
 // :id
 const updateReport = async (req, res) => {
-	const reportID = req.params.id;
+	const reportID = req.params.reportID;
 	const dataToUpdate = req.body;
 	const role = String(req.originalUrl.split('/')[1]);
 
-	const reportInfo = await reportService.getSingleReport(reportID);
-	let officer = await userService.getRoleByUsername(dataToUpdate.officerName);
+	const reportInfo1 = await reportService.getSingleReport(reportID);
+	const reportInfo = reportInfo1[0];
+	console.log(reportInfo);
+	let officer = await userService.getRoleByUsername(dataToUpdate.officer);
 
 	if (role === 'district') {
 		officer = await districtService.getDistrictByID(officer);
@@ -180,9 +184,11 @@ const updateReport = async (req, res) => {
 
 const showDetail = async (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
-	const reportID = req.params.id;
-	const dataFetch = await reportService.getSingleReport(reportID);
-	// console.log(dataFetch);
+	const reportID = req.params.reportID;
+	console.log(reportID);
+	const data1 = await reportService.getSingleReport(reportID);
+	const dataFetch = data1[0];
+	console.log(dataFetch);
 	let title = role === 'district' ? 'Quận - Chi tiết báo cáo vi phạm' : 'Phường - Chi tiết báo cáo vi phạm';
 
 	const officerName = req.user.username;
@@ -226,6 +232,8 @@ const showDetail = async (req, res) => {
 		spotAddress: dataFetch.spotAddress,
 		spotDistrict: dataFetch.district,
 		spotWard: dataFetch.ward,
+		district: dataFetch.district,
+		ward: dataFetch.ward
 	}
 	res.render('report-detail', { role, title, officerName, ...data });
 }

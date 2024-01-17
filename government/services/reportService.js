@@ -5,8 +5,9 @@ export const createReport = async (reportData) => {
         const newReport = new report(reportData);
         const count = await report.countDocuments();
         newReport.reportID = 'BC' + String(count + 1).padStart(3, '0');
+        console.log(newReport);
         const saveData = await newReport.save();
-        return saveData;
+        return newReport.reportID;
     } catch (error) {
         throw new Error('Error happen when creating report.')
     }
@@ -222,7 +223,7 @@ export const getSingleReport = async (reportID) => {
                 _id: 0,
                 reportID: 1,
                 objectID: 1,
-                reportType: 1,
+                reportType: '$reporttype.reportTypeName',
                 reporterName: 1,
                 reporterEmail: 1,
                 phoneNumber: 1,
@@ -372,7 +373,8 @@ export const getReportByOfficerRole = async (officerRole) => {
                         { 'locationInfo.districtID': officerRole },
                         { 'locationInfo.wardID': officerRole },
                         { 'boardLocationInfo.districtID': officerRole },
-                        { 'boardLocationInfo.wardID': officerRole }
+                        { 'boardLocationInfo.wardID': officerRole },
+                        { 'objectID': { $regex: '^AD' } }
                     ]
                 }
             },

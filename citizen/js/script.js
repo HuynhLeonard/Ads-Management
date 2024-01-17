@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import request from "./request.js";
-import { formatMapFeature } from "./formatMapFeature.js";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg";
@@ -144,7 +143,6 @@ async function getSpotsData() {
       type: "FeatureCollection",
       features: [],
     };
-
     Object.values(spots).forEach((spot) => {
       spotsGeojson.features.push({
         type: "Feature",
@@ -154,8 +152,9 @@ async function getSpotsData() {
         },
         properties: {
           ...spot,
-          userReport: reportIDs.some((reportIDs) => {
-            const flattenReportIDs = spot.reportIDs.flat(Infinity);
+          userReport: reportIDs.some((reportID) => {
+            console.log(reportIDs);
+            const flattenReportIDs = reportIDs.flat(Infinity);
             return flattenReportIDs.includes(reportIDs);
           }),
           description: generateSpotHTML(spot),

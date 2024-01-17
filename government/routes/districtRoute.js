@@ -20,7 +20,9 @@ router.post('/officer/:username', (req, res) => controller.infoController.update
 router.get("/reports", (req,res) => {
     controller.reportController.show(req,res);
 });
-router.get("/reports/:reportID");
+router.get("/reports/:reportID", (req,res) => {
+    controller.reportController.showDetail(req,res);
+});
 router.post("/reports/:reportID", (req,res) => {
     controller.reportController.updateReport(req,res);
 });
