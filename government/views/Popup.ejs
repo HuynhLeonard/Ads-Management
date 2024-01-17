@@ -42,12 +42,12 @@
                     <div class="ads" id="ads_1">
                         <div class="detail">
                             <div class="data">
-                                <div class="title">Trụ, cụm pano 1</div>
-                                <span>Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
-                                <div>Kích thước: 2.5m x 10m</div>
-                                <div>Số lượng: <strong>1 trụ bảng</strong></div>
-                                <div>Hình thức: <strong>Cổ động chính trị</strong></div>
-                                <div>Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
+                                <div class="ads-title">Trụ, cụm pano 1</div>
+                                <span class="ads-address">Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao), Phường Bến Nghé, Quận 1</span>
+                                <div class="ads-size">Kích thước: 2.5m x 10m</div>
+                                <div class="ads-quant">Số lượng: <strong>1 trụ bảng</strong></div>
+                                <div class="ads-format">Hình thức: <strong>Cổ động chính trị</strong></div>
+                                <div class="ads-type">Phân loại: <strong>Đất công/Công viên/Hành lang an toàn giao thông</strong></div>
                             </div>
                             <div class="butn">
                                 <button class="info-btn">Thông tin chi tiết</button>
@@ -102,11 +102,11 @@
                     <div class="reports" id="reports_1">
                         <div class="detail">
                             <div class="data">
-                                <div class="title">Hình thức báo cáo 1</div>
-                                <div><strong>Họ tên người gửi: </strong>YuLockii</div>
-                                <div><strong>Email: </strong>votanloc1106@gmail.com</div>
-                                <div><strong>Điện thoại liên lạc: </strong>0123456789</div>
-                                <div><strong>Tình trạng xử lý: </strong>Chưa xử lý</div>
+                                <div class="reports-title">Hình thức báo cáo 1</div>
+                                <div class="reports-owner"><strong>Họ tên người gửi: </strong>YuLockii</div>
+                                <div class="reports-email"><strong>Email: </strong>votanloc1106@gmail.com</div>
+                                <div class="reports-phone"><strong>Điện thoại liên lạc: </strong>0123456789</div>
+                                <div class="reports-status"><strong>Tình trạng xử lý: </strong>Chưa xử lý</div>
                             </div>
                             <div class="butn">
                                 <button class="info-btn">Thông tin chi tiết</button>
@@ -152,5 +152,29 @@
         </section>
     </section>
     <script src="/js/place.js"></script>
+    <script>
+        const placeSlider = document.querySelector(".slider");
+        const placeSliderNav = document.querySelector(".slider-nav");
+        const placeName = document.querySelector(".place-name");
+        const placeAddr = document.querySelector(".address");
+
+        const addSlider = document.querySelector(".ads-slider");
+        const ads = document.querySelector(".ads");
+        const adsTitle = document.querySelector(".ads-title");
+        const adsAddr = document.querySelector(".ads-address");
+        const adsSize = document.querySelector(".ads-size");
+        const adsQuant = document.querySelector(".ads-quant");
+        const adsFormat = document.querySelector(".ads-format");
+        const adsType = document.querySelector(".ads-type");
+        const adsNav = document.querySelector(".ads-nav");
+
+        const reportSlider = document.querySelector(".reports-slider");
+        const reports = document.querySelector(".reports");
+        const reportTitle = document.querySelector(".reports-title");
+        const reportOwner = document.querySelector(".reports-owner");
+        const reportEmail = document.querySelector(".reports-email");
+        const reportPhone = document.querySelector(".reports-phone");
+        const reportStatus = document.querySelector(".reports-status");
+    </script>
 </body>
 </html>
