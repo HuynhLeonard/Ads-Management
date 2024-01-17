@@ -1,6 +1,8 @@
 import Location from "../models/locationSchema.js";
 import Report from "../models/reportAdsSchema.js";
-
+import {createReport,getSingleReport} from "./reportService.js"
+import {getSingleBoard} from "./boardService.js";
+import {getAllReportType} from "./reportTypeService.js";
 // query here
 
 export const getAllLocations = async (districtID, wardID) => {
@@ -173,7 +175,11 @@ export const getAllLocations = async (districtID, wardID) => {
     return await Location.aggregate(option);
 };
 
-export const getLocationDetail = async (locationID) => {
+export const getLocationDetail = async (locationID, getAll) => {
+    let currentDate = new Date();
+    if (getAll == true) {
+        currentDate.setFullYear(currentDate.getFullYear() - 10);
+    }
     const option = [
         {
             $match: {
@@ -244,6 +250,11 @@ export const getLocationDetail = async (locationID) => {
                             boardSize: { $concat: [{ $toString: '$width' }, 'x', { $toString: '$height' }] },
                             quantity: 1,
                             boardType: '$boardtype.typeName'
+                        }
+                    },
+                    {
+                        $match: {
+                            expiredDate: {$gt: currentDate}
                         }
                     }
                 ]
@@ -519,3 +530,13 @@ export const getListReport = async (reportIDs) => {
         throw new Error(`Error getting list report: ${error.message}`);
     }
 };
+
+export default {
+    createReport,
+    getAllReportType,
+    getAllLocations,
+    getSingleBoard,
+    getLocationDetail,
+    getListReport,
+    getSingleReport
+}
