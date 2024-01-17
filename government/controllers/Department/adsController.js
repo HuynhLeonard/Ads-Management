@@ -1,7 +1,8 @@
+import locationSchema from "../../models/locationSchema.js";
 import * as adsCategoryService from "../../services/adsCategoriesService.js";
 import * as boardService from "../../services/boardService.js";
 import * as boardTypeService from "../../services/boardTypeService.js";
-import * as IDCreate from "../../services/createIDService.js";
+// import * as IDCreate from "../../services/createIDService.js";
 import * as districtService from "../../services/districtService.js";
 import * as locationService from "../../services/locationService.js";
 import * as locationTypeService from "../../services/locationTypeService.js";
@@ -93,15 +94,15 @@ export const show = async (req, res) => {
 
 // category = Location || Board
 export const showDetail = async (req, res, isEdit) => {
+    console.log(req.originalUrl);
     const category = req.query.category || ''
     const title = 'Sở - Chi tiết ' + (category === 'Location' ? 'điểm đặt' : 'bảng quảng cáo')
     const role = String(req.originalUrl.split('/')[1])
     const ID = req.params.id || ''
     const isSpotCategory = category === 'Location' ? 1 : 0
-
     const getDataObject = category === 'Location' ? locationService.getSingleLocation : boardService.getSingleBoard
     const object = await getDataObject(ID)
-    console.log(object);
+    console.log(object)
     const commonData = {
         url: req.originalUrl,
         title,
@@ -109,17 +110,23 @@ export const showDetail = async (req, res, isEdit) => {
     }
 
     if (isSpotCategory) {
-        const { locationName, address, wardName, districtName, locationtypeName, adsFormName, planned, images } = object
+        const { locationName, address, wardName, districtName, locationtypeName, adsFormName, planned, images, wardID, districtID, locationType, adsForm, longitude, latitude} = object
         const data = {
             spotTitle: locationName,
             spotId: ID,
             spotAddress: address,
+            ward: wardID,
+            district: districtID,
             wardName,
             districtName,
             locationtypeName,
             adsFormName,
             planned: planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
-            imgUrls: images
+            imgUrls: images,
+            spotType: locationType,
+            adsForm: adsForm,
+            longitude,
+            latitude
         }
 
         var boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
@@ -138,6 +145,7 @@ export const showDetail = async (req, res, isEdit) => {
             other.adsforms = (await adsCategoryService.getAllCategories()) || []
             res.render('modifyLocation', { ...commonData, ...data, other })
         } else {
+            console.log('Come to res.render');
             res.render('detailLocation', {
                 ...commonData,
                 ...data,
@@ -231,10 +239,10 @@ export const showModifyForm = (req, res) => {
     const category = req.query.category || ''
     switch (category) {
         case 'Location':
-            res.render('spot-modify', { url: req.originalUrl, title: 'Sở - Chỉnh sửa điểm đặt' })
+            res.render('modifyLocation', { url: req.originalUrl, title: 'Sở - Chỉnh sửa điểm đặt' })
             break
         case 'Board':
-            res.render('board-modify', { url: req.originalUrl, title: 'Sở - Chỉnh sửa bảng quảng cáo' })
+            res.render('modifyBoard', { url: req.originalUrl, title: 'Sở - Chỉnh sửa bảng quảng cáo' })
             break
         default:
             res.status(404)
@@ -242,10 +250,15 @@ export const showModifyForm = (req, res) => {
     }
 };
 
+const generateSpotID = async () => {
+    const count = await locationSchema.countDocuments();
+    const boardID = 'LC' + String(count + 1).padStart(3,'0');
+    return boardID;
+}
 // category = Location || Board
 export const addNewSpot = async (req, res) => {
     const { locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm, planned, images } = req.body;
-    const locationID = await IDCreate.getNewID('Spot');
+    const locationID = await generateSpotID();
     const data = { locationID, locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm, planned, images }
     try {
         await locationService.createNewLocation(data);

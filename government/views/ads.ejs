@@ -88,11 +88,11 @@
                 <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
                 <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
                 <a role="button" class="text-decoration-none mx-3 remove-button" href="<%= removeUrl %>" <% if (!url.includes('department')) { %> hidden <% } %>>
-                  <img src="/images/remove.svg" alt="remove" class="bg-transparent">
+                  <img src="/assets/remove.svg" alt="remove" class="bg-transparent">
                 </a>
                 <% if (tableRow.actions.info) { %>
                   <a href='<%= infoUrl || "javascript:"%>' class="text-decoration-none">
-                    <img src="/images/info.svg" alt="info" class="bg-transparent">
+                    <img src="/assets/info.svg" alt="info" class="bg-transparent">
                   </a>
                 <% } %>
               </td>

@@ -102,11 +102,6 @@ governmentApp.get("/", (req,res) => {
 
 import {loginController} from "./government/controllers/authController.js";
 governmentApp.post('/', loginController);
-// governmentApp.post('/', (req,res) => {
-//     res.redirect('/department')
-// });
-
-governmentApp.use('/department',departmentRoute);
 governmentApp.use('/add', (req,res) => {
     res.render('add')
 })

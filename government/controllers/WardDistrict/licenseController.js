@@ -14,7 +14,7 @@ import {
 } from "../../services/locationService.js";
 import { getRoleByUsername } from "../../services/userService.js";
 import { getWardOfDistrict } from "../../services/wardService.js";
-
+import licensingSchema from "../../models/licensingSchema.js";
 const convertDate = (date) => {
     const dateObject = new Date(date);
 
@@ -262,13 +262,19 @@ const showExtend = async (req, res) => {
     res.render("board-extend", { ...commonData, ...data });
 };
 
+const generatelicenseID = async () => {
+    const count = await licensingSchema.countDocuments();
+    const boardID = 'LS' + String(count + 1).padStart(3,'0');
+    return boardID;
+}
+
 const add = async (req, res) => {
     try {
         const license = req.body;
         console.log(license);
         const role = String(req.originalUrl.split("/")[1]);
         license.status = 0;
-        license.requestID = "LS002";
+        license.requestID = await generatelicenseID();
         console.log(license);
         await createLicense(license);
         res.redirect(`/${role}`);

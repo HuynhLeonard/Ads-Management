@@ -35,12 +35,4 @@ const boardSchema = new mongoose.Schema({
     }
 });
 
-boardSchema.pre('save', async function(next){
-    const boa = this;
-    const count = await boardSchema.countDocuments();
-    boa.boardID = 'QC' + String(count + 1).padStart(3,'0');
-    next();
-});
-
-
 export default mongoose.model('Board', boardSchema);

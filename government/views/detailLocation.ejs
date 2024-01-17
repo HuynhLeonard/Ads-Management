@@ -29,7 +29,7 @@
                   <div class="container d-flex justify-content-between">
                     <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
                     <% const [baseUrl, queryParams] = url.split('?'); %>
-                        <% if (role !== 'so') { %>
+                        <% if (role !== 'department') { %>
                         <a href="<%= baseUrl + '/modify?' + queryParams %>" class="btn btn-primary" tabindex="-1"
                            role="button"
                            aria-disabled="true">Yêu cầu chỉnh sửa</a>
@@ -71,7 +71,7 @@
             <!-- Ads list -->
             <div class="mt-5 mb-2" style="font-size: 20px; font-weight: bold;">Danh sách bảng quảng cáo</div>
             <% const basePath = url.split('/').splice(0, 3).join('/'); %>
-            <%- include("./components/table.ejs", {linkDetails: {basePath, category: 'board'}, tableHeads: boardsTableHeads, tableData: boardsTableData}); %>
+            <%- include("./components/table.ejs", {linkDetails: {basePath, category: 'Board'}, tableHeads: boardsTableHeads, tableData: boardsTableData}); %>
         </div>
     </div>
 </main>

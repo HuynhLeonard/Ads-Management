@@ -26,7 +26,7 @@
         %>
         <% if (tableRow.actions.edit) { %>
           <button class="btn p-0" data-bs-target="<%= target || ''%>" data-bs-toggle="modal" data-bs-dismiss="modal">
-            <img src="/images/edit.svg" alt="Edit" class="bg-transparent">
+            <img src="/assets/edit.svg" alt="Edit" class="bg-transparent">
           </button>
         <% } %>
         <% if (tableRow.actions.remove) { %>
@@ -34,12 +34,12 @@
             class="text-decoration-none mx-3 remove-button"
             data-bs-url="<%= url %>"
             href="<%= url %>" >
-            <img src="/images/remove.svg" alt="Edit" class="bg-transparent">
+            <img src="/assets/remove.svg" alt="Edit" class="bg-transparent">
           </a>
         <% } %>
         <% if (tableRow.actions.info) { %>
           <a href='<%= infoUrl || "javascript:"%>' class="text-decoration-none">
-            <img src="/images/info.svg" alt="info" class="bg-transparent">
+            <img src="/assets/info.svg" alt="info" class="bg-transparent">
           </a>
         <% } %>
       </td>
