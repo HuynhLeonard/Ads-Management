@@ -1,4 +1,5 @@
 import Location from "../models/locationSchema.js";
+import reportSchema from "../models/reportAdsSchema.js";
 import { getSingleBoard } from "./boardService.js";
 import { createReport, getSingleReport } from "./reportService.js";
 import { getAllReportType } from "./reportTypeService.js";
@@ -23,7 +24,7 @@ export const getAllLocations = async (districtID, wardID) => {
                     $lookup: {
                         as: 'reports',
                         from: 'reports',
-                        foreignField: 'boardID',
+                        foreignField: 'objectID',
                         localField: 'boardID'
                     }
                     },
@@ -182,7 +183,7 @@ export const getLocationDetail = async (locationID, getAll) => {
     const option = [
         {
             $match: {
-                locationID: 'LC001'
+                locationID: locationID
             }
         },
         {
@@ -231,7 +232,7 @@ export const getLocationDetail = async (locationID, getAll) => {
                         $lookup: {
                             as: 'boardtype',
                             from: 'boardtypes',
-                            foreignField: 'boardtypeID',
+                            foreignField: 'boardTypeID',
                             localField: 'boardModelType'
                         }
                     },
@@ -392,7 +393,7 @@ export const getLocationDetail = async (locationID, getAll) => {
                 _id: 0,
                 locationID: 1,
                 locationName: 1,
-                Images: 1,
+                images: 1,
                 address: {
                     $concat: ['$address', ', Phường ', '$ward.wardName', ', Quận ', '$district.districtName']
                 },
@@ -539,6 +540,7 @@ export const getListReport = async (reportIDs) => {
               }
             }
         ]
+        return await reportSchema.aggregate(option);
     } catch (error) {
         console.log(error);
         throw new Error(`Error getting list report: ${error.message}`);
