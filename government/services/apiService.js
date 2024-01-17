@@ -1,8 +1,7 @@
 import Location from "../models/locationSchema.js";
-import Report from "../models/reportAdsSchema.js";
-import {createReport,getSingleReport} from "./reportService.js"
-import {getSingleBoard} from "./boardService.js";
-import {getAllReportType} from "./reportTypeService.js";
+import { getSingleBoard } from "./boardService.js";
+import { createReport, getSingleReport } from "./reportService.js";
+import { getAllReportType } from "./reportTypeService.js";
 // query here
 
 export const getAllLocations = async (districtID, wardID) => {
@@ -183,7 +182,7 @@ export const getLocationDetail = async (locationID, getAll) => {
     const option = [
         {
             $match: {
-                locationID: locationID
+                locationID: 'LC001'
             }
         },
         {
@@ -204,8 +203,8 @@ export const getLocationDetail = async (locationID, getAll) => {
                                 {
                                     $lookup: {
                                         from: 'reporttypes',
-                                        localField:'reportType',
-                                        foreignField:'reportTypeID',
+                                        localField: 'reportType',
+                                        foreignField: 'reportTypeID',
                                         as: 'reporttype'
                                     },
                                 },
@@ -232,13 +231,27 @@ export const getLocationDetail = async (locationID, getAll) => {
                         $lookup: {
                             as: 'boardtype',
                             from: 'boardtypes',
-                            foreignField: 'typeID',
-                            localField: 'boardType'
+                            foreignField: 'boardtypeID',
+                            localField: 'boardModelType'
                         }
                     },
                     {
                         $unwind: {
                             path: '$boardtype',
+                            preserveNullAndEmptyArrays: true
+                        }
+                    },
+                    {
+                        $lookup: {
+                            as: 'licensingrequest',
+                            from: 'licensingrequests',
+                            foreignField: 'requestID',
+                            localField: 'licenseNumber'
+                        }
+                    },
+                    {
+                        $unwind: {
+                            path: '$licensingrequest',
                             preserveNullAndEmptyArrays: true
                         }
                     },
@@ -249,12 +262,13 @@ export const getLocationDetail = async (locationID, getAll) => {
                             reports: 1,
                             boardSize: { $concat: [{ $toString: '$width' }, 'x', { $toString: '$height' }] },
                             quantity: 1,
-                            boardType: '$boardtype.typeName'
+                            boardType: '$boardtype.typeName',
+                            expiredDate: '$licensingrequest.endDate'
                         }
                     },
                     {
                         $match: {
-                            expiredDate: {$gt: currentDate}
+                            expiredDate: { $gt: currentDate }
                         }
                     }
                 ]
