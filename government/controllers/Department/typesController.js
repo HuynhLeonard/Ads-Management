@@ -74,13 +74,13 @@ const showDetail = async (req, res) => {
 const add = async (req, res) => {
     const category = req.query.category || '';
     const newData = req.body;
-
+    console.log(newData);
     try {
         switch (category) {
             case 'ads':
                 const newAds = {
-                    CategoriesName: newData.CategoriesName,
-                    description: newData.description
+                    CategoriesName: newData.type,
+                    description: newData.desc
                 }
                 const messageAds = await adsCategoriesService.createCategories(newAds);
 
@@ -112,7 +112,7 @@ const remove = async (req, res) => {
     const category = req.query.category || '';
     const id = req.params.id;
     let message = '';
-
+    console.log(id);
     try {
         switch (category) {
             case 'ads':
@@ -140,13 +140,13 @@ const modify = async (req, res) => {
     const category = req.query.category || '';
     const id = req.params.id;
     const newData = req.body;
-
+    console.log(newData);
     try {
         switch (category) {
             case 'ads':
                 const newAds = {
-                    CategoriesName: newData.CategoriesName,
-                    description: newData.description
+                    CategoriesName: newData.type,
+                    description: newData.desc
                 }
                 const messageAds = await adsCategoriesService.modifyCategories(id, newAds);
 

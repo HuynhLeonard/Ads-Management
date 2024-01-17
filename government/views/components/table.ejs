@@ -25,15 +25,15 @@
           console.log(removeUrl)
         %>
         <% if (tableRow.actions.edit) { %>
-          <button class="btn p-0" data-bs-target="<%= target || ''%>" data-bs-toggle="modal" data-bs-dismiss="modal">
+          <button class="btn p-0" data-bs-target="<%= '#editModal-' + i || ''%>" data-bs-toggle="modal" data-bs-dismiss="modal">
             <img src="/assets/edit.svg" alt="Edit" class="bg-transparent">
           </button>
         <% } %>
         <% if (tableRow.actions.remove) { %>
           <a role="button"
             class="text-decoration-none mx-3 remove-button"
-            data-bs-url="<%= url %>"
-            href="<%= url %>" >
+            data-bs-url="<%= removeUrl %>"
+            href="<%= removeUrl %>" >
             <img src="/assets/remove.svg" alt="Edit" class="bg-transparent">
           </a>
         <% } %>
