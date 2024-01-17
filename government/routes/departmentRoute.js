@@ -12,7 +12,9 @@ router.get("*", (req, res, next) => {
 router.get("/", (req, res) => {
     res.render("Department/index");
 });
-
+router.get("/details", (req, res) => {
+  res.render("Popup");
+});
 // nhom location (quan)
 router.get("/locations", (req,res) => {
   controllerAPI.locationController.findAllDistricts(req,res);

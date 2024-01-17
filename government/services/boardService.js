@@ -31,7 +31,7 @@ export const getSingleBoard = async (boardID) => {
             },
             {
                 $lookup: {
-                    from: 'licensingrequest',
+                    from: 'licensingrequests',
                     localField: 'licenseNumber',
                     foreignField: 'requestID',
                     as: 'licensereq',
@@ -128,7 +128,7 @@ export const getSingleBoard = async (boardID) => {
                     districtName: '$district.districtName',
                     wardName: '$ward.wardName',
                     authCompany: '$licensereq.companyName',
-                    authCompanyPhone: '$licensereq.companyPhone',
+                    authCompanyPhone: '$licensereq.phoneNumber',
                     authCompanyEmail: '$licensereq.companyEmail',
                     authCompanyAddress: '$licensereq.companyAddress',
                     startDate: '$licensereq.startDate',

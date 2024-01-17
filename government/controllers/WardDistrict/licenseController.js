@@ -213,7 +213,7 @@ const showCreate = async (req, res) => {
     if (req.query.locationID != null) {
         curSpot = await getSingleLocation(req.query.locationID);
     }
-    // console.log(curSpot);
+    console.log(curSpot);
     // if(Object.keys(curSpot).length === 0) console.log(1);
 
     let boardtypes = await getAllBoardType();

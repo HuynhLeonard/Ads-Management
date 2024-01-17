@@ -36,9 +36,9 @@ router.get("/advertisements", (req,res) => controller.adsController.show(req,res
 // /advertisements/new?category=Location
 router.get("/advertisements/new", (req, res) => controller.adsController.showAdd(req,res));
 router.post("/advertisements/new");
-router.get("/advertisements/:id");
-router.get("/advertisements/edit/:id");
-router.post("/advertisements");
+router.get("/advertisements/:id", (req,res) => controller.adsController.showDetail(req,res,false));
+router.get("/advertisements/:id/modify", (req,res) => controller.adsController.showDetail(req,res,true));
+router.post("/advertisements/:id", (req,res) => controller.adsController.request(req,res));
 
 // nhóm giấy phép (license)
 router.get('/license', (req, res) => controller.licenseController.show(req, res));

@@ -52,7 +52,7 @@ controller.show = async (req, res) => {
             ward: request.wardName || 'N/A',
             district: request.districtName || 'N/A',
             officer: request.officer,
-            reason: request.editContent,
+            reason: request.reason,
             status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
             actions: {
                 edit: false,

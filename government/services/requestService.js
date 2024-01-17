@@ -178,6 +178,7 @@ class RequestService {
 
     async create(data) {
         try {
+            console.log(data);
             const newRequest = new this.model(data);
             await newRequest.save();
             return { message: `${this.model.modelName} created successfully` }

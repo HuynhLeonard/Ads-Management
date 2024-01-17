@@ -115,7 +115,7 @@ import districtRoute from './government/routes/districtRoute.js';
 import { setHeaders } from './government/routes/apiRoutes.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
 governmentApp.use('/department', departmentRoute);
-governmentApp.use('/district', checkAuth, districtRoute);
+governmentApp.use('/district', districtRoute);
 // governmentApp.get('/api/location/', (req,res) => {
 //     api
 //         .getAllLocations(req.query.districtID, req.query.wardID)

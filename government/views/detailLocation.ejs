@@ -14,7 +14,7 @@
     <div class="row"><%- include("./components/sidebar.ejs"); %></div>
     <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-
+            <%- include("./components/back_button.ejs", {url: "/phuong/boards"}); %>
             <!-- Title -->
             <div class="d-flex flex-row align-items-center" style="gap: 10px">
                 <h1 class="fw-bolder m-0 text-uppercase"><%= spotTitle %></h1>
