@@ -29,10 +29,10 @@ controller.show = async (req, res) => {
     let checkboxHeader = 'Thành phố Hồ Chí Minh'
 
     const data = await reportService.getAllReport();
-    // console.log(data);
+    console.log(data);
     tableData = await Promise.all(data.map(async (item) => {
-        let districtName = item.locationDistrictName[0];
-        let wardName = item.locationWardName[0];
+        let districtName = item.spotDistrictName[0];
+        let wardName = item.spotWardName[0];
 
         // console.log(item.objectID);
 
@@ -40,8 +40,8 @@ controller.show = async (req, res) => {
             const lat = item.objectID.split(':')[1];
             const lng = item.objectID.split(':')[0].replace('AD', '');
             const location = await locationDetailService.getDistrictWardName(lat, lng);
-            districtName = location.districtName;
-            wardName = location.wardName;
+            districtName = 'Quận ' + location.districtName;
+            wardName = 'Phường ' +location.wardName;
         }
 
         return {
@@ -66,7 +66,7 @@ controller.show = async (req, res) => {
     let checkboxData = await districtService.getAllDistricts()
     checkboxData = checkboxData.map((dist) => {
         return {
-            name: `Quận ${dist.districtName}`,
+            name: `${dist.districtName}`,
             status: tableData.some(item => item.district === dist.districtName)
         }
     });
@@ -84,8 +84,9 @@ controller.show = async (req, res) => {
 
 controller.showDetail = async (req, res) => {
     const id = req.params.id
-    const dataFetch = await reportService.getSingleReport(id);
-
+    const dataFetch1 = await reportService.getSingleReport(id);
+    const dataFetch = dataFetch1[0];
+    console.log('data fetch',dataFetch);
     if (dataFetch.objectID.includes('QC')) {
         const boardDetail = await boardService.getSingleBoard(dataFetch.objectID);
 
@@ -124,9 +125,11 @@ controller.showDetail = async (req, res) => {
         spotAddress: dataFetch.spotAddress,
         spotDistrict: dataFetch.district,
         spotWard: dataFetch.ward,
+        district: dataFetch.userDistrictName
     }
+    console.log('detail', detail)
     const title = 'Sở - Chi tiết báo cáo vi phạm'
-    return res.render('Department/report-detail', { title, detail, toolbars })
+    return res.render('Department/report-detail', { title, detail})
 }
 
 controller.showStatistic = async (req, res) => {

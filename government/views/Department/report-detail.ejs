@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("../components/head.ejs"); %>
+</head>
+<body>
+<main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <div class="row">
+        <%- include("../components/sidebar.ejs"); %>
+    </div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <!-- Back button -->
+            <%- include("../components/back_button.ejs"); %>
+            <!-- Title -->
+            <div class="d-flex flex-row align-items-center" style="gap: 10px">
+                <h2 class="fw-bolder m-0 text-uppercase"><%= title %></h2>
+            </div>
+
+            <!-- Content -->
+            <div class="container-fluid nd-chi-tiet px-0">
+                <!-- Row 1: 3 columns -->
+                <div class="row mt-2">
+                    <div class="col-md-4 custom-col">
+                        <label for="id" style="margin-bottom: 6px">ID Báo cáo</label>
+                        <input type="text" class="form-control" id="id" value='<%= detail.id %>' disabled/>
+                    </div>
+                    <div class="col-md-4 custom-col">
+                        <label for="sdt" style="margin-bottom: 6px">Số điện thoại</label>
+                        <input type="text" class="form-control" id="sdt" value='<%= detail.phone %>' disabled/>
+                    </div>
+                    <div class="col-md-4 custom-col">
+                        <label for="dropdown-state-list" style="margin-bottom: 6px">Trạng thái</label>
+                        <% if(detail.state === 0) { %>
+                            <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
+                              <option selected>Đang xử lí</option>
+                              <option >Đã xử lí</option>
+                            </select>
+                        <% } else { %>
+                            <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
+                              <option >Đang xử lí</option>
+                              <option selected >Đã xử lí</option>
+                            </select>
+                        <% } %>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                  <div class="col-md-4 custom-col">
+                      <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                      <input type="text" class="form-control" id="spotAddress" value='<%= detail.spotAddress %>' disabled/>
+                  </div>
+                  <div class="col-md-4 custom-col">
+                    <label for="spotDistrict" style="margin-bottom: 6px">Quận</label>
+                    <input type="text" class="form-control" id="spotDistrict" value='<%= detail.spotDistrict %>' disabled/>
+                  </div>
+                  <div class="col-md-4 custom-col">
+                      <label for="spotWard" style="margin-bottom: 6px">Phường</label>
+                      <input type="text" class="form-control" id="spotWard" value='<%= detail.spotWard %>' disabled/>
+                  </div>
+                </div>
+
+                <!-- Row 2: 2 columns -->
+                <div class="row mt-2">
+                    <div class="col-md-6 custom-col">
+                        <label for="ads_id" style="margin-bottom: 6px">ID Điểm đặt/ Bảng quảng cáo</label>
+                        <input type="text" class="form-control" id="ads_id" value='<%= detail.objectID %>' disabled/>
+                    </div>
+                    <div class="col-md-6 custom-col">
+                        <label for="report_type" style="margin-bottom: 6px">Hình thức báo cáo</label>
+                        <input type="text" class="form-control" id="report_type" value='<%= detail.reportType %>'
+                               disabled/>
+                    </div>
+                </div>
+
+                <!-- Row 3: 3 columns -->
+                <div class="row mt-2">
+                    <form class="col-md-4 custom-col">
+                        <label for="date" style="margin-bottom: 6px">Thời điểm gửi</label>
+                        <div class="input-group date" id="datepicker">
+                            <input type="text" class="form-control" id="date" value='<%= detail.sendTime %>' disabled/>
+                            <span class="input-group-append">
+                  <span class="input-group-text h-100">
+                    <i class="fa fa-calendar bg-transparent"></i>
+                  </span>
+                </span>
+                        </div>
+                    </form>
+                    <div class="col-md-4 custom-col">
+                        <label for="sender-name" style="margin-bottom: 6px">Họ và tên người gửi</label>
+                        <input type="text" class="form-control" id="sender-name" value='<%= detail.name %>' disabled/>
+                    </div>
+                    <div class="col-md-4 custom-col">
+                        <label for="email" style="margin-bottom: 6px">Email</label>
+                        <input type="email" class="form-control" id="email" value='<%= detail.email %>' disabled/>
+                    </div>
+                </div>
+
+                <% if(detail.state == 1) { %>
+                    <div class="row mt-2">
+                      <div class="col-md-4 custom-col">
+                        <label for="officerName" style="margin-bottom: 6px">Cán bộ xử lý</label>
+                        <input type="text" class="form-control" id="officerName" value="<%- detail.officer %>" disabled />
+                      </div>
+                      <div class="col-md-4 custom-col">
+                        <label for="officerDistrict" style="margin-bottom: 6px">Thuộc Quận</label>
+                        <input type="text" class="form-control" id="officerDistrict" value="<%- detail.district %>" disabled />
+                      </div>
+                      <div class="col-md-4 custom-col">
+                        <label for="officerWard" style="margin-bottom: 6px">Thuộc Phường</label>
+                        <input type="text" class="form-control" id="officerWard" value="<%- detail.ward %>" disabled />
+                      </div>
+                    </div>
+                <% } %>
+
+                <!-- Rows 4, 5, 6: 1 column each -->
+                <div class="row mt-2">
+                    <div class="col-md-12 custom-col">
+                        <label for="content" style="margin-bottom: 6px">Nội dung báo cáo</label>
+                        <div id="content" class="form-control"
+                             style="min-height: 6.25rem; border-radius: 0; background-color: var(--bs-secondary-bg) !important; border-bottom-color: var(--Neutral-5);">
+                             <%- detail.content %>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12 custom-col">
+                        <div class="col-md-12 custom-col">
+                            <label for="solution" style="margin-bottom: 6px">Hình thức xử lý</label>
+                            <textarea class="form-control" id="solution" disabled><%= detail.solution %></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12 custom-col hinhanh-mhoa">
+                      <label for="illustrate" style="margin-bottom: 6px">Hình ảnh minh họa</label>
+                      <div class="d-flex flex-row row">
+                        <% if(detail.imgUrls[1]) { %>
+                          <div class="col-md-6 custom-col">
+                            <img src="<%- detail.imgUrls[0] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">
+                          </div>
+                          <div class="col-md-6 custom-col">
+                            <img src="<%- detail.imgUrls[1] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">
+                          </div>
+                        <% } else { %>  
+                          <div class="col-md-12 custom-col">
+                            <img src="<%- detail.imgUrls[0] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">
+                          </div>
+                        <% } %>   
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Include Bootstrap Datepicker -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+      integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+        integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>

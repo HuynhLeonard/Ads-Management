@@ -120,4 +120,12 @@ router.post('/requestsProcessing', (req, res) => {
 
 router.post('/acceptlicense', (req, res) => controllerAPI.requestController.acceptLicense(req, res));
 router.post('/rejectlicense/:id', (req, res) => controllerAPI.requestController.rejectLicense(req, res));
+
+// nhom report
+router.get('/reports', (req, res) => {
+  controllerAPI.reportController.show(req, res);
+})
+router.get('/reports/:id', (req, res) => {
+  controllerAPI.reportController.showDetail(req, res);
+});
 export default router;

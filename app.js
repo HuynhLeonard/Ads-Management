@@ -111,9 +111,11 @@ governmentApp.get('/show', (req,res) => {
 import userController from './government/controllers/userController.js';
 import apiRoute, { setHeaders } from "./government/routes/apiRoutes.js";
 import districtRoute from './government/routes/districtRoute.js';
+import wardRoute from './government/routes/wardRoute.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
 governmentApp.use('/department', departmentRoute);
 governmentApp.use('/district', districtRoute);
+governmentApp.use('/ward', wardRoute);
 // governmentApp.get('/api/location/', (req,res) => {
 //     api
 //         .getAllLocations(req.query.districtID, req.query.wardID)
