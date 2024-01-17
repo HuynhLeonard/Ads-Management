@@ -13,8 +13,8 @@ export const saveOTP = async (email, otp) => {
 
 export const getSingleOTP = async (email) => {
     try {
-        const otp = await OTP.findOne({email}).sort({expirationTime: -1});
-        if(otp.expirationTime < new Date()) {
+        const otp = await OTP.findOne({email}).sort({expiredTime: -1});
+        if(otp.expiredTime < new Date()) {
             return null;
         }
         return otp;
@@ -25,7 +25,7 @@ export const getSingleOTP = async (email) => {
 
 export const sendOTP = async (email, otp) => {
     try {
-        await emailService.sendOTP(email.otp);
+        await emailService.sendOTP(email,otp);
     } catch (error) {
         throw new Error('Error sending OTP.')
     }
