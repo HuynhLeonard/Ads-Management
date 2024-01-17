@@ -4,7 +4,7 @@ import * as IDCreate from '../../services/createIDService.js';
 import { getSingleRequest } from '../../services/licensingService.js';
 import * as spotService from '../../services/locationService.js';
 import { editRequestService, licensingRequestService } from '../../services/requestService.js';
-
+import boardSchema from '../../models/boardSchema.js';
 const controller = {};
 
 const convertDate = (date) => {
@@ -189,6 +189,13 @@ controller.requestProcessing = async (req, res) => {
     }
 }
 
+// generate boardID
+const generateBoardID = async () => {
+    const count = await boardSchema.countDocuments();
+    const boardID = 'QC' + String(count + 1).padStart(3,'0');
+    return boardID;
+}
+
 controller.acceptLicense = async (req, res) => {
     const data = req.body;
     if (data.boardID != null) {
@@ -206,8 +213,8 @@ controller.acceptLicense = async (req, res) => {
             res.redirect('requests?category=license');
         }
     } else {
-        // console.log(data);
-        data.boardID = await IDCreate.getNewID('Board');
+        data.boardID = await generateBoardID();
+        console.log(data);
         try {
             const response = await boardService.createNewBoard(data);
             if (response.message.trim() == 'Board created successfully') {
