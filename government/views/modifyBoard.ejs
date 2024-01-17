@@ -295,12 +295,12 @@
         }
 
         // ................................................
-
+        console.log(document.getElementById('boardType').value);
         const data = {
-            spotID: document.getElementById('spotID').value,
+            locationID: document.getElementById('spotID').value,
             image: imgUrlsData,
             boardID: document.getElementById('boardID').value,
-            boardType: document.getElementById('boardType').value,
+            boardModelType: document.getElementById('boardType').value,
             boardTypeName: document.getElementById('boardTypeName').value,
             quantity: quantity,
             height: height,
@@ -317,7 +317,7 @@
             endDate: document.getElementById('endDate').value,
             spotTypeName: document.getElementById('spotTypeName').value,
             adsFormName: document.getElementById('adsFormName').value,
-            licensingID: '<%= licensingID %>',
+            licenseNumber: '<%= licensingID %>',
         }
         const url = '<%= url %>';
         const requestUrl = url.replace('/modify', '');
@@ -470,15 +470,19 @@
       })
 
       const boardtypes = JSON.parse('<%- JSON.stringify(other.boardtypes); %>');
+      console.log(boardtypes);
       const boardtypeInput = document.getElementById('boardTypeName');
       const boardtypeIdInput = document.getElementById('boardType');
       boardtypeInput.addEventListener('keyup', (e) => {
         const boardtypeName = e.target.value;
+        console.log(boardtypes)
         const boardtype = boardtypes.find((boardtype) => boardtype.typeName === boardtypeName);
+        console.log(boardtype);
         if (boardtype) {
-          boardtypeIdInput.value = boardtype.typeID;
+          boardtypeIdInput.value = boardtype.boardTypeID;
           // console.log(boardtypeIdInput.value);
         }
+        console.log(boardtypeIdInput.value)
       })    
       
       document.querySelectorAll('.btn-close').forEach((btn) => {

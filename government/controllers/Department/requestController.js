@@ -1,10 +1,9 @@
+import boardSchema from '../../models/boardSchema.js';
 import * as boardService from '../../services/boardService.js';
 import { getSingleBoardType } from '../../services/boardTypeService.js';
-import * as IDCreate from '../../services/createIDService.js';
 import { getSingleRequest } from '../../services/licensingService.js';
 import * as spotService from '../../services/locationService.js';
 import { editRequestService, licensingRequestService } from '../../services/requestService.js';
-import boardSchema from '../../models/boardSchema.js';
 const controller = {};
 
 const convertDate = (date) => {
@@ -107,7 +106,6 @@ controller.showDetail = async (req, res) => {
             let spotDetail = await spotService.getSingleLocation(data.locationID);
             const boardType = await getSingleBoardType(data.boardType);
             console.log(data);
-            // console.log(spotDetail);
             data = {
                 requestID: data.requestID,
                 spotID: data.locationID,
@@ -135,25 +133,27 @@ controller.showDetail = async (req, res) => {
         case 'modify':
             console.log('modify');
             data = await editRequestService.getSingle(id);
+            console.log(data);
             const type = data.objectID.startsWith('LC') ? 'location' : 'board';
             if (data.requestTime !== undefined) {
                 data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
             }
-            return res.render('Department/edit-request-detail', { title, toolbars, id: req.params.id, type, ...data });
+            return res.render('Department/edit-request-detail', { title, id: req.params.id, type, ...data });
     }
 }
 
 controller.requestProcessing = async (req, res) => {
     try {
         const { requestID, status } = req.body;
-        console.log(requestID, status);
+        console.log('here', req.body);
         let { message } = await editRequestService.updateStatus(requestID, status);
         //console.log(`Message: ${message}`);
 
         if (status === 1) {
-            const { objectID, newInfo } = await editRequestService.getSingle(requestID);
+            const { objectID, editContent } = await editRequestService.getSingle(requestID);
+            console.log('here2', editContent)
             if (objectID.startsWith('LC')) {
-                const { spotID, address, latitude, longitude, wardID, districtID, spotType, adsForm, planned, spotName, spotImage } = newInfo;
+                const { spotID, address, latitude, longitude, wardID, districtID, spotType, adsForm, planned, spotName, spotImage } = editContent;
                 await spotService.updateLocation(spotID, {
                     address: address,
                     latitude: latitude,
@@ -167,15 +167,16 @@ controller.requestProcessing = async (req, res) => {
                     images: spotImage
                 })
             } else {
-                const { boardID, boardType, spotID, height, width, quantity, image, licensingNumber } = newInfo;
+                console.log('newinfo',editContent);
+                const { boardID, boardModelType, locationID, height, width, quantity, image, licenseNumber } = editContent;
                 await boardService.updateBoard(boardID, {
-                    boardModelType: boardType,
-                    locationID: spotID,
+                    boardModelType: boardModelType,
+                    locationID: locationID,
                     height: height,
                     width: width,
                     quantity: quantity,
                     images: image,
-                    licenseNumber: licensingNumber
+                    licenseNumber: licenseNumber
                 });
             }
         }

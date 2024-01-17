@@ -334,8 +334,8 @@
         // ................................................
 
         const data = {
-            spotID: spotID,
-            spotImage: imgUrlsData,
+            locationID: spotID,
+            images: imgUrlsData,
             address: address,
             wardID: wardID,
             wardName: wardName,
@@ -343,11 +343,11 @@
             districtName: districtName,
             latitude: latitude,
             longtitude: longtitude,
-            spotType: spotType,
+            locationType: spotType,
             spotTypeName: spotTypeName,
             adsForm: adsForm,
             adsFormName: adsFormName,
-            spotName: spotName,
+            locationName: spotName,
             planned: (planned == 'Đã quy hoạch') ? 1 : 0,
             reason: reason,
             officerUsername: '<%= user.username %>'

@@ -440,6 +440,7 @@ export const getAllBoardsOfWard = async (wardID) => {
 // done
 export const updateBoard = async (boardID, updatedData) => {
     try {
+        console.log('in board Service', updatedData);
         const updatedBoard = await Board.findOneAndUpdate(
             { boardID: boardID },
             { $set: updatedData },

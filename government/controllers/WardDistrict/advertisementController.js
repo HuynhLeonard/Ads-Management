@@ -1,12 +1,12 @@
-import * as spotService from '../../services/locationService.js';
-import * as boardService from '../../services/boardService.js';
-import * as wardService from '../../services/wardService.js';
-import * as districtService from '../../services/districtService.js';
-import * as adsFormService from '../../services/adsCategoriesService.js';
-import * as spotTypeService from '../../services/locationTypeService.js';
-import * as boardTypeService from '../../services/boardTypeService.js';
-import { editRequestService } from '../../services/requestService.js';
 import editRequestSchema from '../../models/editRequestSchema.js';
+import * as adsFormService from '../../services/adsCategoriesService.js';
+import * as boardService from '../../services/boardService.js';
+import * as boardTypeService from '../../services/boardTypeService.js';
+import * as districtService from '../../services/districtService.js';
+import * as spotService from '../../services/locationService.js';
+import * as spotTypeService from '../../services/locationTypeService.js';
+import { editRequestService } from '../../services/requestService.js';
+import * as wardService from '../../services/wardService.js';
 const isOutDated = (date) => {
 	const curDate = new Date();
 	const inDate = new Date(date);
@@ -285,7 +285,7 @@ const request = async (req, res) => {
     data = {
       requestID: await generateRequestID(),
       requestTime: new Date(),
-      objectID: (type === 'Location') ? rest.spotID : rest.boardID,
+      objectID: (type === 'Location') ? rest.locationID : rest.boardID,
       reason: reason,
       editContent: rest,
       status: 0,

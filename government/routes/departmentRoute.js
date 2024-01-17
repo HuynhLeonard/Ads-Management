@@ -114,7 +114,7 @@ router.get('/requests/:id', (req, res) => {
   controllerAPI.requestController.showDetail(req, res);
 });
 
-router.post('/requestsProcessing', (req, res) => {
+router.post('/requests/:id', (req, res) => {
   controllerAPI.requestController.requestProcessing(req, res);
 })
 

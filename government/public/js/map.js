@@ -46,7 +46,7 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.locationTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
-              <a class="btn btn-primary btn-sm mt-2" href=/department/details?locationID=${spot.locationID}>Xem chi tiết</a>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.locationID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
             </div>
           </div>`;
   }
@@ -97,7 +97,7 @@ async function getSpotsData() {
         }
       });
     });
-
+    console.log(spotsGeojson);
     return spotsGeojson;
   } catch (error) {
     console.log(error);

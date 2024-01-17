@@ -167,11 +167,11 @@
     // update info tab pane
     const infoTabPane = offcanvas.querySelector('#info-tab-pane');
     const infoHTML = `<p>Địa chỉ: <b>${detailSpot.address}</b></p>
-      <p>Loại hình: <b>${detailSpot.adsFormName}</b></p>
-      <p>Hình thức: <b>${detailSpot.spotTypeName} </b></p>
+      <p>Loại hình: <b>${detailSpot.adsFormNme}</b></p>
+      <p>Hình thức: <b>${detailSpot.locationTypeName} </b></p>
       <p class="text-uppercase fw-bold fst-italic">${detailSpot.planned}</p>
       <div class="options">
-            <a href="so/ads/${detailSpot.spotID}?category=spot" class="btn btn-icon" role="button">
+            <a href="department/advertisements/${detailSpot.locationID}?category=Location" class="btn btn-icon" role="button">
               <i class="bi bi-info-circle"></i>
             </a>
           </div>`;
@@ -185,10 +185,10 @@
       <small>${detailSpot.address}</small>
       <p class="mb-1">Kích thước: <b>${ad.boardSize}m</b></p>
       <p class="mb-1">Số lượng: <b>${ad.quantity}<b></p>
-      <p class="mb-1">Hình thức: <b>${detailSpot.adsFormName}</b></p>
-      <p class="mb-1">Loại hình: <b>${detailSpot.spotTypeName}</b></p>
+      <p class="mb-1">Hình thức: <b>${detailSpot.adsFormNme}</b></p>
+      <p class="mb-1">Loại hình: <b>${detailSpot.locationTypeName}</b></p>
       <div class="options">
-        <a href="so/ads/${ad.boardID}?category=board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>`;
+        <a href="department/advertisements/${ad.boardID}?category=Board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>`;
       
       const currentDate = new Date();
       const endDate = new Date(ad.expiredDate);
@@ -236,7 +236,7 @@
       <p class="mb-1">Ngày gửi: <b>${formatter.format(new Date(report.sendTime))}</b></p>
       <p class="mb-1">Tình trạng: <b>${report.status ? 'Đã xử lý' : 'Chưa xử lý'}</b></p>
       <div class="options">
-        <a href="so/reports/${report.reportID}" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>
+        <a href="department/reports/${report.reportID}" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>
       </div>
       </div>`);
 

@@ -44,7 +44,7 @@ export const getAllLocations = async (districtID, wardID) => {
                 $lookup: {
                 as: 'reports',
                 from: 'reports',
-                foreignField: 'boardID',
+                foreignField: 'objectID',
                 localField: 'locationID'
                 }
             },

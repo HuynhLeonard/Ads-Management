@@ -1,6 +1,5 @@
 import editRequest from "../models/editRequestSchema.js";
 import licensingRequest from "../models/licensingSchema.js";
-import {request} from 'http'
 
 class RequestService {
     constructor(model) {
@@ -171,7 +170,7 @@ class RequestService {
                     objectID: 1,
                     editContent: 1,
                     requestTime: 1,
-
+                    reason: 1
                 }
         }
     }
@@ -246,6 +245,7 @@ class RequestService {
     async updateStatus(id, status) {
         try {
             await this.model.findOneAndUpdate({requestID: id}, {status: status});
+            return {message: 'Update status successfully'}
         } catch (error) {
             throw new Error('Error updating status')
         }
@@ -255,4 +255,5 @@ class RequestService {
 const licensingRequestService = new RequestService(licensingRequest);
 const editRequestService = new RequestService(editRequest);
 
-export {licensingRequestService, editRequestService};
+export { editRequestService, licensingRequestService };
+
