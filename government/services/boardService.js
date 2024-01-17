@@ -6,7 +6,7 @@ export const createNewBoard = async (boardData) => {
     try {
         const newBoard = new Board(boardData);
         const saveData = await newBoard.save();
-        return saveData;
+        return { message: 'Board created successfully' };
     } catch (error) {
         throw new Error(`Error creating board: ${error.message}`);
     }
@@ -445,7 +445,7 @@ export const updateBoard = async (boardID, updatedData) => {
             { $set: updatedData },
         );
 
-        return { message: 'Board upated successfully' }
+        return { message: 'Board updated successfully' }
     } catch (error) {
         throw new Error(`Error updating board by ID: ${error.message}`);
     }

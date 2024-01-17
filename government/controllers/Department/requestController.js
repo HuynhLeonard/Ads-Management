@@ -1,12 +1,12 @@
 import * as boardService from '../../services/boardService.js';
 import { getSingleBoardType } from '../../services/boardTypeService.js';
 import * as IDCreate from '../../services/createIDService.js';
+import { getSingleRequest } from '../../services/licensingService.js';
 import * as spotService from '../../services/locationService.js';
-import {licensingRequestService, editRequestService} from '../../services/requestService.js';
+import { editRequestService, licensingRequestService } from '../../services/requestService.js';
 
 const controller = {};
-// const instance2 = new RequestService('editRequest');
-// const instance1 = new RequestService('licensingRequest');
+
 const convertDate = (date) => {
     const dateObject = new Date(date);
 
@@ -103,7 +103,7 @@ controller.showDetail = async (req, res) => {
     switch (category) {
         case 'license':
             // console.log('license');
-            data = await licensingRequestService.getSingle(id);
+            data = await getSingleRequest(id);
             let spotDetail = await spotService.getSingleLocation(data.locationID);
             const boardType = await getSingleBoardType(data.boardType);
             console.log(data);
@@ -113,20 +113,20 @@ controller.showDetail = async (req, res) => {
                 spotID: data.locationID,
                 name: spotDetail.locationName,
                 address: `${spotDetail.address}, Phường ${spotDetail.wardName}, Quận ${spotDetail.districtName}`,
-                // company: data.companyName,
-                // phone: data.companyPhone,
-                // email: data.companyEmail,
-                // compAddr: data.companyAddress,
+                company: data.companyName,
+                phone: data.phoneNumber,
+                email: data.companyEmail,
+                compAddr: data.companyAddress,
                 startTime: convertDate(data.startDate),
                 endTime: convertDate(data.endDate),
                 content: data.content,
-                // boardTypeID: data.boardType,
+                boardTypeID: data.boardType,
                 boardType: boardType.typeName,
-                // height: data.height,
-                // width: data.width,
-                // quantity: data.quantity,
-                // state: data.status,
-                // imgUrls: data.adsImages,
+                height: data.height,
+                width: data.width,
+                quantity: data.quantity,
+                state: data.status,
+                imgUrls: data.images,
                 officerUsername: data.officer,
                 ward: spotDetail.wardName,
                 district: spotDetail.districtName,
@@ -134,7 +134,7 @@ controller.showDetail = async (req, res) => {
             return res.render('Department/license-request-detail', { title, data:data });
         case 'modify':
             console.log('modify');
-            data = await instance2.getSingle(id);
+            data = await editRequestService.getSingle(id);
             const type = data.objectID.startsWith('LC') ? 'location' : 'board';
             if (data.requestTime !== undefined) {
                 data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
@@ -147,35 +147,35 @@ controller.requestProcessing = async (req, res) => {
     try {
         const { requestID, status } = req.body;
         console.log(requestID, status);
-        let { message } = await instance2.updateById(requestID, status);
-        console.log(`Message: ${message}`);
+        let { message } = await editRequestService.updateStatus(requestID, status);
+        //console.log(`Message: ${message}`);
 
         if (status === 1) {
-            const { objectID, newInfo } = await instance2.getSingle(requestID);
-            if (objectID.startsWith('DD')) {
+            const { objectID, newInfo } = await editRequestService.getSingle(requestID);
+            if (objectID.startsWith('LC')) {
                 const { spotID, address, latitude, longitude, wardID, districtID, spotType, adsForm, planned, spotName, spotImage } = newInfo;
                 await spotService.updateLocation(spotID, {
-                    address,
-                    latitude,
-                    longitude,
-                    wardID,
-                    districtID,
-                    spotType,
-                    adsForm,
-                    planned,
-                    spotName,
-                    spotImage
+                    address: address,
+                    latitude: latitude,
+                    longitude: longitude,
+                    wardID: wardID,
+                    districtID: districtID,
+                    locationType: spotType,
+                    adsForm: adsForm,
+                    planned: planned,
+                    locationName: spotName,
+                    images: spotImage
                 })
             } else {
                 const { boardID, boardType, spotID, height, width, quantity, image, licensingNumber } = newInfo;
                 await boardService.updateBoard(boardID, {
-                    boardType,
-                    spotID,
-                    height,
-                    width,
-                    quantity,
-                    image,
-                    licensingNumber
+                    boardModelType: boardType,
+                    locationID: spotID,
+                    height: height,
+                    width: width,
+                    quantity: quantity,
+                    images: image,
+                    licenseNumber: licensingNumber
                 });
             }
         }
@@ -193,16 +193,17 @@ controller.acceptLicense = async (req, res) => {
     const data = req.body;
     if (data.boardID != null) {
         try {
-            const response = await boardService.updateBoard(data.boardID, { licensingNumber: data.licensingNumber });
+            const response = await boardService.updateBoard(data.boardID, { licenseNumber: data.licenseNumber });
+            console.log(response.message.trim());
             if (response.message.trim() == 'Board updated successfully') {
-                const response1 = await instance1.updateById(data.licensingNumber, { status: 1 });
-                // console.log(response1);
+                const response1 = await licensingRequestService.updateById(data.licenseNumber, { status: 1 });
+                console.log(response1);
             }
-            res.redirect('/so/requests?category=license');
+            res.redirect('requests?category=license');
         } catch (error) {
             console.log(`Error sending edit request: ${error.message}`);
             req.flash('error', error.message);
-            res.redirect('/so/requests?category=license');
+            res.redirect('requests?category=license');
         }
     } else {
         // console.log(data);
@@ -210,14 +211,14 @@ controller.acceptLicense = async (req, res) => {
         try {
             const response = await boardService.createNewBoard(data);
             if (response.message.trim() == 'Board created successfully') {
-                const response1 = await instance1.updateById(data.licensingNumber, { status: 1 });
+                const response1 = await licensingRequestService.updateById(data.licenseNumber, { status: 1 });
                 // console.log(response1);
             }
-            res.redirect('/so/requests?category=license');
+            res.redirect('requests?category=license');
         } catch (error) {
             console.log(`Error sending edit request: ${error.message}`);
             req.flash('error', error.message);
-            res.redirect('/so/requests?category=license');
+            res.redirect('requests?category=license');
         }
     }
 
@@ -226,12 +227,12 @@ controller.acceptLicense = async (req, res) => {
 controller.rejectLicense = async (req, res) => {
     const requestID = req.params.id;
     try {
-        const response = await instance1.updateById(requestID, { status: -1 });
-        res.redirect('/so/requests?category=license');
+        const response = await licensingRequestService.updateById(requestID, { status: -1 });
+        res.redirect('/department/requests?category=license');
     } catch (error) {
         console.log(`Error sending edit request: ${error.message}`);
         req.flash('error', error.message);
-        res.redirect('/so/requests?category=license');
+        res.redirect('/department/requests?category=license');
     }
 }
 
