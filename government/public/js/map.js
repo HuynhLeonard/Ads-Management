@@ -71,7 +71,7 @@ async function getSpotsData() {
     const districtID = userData.split(',')[0];
     const wardID = userData.split(',')[1];
     // rewrite the data in backend
-    const spots = await fetch(`http://localhost:3000/api/map/locations?districtID=${districtID}&wardID=${wardID}`, {
+    const spots = await fetch(`https://ads-management-kierh3xen-leonard-huynhs-projects.vercel.app/api/map/locations?districtID=${districtID}&wardID=${wardID}`, {
         method: 'GET',
         headers: new Headers(),
         mode: 'cors'
