@@ -8,16 +8,7 @@ import mongoose from "mongoose";
 const __dirname = path.resolve();
 
 dotenv.config(path.join(__dirname, ".env"));
-// ======================================================================================
 
-// setup for governmentApp
-// import { createCategories, deleteCategorires, getAllCategories, getSingleCategories, modifyCategories } from './government/services/adsCategoriesService.js';
-// import { createNewDistrict, deleteDistrict, getAllDistricts, getDistrictByID, updateDistrict } from './government/services/districtService.js';
-// import { createNewLocation, getAllLocation } from './government/services/locationService.js';
-// import { createNewLocationType, deleteLocationType, getAllLocationType, getLocationType, updateLocationType } from './government/services/locationTypeService.js';
-// import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
-// import * as boardTypeService from './government/services/boardTypeService.js';
-// import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
 // import testController from "./government/controllers/testController.js";
 import cookieParser from 'cookie-parser';

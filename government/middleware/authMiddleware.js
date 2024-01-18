@@ -1,4 +1,6 @@
 export const checkAuth = (req, res, next) => {
+    console.log('Auth: ',req.isAuthenticated());
+    console.log('User: ', req.user)
     if (!req.isAuthenticated() || !req.user || req.user.position === 0) {
         return res.redirect(`/?reqUrl=${req.originalUrl}`);
     }
