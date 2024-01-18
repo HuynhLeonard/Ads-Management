@@ -118,8 +118,11 @@ export const getAllLocation = async () => {
 // Done
 export const updateLocation = async (locationID,updateData) => {
     try {
+        console.log('In service');
+        console.log(locationID);
+        console.log(updateData);
         const updatedLocation = await Location.findOneAndUpdate({locationID: locationID}, {$set: updateData});
-
+        console.log('success');
         return {message: 'Location update successfully'};
     } catch (error) {
         throw new Error('Error happened when update location.')
