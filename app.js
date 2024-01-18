@@ -8,18 +8,6 @@ import mongoose from "mongoose";
 const __dirname = path.resolve();
 
 dotenv.config(path.join(__dirname, ".env"));
-
-const citizenApp = express();
-
-citizenApp.use(express.static(path.join(__dirname, "citizen/public")));
-citizenApp.use(express.json());
-citizenApp.get("/");
-
-const citizenServer = http.createServer(citizenApp);
-citizenServer.listen(process.env.CITIZENPORT, () => {
-  // console.log(`Citizen App is running on http://localhost:${process.env.CITIZENPORT}`);
-});
-
 // ======================================================================================
 
 // setup for governmentApp
