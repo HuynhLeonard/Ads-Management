@@ -130,7 +130,7 @@ const show = async (req, res) => {
         return res.render("error", { error: { status: 404, message: "Không tìm thấy trang" } });
     }
 
-    res.render("license", { url: req.originalUrl, title: title, ...roleInfo });
+    res.render("license", { url: req.originalUrl, title: title, ...roleInfo, role: role });
 
     // tableHeads: ['ID Yêu cầu', 'ID Điểm đặt', 'Công ty yêu cầu', 'Thời gian quảng cáo', 'Trạng thái']
 };

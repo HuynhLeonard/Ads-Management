@@ -136,7 +136,7 @@ const show = async (req, res) => {
 
 	// console.log(wardsOfDistrict);
 
-	res.render('reports', { url: req.originalUrl, title: title, ...roleInfo });
+	res.render('reports', { url: req.originalUrl, title: title, ...roleInfo, role: role });
 }
 
 // :id

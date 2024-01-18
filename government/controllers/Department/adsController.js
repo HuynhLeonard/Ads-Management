@@ -84,7 +84,8 @@ export const show = async (req, res) => {
             tableData,
             checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH',
             checkboxData,
-            current
+            current,
+            role: 'department'
         });
     } catch (error) {
         console.error(error)
