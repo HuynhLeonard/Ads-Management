@@ -79,7 +79,7 @@ const show = async (req, res) => {
                             : "Từ chối giấy phép",
                         actions: {
                             edit: false,
-                            remove: false,
+                            remove: true,
                             info: true,
                         },
                     };
@@ -112,7 +112,7 @@ const show = async (req, res) => {
                             : "Từ chối giấy phép",
                         actions: {
                             edit: false,
-                            remove: false,
+                            remove: true,
                             info: true,
                         },
                     };
