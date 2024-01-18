@@ -8,28 +8,6 @@ import mongoose from "mongoose";
 const __dirname = path.resolve();
 
 dotenv.config(path.join(__dirname, ".env"));
-
-const citizenApp = express();
-
-citizenApp.use(express.static(path.join(__dirname, "citizen/public")));
-citizenApp.use(express.json());
-citizenApp.get("/");
-
-const citizenServer = http.createServer(citizenApp);
-citizenServer.listen(process.env.CITIZENPORT, () => {
-  // console.log(`Citizen App is running on http://localhost:${process.env.CITIZENPORT}`);
-});
-
-// ======================================================================================
-
-// setup for governmentApp
-// import { createCategories, deleteCategorires, getAllCategories, getSingleCategories, modifyCategories } from './government/services/adsCategoriesService.js';
-// import { createNewDistrict, deleteDistrict, getAllDistricts, getDistrictByID, updateDistrict } from './government/services/districtService.js';
-// import { createNewLocation, getAllLocation } from './government/services/locationService.js';
-// import { createNewLocationType, deleteLocationType, getAllLocationType, getLocationType, updateLocationType } from './government/services/locationTypeService.js';
-// import { createNewWard, getAllWard, getWard, getWardOfDistrict, updateWard } from './government/services/wardService.js';
-// import * as boardTypeService from './government/services/boardTypeService.js';
-// import * as boardService from './government/services/boardService.js';
 import departmentRoute from './government/routes/departmentRoute.js';
 // import testController from "./government/controllers/testController.js";
 import cookieParser from 'cookie-parser';
