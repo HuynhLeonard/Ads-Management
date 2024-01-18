@@ -9,7 +9,10 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+    />
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
@@ -21,6 +24,8 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
+    <%- include("./components/head.ejs"); %> <%-
+    include("./components/sidebar.ejs"); %>
     <!-- <link rel="stylesheet" href="styles.css" /> -->
     <style>
       body {
@@ -32,7 +37,6 @@
       }
 
       .container {
-        margin-block-start: 20px;
         margin-block-end: 20px;
         border-radius: 5px;
         background-color: #f2f2f2;
@@ -87,51 +91,89 @@
         transition: all 0.3s ease 0s;
         cursor: pointer;
         outline: none;
-    }
+      }
 
-    .button:hover {
-    background-color: #08a5a0;
-    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-    color: #fff;
-    transform: translateY(-7px);
-    }
+      .button:hover {
+        background-color: #08a5a0;
+        box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+        color: #fff;
+        transform: translateY(-7px);
+      }
 
-    .button:active {
-    transform: translateY(-1px);
-    }
-
-    a {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:visited {
-        color: black;
-    }
+      .button:active {
+        transform: translateY(-1px);
+      }
     </style>
     <title>License</title>
   </head>
-  <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert"
-    style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+  <div
+    class="alert alert-success alert-dismissible fade show mt-3"
+    id="alert-success"
+    role="alert"
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80%;
+      z-index: 1000;
+      margin-left: 10rem;
+    "
+    hidden
+  >
     <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
   </div>
 
-  <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert"
-      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
-      <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <div
+    class="alert alert-danger alert-dismissible fade show mt-3"
+    id="alert-danger"
+    role="alert"
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80%;
+      z-index: 1000;
+      margin-left: 10rem;
+    "
+    hidden
+  >
+    <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
   </div>
 
-  <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
-      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
-      <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
-      <button type="button" class="btn-close"></button>
+  <div
+    class="alert alert-warning alert-dismissible fade show mt-3"
+    id="alert-warning"
+    role="alert"
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80%;
+      z-index: 1000;
+      margin-left: 10rem;
+    "
+    hidden
+  >
+    <strong id="warning-text"
+      >Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong
+    >
+    <button type="button" class="btn-close"></button>
   </div>
   <body>
     <div class="container">
-      <!-- <%- include('./components/sidebar.ejs') %> -->
-        <a href="/<%=role%>/license" class="button">Return</a>
+      <a href="/<%=role%>/license" class="button">Return</a>
       <h1>Yêu cầu cấp phép quảng cáo</h1>
       <form action="" class="row g-3">
         <div class="item-container col-md-6">
@@ -163,11 +205,11 @@
             list="spotList"
             required
           />
-          <datalist id="spotList" style="display: none;">
+          <datalist id="spotList" style="display: none">
             <% locations.forEach((spot) => { %>
-                <option value="<%= spot.name; %>"></option>
+            <option value="<%= spot.name; %>"></option>
             <% }); %>
-        </datalist>
+          </datalist>
         </div>
 
         <div class="item-container">
@@ -185,11 +227,11 @@
             list="boardTypeList"
           />
           <input type="text" class="form-control" id="boardType" hidden />
-                        <datalist id="boardTypeList" style="display: none;">
-                            <% boardtypes.forEach((type)=> { %>
-                            <option value="<%= type.typeName; %>"></option>
-                            <% }); %>
-                        </datalist>
+          <datalist id="boardTypeList" style="display: none">
+            <% boardtypes.forEach((type)=> { %>
+            <option value="<%= type.typeName; %>"></option>
+            <% }); %>
+          </datalist>
         </div>
 
         <div class="item-container col-md-4">
@@ -402,8 +444,7 @@
             var myEditor;
             // This sample still does not showcase all CKEditor&nbsp;5 features (!)
             // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-            CKEDITOR.ClassicEditor
-              .create(document.getElementById("editor"), {
+            CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
               // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
               toolbar: {
                 items: [
@@ -651,161 +692,204 @@
                 "PasteFromOfficeEnhanced",
               ],
             })
-            .then(editor => {
-              console.log('Editor is created');
-              myEditor = editor
-            })
-            .catch((err) => {
-              console.log(err.stack);
-            });
+              .then((editor) => {
+                console.log("Editor is created");
+                myEditor = editor;
+              })
+              .catch((err) => {
+                console.log(err.stack);
+              });
           </script>
         </div>
         <div class="note" id="must">(*) : Bắt buộc</div>
       </form>
       <div class="d-flex mt-3 align-items-center justify-content-center">
-        <button class="btn btn-primary" id="submitBtn" type="button">Gửi yêu cầu</button>
+        <button class="btn btn-primary" id="submitBtn" type="button">
+          Gửi yêu cầu
+        </button>
       </div>
     </div>
   </body>
   <script defer>
     const upload2Imgur = async (files) => {
-      const links = []
+      const links = [];
       console.log(files);
       for (let i = 0; i < files.length; i++) {
-        let formData = new FormData()
-        formData.append('image', files[i])
-        const response = await fetch('/pic/posts', {
-          method: 'POST',
+        let formData = new FormData();
+        formData.append("image", files[i]);
+        const response = await fetch("/pic/posts", {
+          method: "POST",
           body: formData,
-          redirect: 'follow'
+          redirect: "follow",
         });
-        const data = await response.json()
+        const data = await response.json();
         links.push(data.message);
       }
-      return links
-    }
-    
+      return links;
+    };
+
     const submitHandler = async (e) => {
       e.preventDefault();
       console.log(myEditor.getData());
       // Check spot name.
-      const spotNameInput = document.getElementById('diemqc').value.trim();
-      const spotList = JSON.parse('<%- JSON.stringify(locations); %>');
-      if(spotNameInput == '' || !(spotList.some(spot => spot.name === spotNameInput))){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng TÊN ĐIỂM ĐẶT.";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const spotNameInput = document.getElementById("diemqc").value.trim();
+      const spotList = JSON.parse("<%- JSON.stringify(locations); %>");
+      if (
+        spotNameInput == "" ||
+        !spotList.some((spot) => spot.name === spotNameInput)
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng TÊN ĐIỂM ĐẶT.";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check company name
-      const companyName = document.getElementById('tencty').value.trim();
-      if(companyName == ''){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN CÔNG TY";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const companyName = document.getElementById("tencty").value.trim();
+      if (companyName == "") {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập TÊN CÔNG TY";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check phone number is digit ?
-      const companyPhone = document.getElementById('sdtcty').value
-      if(companyPhone == '' || !(/^\d+$/).test(companyPhone)){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng SỐ ĐIỆN THOẠI (tất cả đồ là chữ số)";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const companyPhone = document.getElementById("sdtcty").value;
+      if (companyPhone == "" || !/^\d+$/.test(companyPhone)) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng SỐ ĐIỆN THOẠI (tất cả đồ là chữ số)";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check email format
-      const companyEmail = document.getElementById('mailcty').value;
-      if(companyEmail == '' || !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(companyEmail)){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng số ĐỊA CHỈ EMAIL (example@abc.xyz)";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const companyEmail = document.getElementById("mailcty").value;
+      if (
+        companyEmail == "" ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(companyEmail)
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng số ĐỊA CHỈ EMAIL (example@abc.xyz)";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check company address
-      const companyAddress = document.getElementById('dcct').value.trim();
-      if(companyAddress == ''){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập ĐỊA CHỈ công ty";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const companyAddress = document.getElementById("dcct").value.trim();
+      if (companyAddress == "") {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập ĐỊA CHỈ công ty";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check startDate & EndDate
-      const startDate = document.getElementById('startdate').value;
-      const endDate = document.getElementById('enddate').value;
+      const startDate = document.getElementById("startdate").value;
+      const endDate = document.getElementById("enddate").value;
       console.log(startDate);
       console.log(endDate);
       const curDate = new Date();
       const sDate = new Date(startDate);
-      if(startDate == '' || endDate == '' || startDate >= endDate || sDate <= curDate){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng NGÀY BẮT ĐẦU và NGÀY KẾT THÚC";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      if (
+        startDate == "" ||
+        endDate == "" ||
+        startDate >= endDate ||
+        sDate <= curDate
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng NGÀY BẮT ĐẦU và NGÀY KẾT THÚC";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check board type (chưa có)
-      const boardTypeInput = document.getElementById('boardTypeName').value.trim();
-      const boardTypeList = JSON.parse('<%- JSON.stringify(boardtypes); %>');
-      if(boardTypeInput == '' || !(boardTypeList.some(type => type.typeName === boardTypeInput))){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI BẢNG QUẢNG CÁO.";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const boardTypeInput = document
+        .getElementById("boardTypeName")
+        .value.trim();
+      const boardTypeList = JSON.parse("<%- JSON.stringify(boardtypes); %>");
+      if (
+        boardTypeInput == "" ||
+        !boardTypeList.some((type) => type.typeName === boardTypeInput)
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng LOẠI BẢNG QUẢNG CÁO.";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check quantity
-      const quantity = document.getElementById('slbienqc').value
-      if(quantity == '' || !(/^\d+$/).test(quantity) || Number.parseInt(quantity) > 10 || Number.parseInt(quantity) < 0){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng SỐ LƯỢNG BẢNG / TRỤ (số nguyên từ 0 tới 10).";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const quantity = document.getElementById("slbienqc").value;
+      if (
+        quantity == "" ||
+        !/^\d+$/.test(quantity) ||
+        Number.parseInt(quantity) > 10 ||
+        Number.parseInt(quantity) < 0
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng SỐ LƯỢNG BẢNG / TRỤ (số nguyên từ 0 tới 10).";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check height
-      const height = document.getElementById('chieurong').value
-      if(height == '' || Number.parseFloat(height) > 50.0 || Number.parseFloat(height) < 0.0){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng CHIỀU CAO (từ 0 tới 50).";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const height = document.getElementById("chieurong").value;
+      if (
+        height == "" ||
+        Number.parseFloat(height) > 50.0 ||
+        Number.parseFloat(height) < 0.0
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng CHIỀU CAO (từ 0 tới 50).";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check width
-      const width = document.getElementById('chieudai').value
-      if(width == '' || Number.parseFloat(width) > 50.0 || Number.parseFloat(width) < 0.0){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng CHIỀU RỘNG (từ 0 tới 50).";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      const width = document.getElementById("chieudai").value;
+      if (
+        width == "" ||
+        Number.parseFloat(width) > 50.0 ||
+        Number.parseFloat(width) < 0.0
+      ) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập đúng CHIỀU RỘNG (từ 0 tới 50).";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // Check content
-      
+
       const content = myEditor.getData();
-      if(content == ''){
-          document.getElementById('warning-text').textContent = "Vui lòng nhập NỘI DUNG QUẢNG CÁO.";
-          document.getElementById('alert-warning').hidden = false;
-          return;
+      if (content == "") {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng nhập NỘI DUNG QUẢNG CÁO.";
+        document.getElementById("alert-warning").hidden = false;
+        return;
       }
-  
+
       // ................................................
-      const inputImage1 = document.getElementById('formFileLg1');
-      const inputImage2 = document.getElementById('formFileLg2');
+      const inputImage1 = document.getElementById("formFileLg1");
+      const inputImage2 = document.getElementById("formFileLg2");
       const files = [];
       files.push(inputImage1.files);
       files.push(inputImage2.files);
-  
+
       const imgUrls = await upload2Imgur(inputImage1.files);
       console.log(imgUrls);
-  
+
       // Check image
-      if(imgUrls.length == 0){
-          document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về bảng quảng cáo.";
-          document.getElementById('alert-warning').hidden = false;
-          loader.style.display = 'none';
-          return;
+      if (imgUrls.length == 0) {
+        document.getElementById("warning-text").textContent =
+          "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về bảng quảng cáo.";
+        document.getElementById("alert-warning").hidden = false;
+        loader.style.display = "none";
+        return;
       }
       // ................................................
-  
+
       const data = {
-        locationID: document.getElementById('bienqc').value,
-        boardType: document.getElementById('boardType').value,
+        locationID: document.getElementById("bienqc").value,
+        boardType: document.getElementById("boardType").value,
         quantity: Number.parseFloat(quantity),
         height: Number.parseFloat(height),
         width: Number.parseFloat(width),
@@ -817,74 +901,80 @@
         companyAddress: companyAddress,
         startDate: startDate,
         endDate: endDate,
-        officer: '<%= user.username %>',
-        extendForBoard: '',
-      }
-      const url = '<%= url %>';
-      const requestUrl = url.replace('/create', '');
-  
+        officer: "<%= user.username %>",
+        extendForBoard: "",
+      };
+      const url = "<%= url %>";
+      const requestUrl = url.replace("/create", "");
+
       console.log(data);
       // console.log(requestUrl);
       const result = await fetch(requestUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
       if (result.status == 200) {
-          document.getElementById('alert-success').removeAttribute('hidden');
-          // clear all input
-          document.querySelectorAll('input').forEach((input) => {
-              input.value = '';
-          });
-          document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
-              console.log('1');
-              const role = JSON.parse('<%- JSON.stringify(role); %>');
-              window.location.href = `/${role}/license`;
+        document.getElementById("alert-success").removeAttribute("hidden");
+        // clear all input
+        document.querySelectorAll("input").forEach((input) => {
+          input.value = "";
+        });
+        document
+          .getElementById("alert-success")
+          .addEventListener("closed.bs.alert", () => {
+            console.log("1");
+            const role = JSON.parse("<%- JSON.stringify(role); %>");
+            window.location.href = `/${role}/license`;
           });
       } else {
-          document.getElementById('alert-danger').hidden = false;
+        document.getElementById("alert-danger").hidden = false;
       }
-  
-      loader.style.display = 'none';
-    }
-  
-    const boardTypes = JSON.parse('<%- JSON.stringify(boardtypes) %>');
+
+      loader.style.display = "none";
+    };
+
+    const boardTypes = JSON.parse("<%- JSON.stringify(boardtypes) %>");
     const boardTypeInput = document.getElementById("boardTypeName");
     const boardTypeID = document.getElementById("boardType");
-  
-    boardTypeInput.addEventListener('change', (e) => {
-      const boardType = boardTypes.find(type => type.typeName === boardTypeInput.value);
+
+    boardTypeInput.addEventListener("change", (e) => {
+      const boardType = boardTypes.find(
+        (type) => type.typeName === boardTypeInput.value
+      );
       boardTypeID.value = boardType.boardTypeID;
-    })
-  
-    document.getElementById('submitBtn').addEventListener('click', submitHandler);
-  
-    const spots = JSON.parse('<%- JSON.stringify(locations); %>');
-    const spotIDInput = document.getElementById('bienqc');
-    const spotNameInput = document.getElementById('diemqc');
-    const spotAddressInput = document.getElementById('dccty');
-    spotNameInput.addEventListener('keyup', (e) => {
+    });
+
+    document
+      .getElementById("submitBtn")
+      .addEventListener("click", submitHandler);
+
+    const spots = JSON.parse("<%- JSON.stringify(locations); %>");
+    const spotIDInput = document.getElementById("bienqc");
+    const spotNameInput = document.getElementById("diemqc");
+    const spotAddressInput = document.getElementById("dccty");
+    spotNameInput.addEventListener("keyup", (e) => {
       const spotName = e.target.value;
       const spot = spots.find((spot) => spot.name === spotName);
       if (spot) {
         spotIDInput.value = spot.id;
         spotAddressInput.value = spot.address;
       }
-    })
-    const curSpot = JSON.parse('<%- JSON.stringify(curSpot); %>');
-    if(Object.keys(curSpot).length > 0){
+    });
+    const curSpot = JSON.parse("<%- JSON.stringify(curSpot); %>");
+    if (Object.keys(curSpot).length > 0) {
       spotIDInput.value = curSpot.locationID;
       spotAddressInput.value = `${curSpot.address}, Phường ${curSpot.wardName}, Quận ${curSpot.districtName}`;
       spotNameInput.value = curSpot.locationName;
     }
-  
-    document.querySelectorAll('.btn-close').forEach((btn) => {
-          btn.addEventListener('click', (e) => {
-              e.preventDefault();
-              e.target.parentElement.hidden = true;
-          });
-        });
+
+    document.querySelectorAll(".btn-close").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.target.parentElement.hidden = true;
+      });
+    });
   </script>
 </html>
