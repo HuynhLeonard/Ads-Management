@@ -14,7 +14,7 @@
     <div class="row"><%- include('../components/sidebar.ejs') %></div>
     <div class="container-fluid vw-100 pt-1">
       <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-
+        <%- include('../components/back_button.ejs') %>
         <!-- Title -->
         <div class="d-block">
           <h2 class="fw-bolder text-uppercase">PHÂN CÔNG TÀI KHOẢN</h2>
@@ -69,10 +69,10 @@
                   </button>
                   <% } else { %>
                   <a href="javascript:" class="mx-3 bg-transparent" onclick="showEditModal(JSON.parse('<%= JSON.stringify(account) %>'))">
-                    <img src="/images/edit.svg" alt="edit-icon">
+                    <img src="/assets/edit.svg" alt="edit-icon">
                   </a>
                   <a role="button" class="text-decoration-none mx-3 remove-button" href="#" value="<%= account.username %>">
-                    <img src="/images/remove.svg" alt="remove-icon" class="bg-transparent">
+                    <img src="/assets/remove.svg" alt="remove-icon" class="bg-transparent">
                   </a>
                   <% } %>
                 </div>

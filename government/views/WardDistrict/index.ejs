@@ -18,7 +18,7 @@
         type="text/css" />
     <header></header>
     <aside class="position-absolute z-3 h-100">
-        <%- include('../components/sidebar.ejs'); %>
+        <%- include('../components/sidebar2.ejs', {role: role}); %>
     </aside>
 
     <div id="user-data" hidden><%= user.districtID %>,<%= user.wardID %></div>
