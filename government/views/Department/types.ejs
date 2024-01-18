@@ -9,6 +9,7 @@
   <body>
     <header></header>
     <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+      
       <div class="row"><%- include("../components/sidebar.ejs"); %></div>
       <div class="container-fluid vw-100 pt-1">
         <% if (typeof message !== undefined) {%>
@@ -31,6 +32,7 @@
           </div>
           <!-- Select -->
           <div class="container-fluid mt-3 ps-0">
+            <%- include('../components/back_button.ejs')  %>
             <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
               <% let current = 0; %>
               <% if (title.includes("báo cáo")) {

@@ -14,7 +14,7 @@
       <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
             <!-- Profile -->
-            <%- include("../components/card.ejs"); %>
+            <%- include("../components/back_button.ejs"); %>
             <!-- Title -->
             <div class="d-block">
               <h1 class="fw-bolder">
@@ -109,10 +109,10 @@
                           <div
                             class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
                             <a href="javascript:" class="mx-3 bg-transparent">
-                              <img src="/images/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(district) %>'))">
+                              <img src="/assets/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(district) %>'))">
                             </a>
                             <a href="javascript:" class="mx-3 bg-transparent">
-                              <img src="/images/remove.svg" onclick="deleteDistrict(JSON.parse('<%= JSON.stringify(district) %>'))" alt="remove-icon">
+                              <img src="/assets/remove.svg" onclick="deleteDistrict(JSON.parse('<%= JSON.stringify(district) %>'))" alt="remove-icon">
                             </a>
                           </div>
                         </td>
