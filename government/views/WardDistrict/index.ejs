@@ -1,129 +1,129 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quan ly - Phuong</title>
+    <title>So Van Hoa</title>
     <%- include("../components/head.ejs"); %>
-    <link rel="stylesheet" href="/css/mapbox.css" />
-    <!-- Mapbox -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
-    <!-- Script -->
-
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/mapbox.css">
 </head>
 
 <body>
-<!--- Load the mapbox geocoder plugin -->
-<script
+    <script
         src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-      type="text/css" />
-<header></header>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css" />
+    <header></header>
+    <aside class="position-absolute z-3 h-100">
+        <%- include('../components/sidebar.ejs'); %>
+    </aside>
 
-<div id="user-data" hidden><%= user.districtID %>,<%= user.wardID %></div>
+    <div id="user-data" hidden><%= user.districtID %>,<%= user.wardID %></div>
 
-<!-- Sidebar -->
-<aside class="position-absolute z-3 h-100">
-    <%- include('../components/sidebar.ejs'); %>
-</aside>
-<main class="container-fluid d-flex bg-light p-0">
-    <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
+    <main class="container-fluid d-flex bg-light p-0">
+        <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
 
-    <!-- Search bar -->
-    <div id="search-bar" class="position-absolute top-0 start-0 z-index-3" style="margin: 1.25rem 6.25rem;">
-      <div class="input-group" style="width: 23.5rem">
-        <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="close-search-btn" id="search-input" />
-        <button class="btn btn-light" type="button" id="close-search-btn">
-          <i class="fa fa-times"></i>
-        </button>
-      </div>
+        <!-- Search bar -->
+        <div id="search-bar" class="position-absolute top-0 start-0 z-index-3" style="margin: 1.25rem 6.25rem;">
+          <div class="input-group" style="width: 23.5rem">
+            <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="close-search-btn" id="search-input" />
+            <button class="btn btn-light" type="button" id="close-search-btn">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
 
-      <!-- Result box -->
-      <div class="result-box">
+          <!-- Result box -->
+          <div class="result-box">
 
-      </div>
-    </div>
+          </div>
+        </div>
 
-    <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3" style="left: 5rem">
-        <div id="toggle-container" class="row align-items-center justify-content-start mx-2">
-            <div class="col-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked />
-                    <label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
+        <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3" style="left: 5rem">
+            <div id="toggle-container" class="row align-items-center justify-content-start mx-2">
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked />
-                    <label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked />
-                    <label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="all-toggle" aria-checked="false" checked />
-                    <label class="form-check-label" for="all-toggle">Hiện tất cả</label>
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="all-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="all-toggle">Hiện tất cả</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSpotDetail" aria-labelledby="offcanvasSpotDetailLabel">
-        <div class="offcanvas-header container-fluid">
-            <img loading="lazy" decoding="async" src="" class="img-fluid" alt="Nhà thi đấu Phú Thọ"
-                style="background-size: cover; margin: 0; content-visibility: auto;" />
-            <h4 class="offcanvas-title fw-bold text-uppercase mt-3" id="offcanvasSpotDetailLabel">Nhà thi đấu Phú
-                Thọ</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="btn-close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane"
-                        type="button" role="tab" aria-controls="info-tab-pane" aria-selected="true">
-                        Thông tin
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" id="ads-tab" data-bs-toggle="tab" data-bs-target="#ads-tab-pane" type="button"
-                        role="tab" aria-controls="ads-tab-pane" aria-selected="false">
-                        B.Quảng cáo
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report-tab-pane"
-                        type="button" role="tab" aria-controls="report-tab-pane" aria-selected="false">
-                        Báo cáo
-                    </button>
-                </li>
-            </ul>
+        <!-- Offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSpotDetail" aria-labelledby="offcanvasSpotDetailLabel">
+            <div class="offcanvas-header container-fluid">
+                <img loading="lazy" decoding="async" src="" class="img-fluid"
+                    alt="Nhà thi đấu Phú Thọ" style="background-size: cover; margin: 0; content-visibility: auto;" />
+                <h4 class="offcanvas-title fw-bold text-uppercase mt-3" id="offcanvasSpotDetailLabel">Nhà thi đấu Phú
+                    Thọ</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                    id="btn-close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
+                            data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="info-tab-pane"
+                            aria-selected="true">
+                            Thông tin
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="ads-tab" data-bs-toggle="tab" data-bs-target="#ads-tab-pane"
+                            type="button" role="tab" aria-controls="ads-tab-pane" aria-selected="false">
+                            B.Quảng cáo
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report-tab-pane"
+                            type="button" role="tab" aria-controls="report-tab-pane" aria-selected="false">
+                            Báo cáo
+                        </button>
+                    </li>
+                </ul>
 
-            <div class="tab-content" id="tabContent">
-                <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"
-                    tabindex="0">
-                </div>
-                <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel"
-                    aria-labelledby="ads-tab" tabindex="0">
-                </div>
-                <div class="tab-pane list-group fade p-0 overflow-auto" id="report-tab-pane" role="tabpanel"
-                    aria-labelledby="report-tab" tabindex="0">
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"
+                        tabindex="0">
+                    </div>
+                    <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel"
+                        aria-labelledby="ads-tab" tabindex="0">
+                    </div>
+                    <div class="tab-pane list-group fade p-0 overflow-auto" id="report-tab-pane" role="tabpanel"
+                        aria-labelledby="report-tab" tabindex="0">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
-
+    </main>
+</body>
 
 <script defer type="module">
+  const pathname = window.location.pathname;
+  console.log(pathname);
   let setupData = false;
 
   const formatter = new Intl.DateTimeFormat('vi-VN', { // <- re-use me
@@ -164,20 +164,16 @@
 
     // update offcanvas header
     const offcanvasHeader = offcanvas.querySelector('.offcanvas-header');
-    offcanvasHeader.querySelector('img').src = detailSpot.spotImage[0];
+    offcanvasHeader.querySelector('img').src = detailSpot.images[0];
     offcanvasHeader.querySelector('#offcanvasSpotDetailLabel').textContent = detailSpot.spotName;
-
-    const pathname = window.location.pathname;
-    console.log(pathname);
-
     // update info tab pane
     const infoTabPane = offcanvas.querySelector('#info-tab-pane');
     const infoHTML = `<p>Địa chỉ: <b>${detailSpot.address}</b></p>
-      <p>Loại hình: <b>${detailSpot.adsFormName}</b></p>
-      <p>Hình thức: <b>${detailSpot.spotTypeName} </b></p>
+      <p>Loại hình: <b>${detailSpot.adsFormNme}</b></p>
+      <p>Hình thức: <b>${detailSpot.locationTypeName} </b></p>
       <p class="text-uppercase fw-bold fst-italic">${detailSpot.planned}</p>
       <div class="options">
-            <a href="${pathname}/ads/${detailSpot.spotID}?category=spot" class="btn btn-icon" role="button">
+            <a href="${pathname}/advertisements/${detailSpot.locationID}?category=Location" class="btn btn-icon" role="button">
               <i class="bi bi-info-circle"></i>
             </a>
           </div>`;
@@ -191,10 +187,11 @@
       <small>${detailSpot.address}</small>
       <p class="mb-1">Kích thước: <b>${ad.boardSize}m</b></p>
       <p class="mb-1">Số lượng: <b>${ad.quantity}<b></p>
-      <p class="mb-1">Hình thức: <b>${detailSpot.adsFormName}</b></p>
-      <p class="mb-1">Loại hình: <b>${detailSpot.spotTypeName}</b></p>
+      <p class="mb-1">Hình thức: <b>${detailSpot.adsFormNme}</b></p>
+      <p class="mb-1">Loại hình: <b>${detailSpot.locationTypeName}</b></p>
       <div class="options">
-        <a href="${pathname}/ads/${ad.boardID}?category=board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>`;
+        <a href="${pathname}/advertisements/${ad.boardID}?category=Board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>`;
+      
       const currentDate = new Date();
       const endDate = new Date(ad.expiredDate);
       if (currentDate > endDate) {
@@ -246,7 +243,7 @@
       </div>`);
 
     // check if reportHTML is empty hide report tab pane, also hide report toggle
-    if (reportHTML.length === 0) {
+    if (reportHTML.length == 0) {
       console.log('empty')
       reportTabPane.classList.add('d-none');
       document.getElementById('report-tab').parentElement.classList.add('d-none');
@@ -267,14 +264,12 @@
     const offcanvasBS = new bootstrap.Offcanvas(offcanvas);
     // show first tab
     const triggerFirstTabEl = document.querySelector('#myTab li:first-child button')
-    bootstrap.Tab.getInstance(triggerFirstTabEl).show()
+          bootstrap.Tab.getInstance(triggerFirstTabEl).show()
     offcanvasBS.show();
     console.log('done');
   });
 </script>
 <script> let position = '<%= user.position %>'; </script>
-<script src="/js/map.js" type="module"></script>
-
-</body>
+<script defer src="/js/map.js"></script>
 
 </html>

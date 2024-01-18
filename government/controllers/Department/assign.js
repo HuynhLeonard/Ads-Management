@@ -80,7 +80,7 @@ const deleteAccount = async (req,res) => {
 const updateOfficer = async (req,res) => {
     const username = req.params.username;
     const updateData = req.body;
-
+    console.log(updateData);
     try {
         const {message} = await userService.updateOfficer(username, updateData);
         return res.status(200).json({

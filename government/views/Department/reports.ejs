@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("../components/head.ejs"); %>
+</head>
+<body>
+<main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <div class="row"><%- include("../components/sidebar.ejs"); %></div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <div class="d-block">
+                <h2 class="fw-bolder text-uppercase"><%= title %></h2>
+            </div>
+            
+            <!-- Check box -->
+            <% if (url.includes('department') || url.includes('district')) { %>
+                <div class="container-fluid checkbox-container">
+                    <div class="d-inline-block pb-2" style="padding-left: 15px">
+                        <h1 style="color: #1f274a; font-size: 22px; font-weight: 500">
+                            <%= checkboxHeader%>
+                        </h1>
+                    </div>
+                    <div class="container-fluid d-flex flex-wrap">
+                        <% checkboxData.forEach((item, i) => {%>
+                            <div class="form-check me-4 mb-3" style="min-width: 11rem;">
+                                <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="check<%= i %>"
+                                        name="option<%= i %>"
+                                        value="<%= item.name %>"
+                                        <% if (item.status) { %> checked <% } else { %> disabled <% } %>/>
+                                <label class="form-check-label" for="check<%= i %>"><%=item.name%></label>
+                            </div>
+                        <%})%>
+                    </div>
+                </div>
+            <% } %>
+            <!-- Select -->
+            <% const [baseUrl, queryParams]=url.split('?'); %>
+                <div class="container-fluid mt-3 ps-0">
+                    <div class="d-flex flex-row align-items-center gap-2 position-relative">
+                        <%- include("../components/select.ejs", {current: 0 , options: [ { name: 'Tất cả' , link: baseUrl
+                            + '#' }, { name: 'Đang xử lý' , link: baseUrl
+                            + '#' }, { name: 'Đã xử lý' , link: baseUrl + '#' }] }); %>
+                    </div>
+                </div>
+            <!-- Table -->
+            <% const [basePath, category] = url.split('?'); %>
+            <%- include('../components/table.ejs', {linkDetails: {basePath: basePath, category: category}}) %>
+        </div>
+    </div>
+</main>
+
+<script defer src="/js/checkbox-select.js"></script>
+</body>
+
+</html>

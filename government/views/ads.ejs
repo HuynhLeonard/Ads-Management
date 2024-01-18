@@ -53,11 +53,11 @@
         <% const [baseUrl, queryParams] = url.split('?'); %>
         <div class="container-fluid mt-3 ps-0">
           <div class="d-flex flex-row align-items-center gap-2 position-relative">
-            <%- include("./partials/select.ejs",
+            <%- include("./components/select.ejs",
                     {current: current ,
                     options: [
-                    { name: 'Điểm đặt quảng cáo' , link: baseUrl + '?category=spot'},
-                    { name: 'Bảng quảng cáo' , link: baseUrl + '?category=board'}]
+                    { name: 'Điểm đặt quảng cáo' , link: baseUrl + '?category=Location'},
+                    { name: 'Bảng quảng cáo' , link: baseUrl + '?category=Board'}]
                     }); %>
           </div>
         </div>
@@ -87,11 +87,13 @@
               <td>
                 <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
                 <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
-                <a role="button" class="text-decoration-none mx-3 remove-button" href="<%= removeUrl %>" <% if (!url.includes('so')) { %> hidden <% } %>>
-                  <img src="/images/remove.svg" alt="Edit" class="bg-transparent">
+                <a role="button" class="text-decoration-none mx-3 remove-button" href="<%= removeUrl %>" <% if (!url.includes('department')) { %> hidden <% } %>>
+                  <img src="/assets/remove.svg" alt="remove" class="bg-transparent">
                 </a>
                 <% if (tableRow.actions.info) { %>
-                <%- include('./partials/info_button.ejs', {url: infoUrl}) %>
+                  <a href='<%= infoUrl || "javascript:"%>' class="text-decoration-none">
+                    <img src="/assets/info.svg" alt="info" class="bg-transparent">
+                  </a>
                 <% } %>
               </td>
               <% }else if (tableRow[key] !== undefined) { %>

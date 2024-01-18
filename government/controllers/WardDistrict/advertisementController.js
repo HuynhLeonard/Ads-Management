@@ -1,139 +1,140 @@
-import * as locationService from '../../services/locationService.js';
-import * as boardService from '../../services/boardService.js';
-import * as wardService from '../../services/wardService.js';
-import * as districtService from '../../services/districtService.js';
+import editRequestSchema from '../../models/editRequestSchema.js';
 import * as adsFormService from '../../services/adsCategoriesService.js';
-import * as locationTypeService from '../../services/locationTypeService.js';
+import * as boardService from '../../services/boardService.js';
 import * as boardTypeService from '../../services/boardTypeService.js';
-// not add
-// import { editRequestService } from '../../services/requestService.js';
-// import * as IDGenerator from '../../services/IDGenerator.js';
+import * as districtService from '../../services/districtService.js';
+import * as spotService from '../../services/locationService.js';
+import * as spotTypeService from '../../services/locationTypeService.js';
+import { editRequestService } from '../../services/requestService.js';
+import * as wardService from '../../services/wardService.js';
+const isOutDated = (date) => {
+	const curDate = new Date();
+	const inDate = new Date(date);
 
-// test later
-
-const show = async (req, res) => {
-    const role = String(req.originalUrl.split('/')[1]);
-    console.log(role)
-    const category = req.query.category || ''
-    let tableHeads = []
-    let tableData = []
-    let title = role === 'district' ? 'Quận' : 'Phường'
-    let checkboxHeader = ''
-
-    if (role === 'district') {
-        checkboxHeader = await districtService.getDistrictByID(req.user.districtID)
-        if (checkboxHeader) checkboxHeader = 'Quận ' + checkboxHeader.districtName
-        else checkboxHeader = 'Không có thông tin quận'
-    }
-    else if (role === 'ward') {
-        checkboxHeader = await wardService.getWard(req.user.wardID)
-        if (checkboxHeader) checkboxHeader = 'Phường ' + checkboxHeader.wardName
-        else checkboxHeader = 'Không có thông tin phường'
-    }
-
-    switch (category) {
-        case 'location':
-        title += ' - Điểm đặt quảng cáo'
-        if (role === 'quan')
-            tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch']
-        else if (role === 'phuong')
-            tableHeads = ['ID', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch']
-        break
-        case 'board':
-        title += ' - Bảng quảng cáo'
-        if (role === 'quan') tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
-        else if (role === 'phuong') tableHeads = ['ID', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
-        break
-        default:
-        res.status(404)
-        return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } })
-    }
-
-    const getSpotTableData = async (spots, role) => {
-        return spots.map((spot) => ({
-        id: spot.locationID,
-        ward: role === 'ward' ? spot.wardName : undefined,
-        spot: spot.locationName,
-        locationType: spot.locationtypeName,
-        type: spot.adsFormName,
-        plan: spot.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
-        actions: {
-            edit: false,
-            remove: true,
-            info: true
-        }
-        }))
-    }
-
-    const getBoardTableData = async (boards, role) => {
-        return boards.map((board) => ({
-        id: board.boardID,
-        ward: role === 'quan' ? board.wardName : undefined,
-        spot: board.locationName,
-        type: board.boardTypeName,
-        size: `${board.height}x${board.width}m`,
-        quantity: `${board.quantity} trụ/bảng`,
-        actions: {
-            edit: false,
-            remove: true,
-            info: true
-        }
-        }))
-    }
-
-    if (category === 'location') {
-        if (role === 'district') {
-        tableData = await getSpotTableData(await locationService.getLocationFromDistricts(req.user.districtID), role)
-        // test
-        console.log(tableData);
-        } else if (role === 'ward') {
-        tableData = await getSpotTableData(await locationService.getLocationFromWard(req.user.wardID), role);
-        console.log(tableData);
-        }
-    } else {
-        if (role === 'district') {
-        tableData = await getBoardTableData(await boardService.getAllBoardsOfDistrict(req.user.districtID), role)
-        } else if (role === 'ward') {
-        tableData = await getBoardTableData(await boardService.getAllBoardsOfWard(req.user.wardID), role)
-        }
-    }
-
-    let checkboxData = []
-    if (role === 'district') {
-        checkboxData = await wardService.getAllWard(req.user.districtID)
-        checkboxData = checkboxData.map((ward) =>{
-        return {
-            name: `Phường ${ward.wardName}`,
-            status: tableData.some(item => item.ward === ward.wardName)
-        }
-        });
-    }
-
-    // render later
-    res.render('ads', {
-        url: req.originalUrl,
-        title,
-        category,
-        checkboxHeader,
-        checkboxData,
-        tableHeads,
-        tableData,
-    })
+	return inDate < curDate;
 }
 
-// '/:id?category='
+const show = async (req, res) => {
+  const role = String(req.originalUrl.split('/')[1])
+  const category = req.query.category || ''
+  let tableHeads = []
+  let tableData = []
+  let title = role === 'district' ? 'Quận' : 'Phường'
+  let checkboxHeader = ''
+
+  if (role === 'district') {
+    checkboxHeader = await districtService.getDistrictByID(req.user.districtID)
+    if (checkboxHeader) checkboxHeader = checkboxHeader.districtName
+    else checkboxHeader = 'Không có thông tin quận'
+  }
+  else if (role === 'ward') {
+    checkboxHeader = await wardService.getWard(req.user.wardID)
+    if (checkboxHeader) checkboxHeader =  checkboxHeader.wardName
+    else checkboxHeader = 'Không có thông tin phường'
+  }
+
+  switch (category) {
+    case 'Location':
+      title += ' - Điểm đặt quảng cáo'
+      if (role === 'district')
+        tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch']
+      else if (role === 'ward')
+        tableHeads = ['ID', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch']
+      break
+    case 'Board':
+      title += ' - Bảng quảng cáo'
+      if (role === 'district') tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
+      else if (role === 'ward') tableHeads = ['ID', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
+      break
+    default:
+      res.status(404)
+      return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } })
+  }
+
+  const getSpotTableData = async (spots, role) => {
+    return spots.map((spot) => ({
+      id: spot.locationID,
+      ward: role === 'district' ? spot.wardName : undefined,
+      spot: spot.locationName,
+      locationType: spot.locationtypeName,
+      type: spot.adsFormName,
+      plan: spot.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+      actions: {
+        edit: false,
+        remove: true,
+        info: true
+      }
+    }))
+  }
+
+  const getBoardTableData = async (boards, role) => {
+    return boards.map((board) => ({
+      id: board.boardID,
+      ward: role === 'district' ? board.wardName : undefined,
+      spot: board.locationName,
+      type: board.boardTypeName,
+      size: `${board.height}x${board.width}m`,
+      quantity: `${board.quantity} trụ/bảng`,
+      actions: {
+        edit: false,
+        remove: true,
+        info: true
+      }
+    }))
+  }
+
+  if (category === 'Location') {
+    if (role === 'district') {
+      tableData = await getSpotTableData(await spotService.getLocationFromDistricts(req.user.districtID), role)
+    } else if (role === 'ward') {
+      tableData = await getSpotTableData(await spotService.getLocationFromWard(req.user.wardID), role)
+    }
+  } else {
+    if (role === 'district') {
+      tableData = await getBoardTableData(await boardService.getAllBoardsOfDistrict(req.user.districtID), role)
+    } else if (role === 'ward') {
+      tableData = await getBoardTableData(await boardService.getAllBoardsOfWard(req.user.wardID), role)
+    }
+  }
+
+  let checkboxData = []
+  if (role === 'district') {
+    checkboxData = await wardService.getWardOfDistrict(req.user.districtID)
+    checkboxData = checkboxData.map((ward) =>{
+      return {
+        name: `${ward.wardName}`,
+        status: tableData.some(item => item.ward === ward.wardName)
+      }
+    });
+  }
+  console.log(tableHeads);
+  console.log(tableData);
+  console.log(checkboxData);
+  res.render('ads', {
+    url: req.originalUrl,
+    title,
+    category,
+    checkboxHeader,
+    checkboxData,
+    tableHeads,
+    tableData,
+    role: role
+  })
+}
+
 const showDetail = async (req, res, isEdit) => {
+  console.log(req.user);
   const ID = req.params.id;
   const role = String(req.originalUrl.split('/')[1]);
   const category = req.query.category || '';
-  const isSpotCategory = category === 'location';
+  const isSpotCategory = category === 'Location';
   let title = '';
   if (isEdit)
     title = `${role === 'district' ? 'Quận ' : role === 'ward' ? 'Phường ' : '-'} Chỉnh sửa ${isSpotCategory ? 'điểm đặt' : 'bảng quảng cáo'}`;
   else
     title = `${role === 'district' ? 'Quận ' : role === 'ward' ? 'Phường ' : '-'} Chi tiết ${isSpotCategory ? 'điểm đặt' : 'bảng quảng cáo'}`;
 
-  const getData = isSpotCategory ? locationService.getSingleLocation : boardService.getSingleBoard;
+  const getData = isSpotCategory ? spotService.getSingleLocation : boardService.getSingleBoard;
   const detailData = await getData(ID);
 
   // console.log(detailData);
@@ -141,30 +142,29 @@ const showDetail = async (req, res, isEdit) => {
   const commonData = {
     url: req.originalUrl,
     title,
-    toolbars: createToolbar(role),
+    role: role
   };
 
-    if (isSpotCategory) {
-        const data = {
-        spotTitle: detailData.locationName,
-        spotId: detailData.locationID,
-        spotAddress: detailData.address,
-        ward: detailData.wardID,
-        district: detailData.districtID,
-        wardName: detailData.wardName,
-        districtName: detailData.districtName,
-        spotType: detailData.locationType,
-        spotTypeName: detailData.locationtypeName,
-        adsForm: detailData.adsForm,
-        adsFormName: detailData.adsFormName,
-        planned: detailData.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
-        imgUrls: detailData.images,
-        longitude: detailData.longitude,
-        latitude: detailData.latitude,
-        };
+  if (isSpotCategory) {
+    const data = {
+      spotTitle: detailData.locationName,
+      spotId: detailData.locationID,
+      spotAddress: detailData.address,
+      ward: detailData.wardID,
+      district: detailData.districtID,
+      wardName: detailData.wardName,
+      districtName: detailData.districtName,
+      spotType: detailData.locationType,
+      locationtypeName: detailData.locationtypeName,
+      adsForm: detailData.adsForm,
+      adsFormName: detailData.adsFormName,
+      planned: detailData.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+      imgUrls: detailData.images,
+      longitude: detailData.longitude,
+      latitude: detailData.latitude,
+    };
 
     const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
-    // check function
     const boardsTableData = (!isEdit)? await boardService.getAllBoardsOfSpot(ID) : [];
     const transformedBoardsTableData = boardsTableData.map((board) => ({
       id: board.boardID,
@@ -176,13 +176,25 @@ const showDetail = async (req, res, isEdit) => {
 
     if (isEdit) {
       let other = {}
-      other.spottypes = await locationTypeService.getAllLocationType() || [];
-      other.adsforms = await adsFormService.getAllCategories() || [];
-      other.districts = await districtService.getAllDistricts() || [];
-      other.wards = await wardService.getAllWard() || [];
-      res.render('location-modify', { ...commonData, ...data, other });
+      // other.spottypes = await spotTypeService.getAllSpotTypes() || [];
+      // other.adsforms = await adsFormService.getAllAdsForms() || [];
+      // other.districts = await districtService.getAllDistricts() || [];
+      // other.wards = await wardService.getAllWards() || [];
+      // promise.all
+      const [spottypes, adsforms, districts, wards] = await Promise.all([
+        spotTypeService.getAllLocationType(),
+        adsFormService.getAllCategories(),
+        districtService.getAllDistricts(),
+        wardService.getAllWard(),
+      ]);
+      other.spottypes = spottypes || [];
+      other.adsforms = adsforms || [];
+      other.districts = districts || [];
+      other.wards = wards || [];
+
+      res.render('modifyLocation', { ...commonData, ...data, other});
     } else {
-      res.render('location-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });
+      res.render('detailLocation', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });
     }
   } else {
     const data = {
@@ -207,75 +219,77 @@ const showDetail = async (req, res, isEdit) => {
       adsForm: detailData.adsForm,
       spotType: detailData.spotType,
       licensingID: detailData.licenseNumber,
-      content: detailData.content
+      content: detailData.content,
+      isOutDated: isOutDated(detailData.endDate)
     };
 
     if (isEdit) {
       let other = {}
-      if (role === 'quan') {
-        other.spots = await spotService.getSpotsByDistrictID(req.user.districtID);
-      } else if (role === 'phuong') {
-        other.spots = await spotService.getSpotsByWardID(req.user.wardID);
+      if (role === 'district') {
+        other.spots = await spotService.getLocationFromDistricts(req.user.districtID);
+      } else if (role === 'ward') {
+        other.spots = await spotService.getLocationFromWard(req.user.wardID);
       }
       other.boardtypes = await boardTypeService.getAllBoardType() || [];
       other.adsforms = await adsFormService.getAllCategories() || [];
-      other.spottypes = await locationTypeService.getLocationType() || [];
-      // console.log('====================================');
-      // console.log(other.boardtypes);
-      // console.log('====================================');
-      res.render('board-modify', { ...commonData, ...data, other });
+      other.spottypes = await spotTypeService.getAllLocationType() || [];
+      res.render('modifyBoard', { ...commonData, ...data, other });
     } else {
-      res.render('board-detail', { ...commonData, ...data });
+      res.render('detailBoard', { ...commonData, ...data });
     }
   }
 };
 
-//?category=Location
-//?category=Board
+
 const showAdd = (req, res) => {
-  // http://localhost:3000/district
 	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	let title = '- Thêm ' + (category === 'Location' ? 'điểm đặt' : 'bảng quảng cáo');
-	if (role === 'district') {
+	let title = '- Thêm ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	if (role === 'quan') {
 		title = 'Quận ' + title;
 	}
-	if (role === 'ward') {
+	if (role === 'phuong') {
 		title = 'Phường ' + title;
 	}
-	res.render(`add${category}`, {url: req.originalUrl, title});
+	res.render(`${category}-new`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
 }
 
 
-// check later
-// ?category=Location
+// ... Khong xai ...
+// Gop chung voi show detail
 const showModify = (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	let title = 'Chỉnh sửa ' + (category === 'Location' ? 'điểm đặt' : 'bảng quảng cáo');
-	if (role === 'district') {
+	let title = 'Chỉnh sửa ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	if (role === 'quan') {
 		title = 'Quận ' + title;
 	}
-	if (role === 'ward') {
+	if (role === 'phuong') {
 		title = 'Phường ' + title;
 	}
-	res.render(`modify${category}`, {url: req.originalUrl, title});
+	res.render(`${category}-modify`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
 }
 // ..................
 
+const generateRequestID = async () => {
+  const count = await editRequestSchema.countDocuments();
+  const requestID = 'YC-CS' + String(count + 1).padStart(3,'0');
+  return requestID;
+}
 const request = async (req, res) => {
   try {
 		let data = req.body;
+    console.log(data);
     const type = req.query.category;
     const { reason, officerUsername, ...rest } = data;
     data = {
-      requestID: await IDGenerator.getNewID('EditRequest'),
+      requestID: await generateRequestID(),
       requestTime: new Date(),
-      objectID: (type === 'location') ? rest.spotID : rest.boardID,
+      objectID: (type === 'Location') ? rest.locationID : rest.boardID,
       reason: reason,
-      newInfo: rest,
+      editContent: rest,
       status: 0,
-      officerUsername: officerUsername,
+      officer: officerUsername,
     }
     // console.log('Ads controller: ', data);
 		let { message } = await editRequestService.create(data);

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("../components/head.ejs"); %>
+</head>
+
+<body>
+<main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <div class="row"><%- include("../components/sidebar.ejs"); %></div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <!-- Title -->
+            <div class="d-block">
+                <h2 class="fw-bolder text-uppercase"><%= title %> </h2>
+            </div>
+            <!-- Select -->
+            <div class="container-fluid mt-3 ps-0">
+                <div class="d-flex flex-row align-items-center gap-2 position-relative">
+                    <%- include("../components/select.ejs",
+                    {current: 0,
+                    options: [
+                    { name: 'Yêu cầu cấp phép' , link: '/department/requests?category=license' },
+                    { name: 'Yêu cầu chỉnh sửa' , link: '/department/requests?category=modify' }, ]}); %>
+                    <%- include("../components/info-card.ejs", {title: 'Đã duyệt' , value: (statusCnt['done'] + ' đơn') , color: '#00b285' }); %>
+                    <%- include("../components/info-card.ejs", {title: 'Chờ duyệt' , value: (statusCnt['waiting'] + ' đơn') , color: '#d59633'}); %>
+                    <%- include("../components/info-card.ejs", {title: 'Từ chối' , value: (statusCnt['decline'] + ' đơn') , color: '#e84747' }); %>
+                </div>
+            </div>
+            <!-- Table -->
+            <% const [basePath, category] = url.split('?'); %>
+            <%- include('../components/table.ejs', {linkDetails: {basePath: basePath, category: category.split('=')[1]}}) %>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>

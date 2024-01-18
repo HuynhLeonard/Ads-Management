@@ -3,26 +3,12 @@ import District from '../models/districtSchema.js';
 
 // Done
 export const createNewWard = async(wardData) => {
-    try {   
-        const existedDistrict = await District.find({districtID: wardData.districtID});
-        if(existedDistrict) {
-            const existedWard = await Ward.find({wardID: wardData.wardID});
-            if(!existedWard) {
-                const savedWard = new Ward(req.body);
-                await savedWard.save();
-                return savedWard;
-            } else {
-                res.status(400).json({
-                    message: 'WardID have already existed'
-                })
-            }
-        } else {
-            res.status(400).json({
-                message: 'District not existed.'
-            })
-        }
+    try {
+        const newWard = new Ward(wardData)
+        await newWard.save()
+        return { message: 'Ward created successfully' }
     } catch (error) {
-        throw new Error('Error happened when create ward!');
+        throw new Error(`Error creating ward: ${error.message}`)
     }
 };
 

@@ -4,6 +4,7 @@ export const createRequest = async (data) => {
     try {
         const newEditRequest = new EditRequest(data);
         await newEditRequest.save();
+        return {message: 'Edit request created successfully'}
     } catch (error) {
         throw new Error('Error happen when creating.')
     }

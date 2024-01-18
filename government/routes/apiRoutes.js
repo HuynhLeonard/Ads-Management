@@ -28,19 +28,54 @@ router.get('/locations/:locationID', (req, res) => {
         getAll = false
     }
     api
-        .getDetailLocation(req.params.spotID, getAll)
+        .getDetailLocation(req.params.locationID, getAll)
         .then((location) => res.status(200).json(location))
         .catch((err) => res.status(500).json({ message: err.message }))
 });
 
-router.get('/reports');
+router.get('/reports' , (req, res) => {
+    api
+        .getListReport(req.query.reportIDs)
+        .then((reports) => res.status(200).json(reports))
+        .catch((err) => res.status(500).json({ message: err.message }))
+  });
 
-router.get('/reports/:reportID');
+router.get('/reports/:reportID', (req,res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+    api
+        .getReport(req.params.reportID)
+        .then((report) => res.status(200).json(report))
+        .catch((err) => res.status(500).json({ message: err.message }))
+});
 
-router.post('/reports');
+router.post('/reports', (req, res) => {
+    api
+        .createReport(req.body)
+        .then((report) => res.status(200).json(report))
+        .catch((err) => res.status(500).json({ message: err.message }))
+});
 
-router.get('/report-types');
+router.get('/report-types', (req, res) => {
+    api
+        .getAllReportTypes()
+        .then((reportTypes) => res.status(200).json(reportTypes))
+        .catch((err) => res.status(500).json({ message: err.message }))
+    });
 
-router.get('/boards/:boardID');
+router.get('/boards/:boardID', (req, res) => {
+    api
+        .getBoard(req.params.boardID)
+        .then((board) => res.status(200).json(board))
+        .catch((err) => res.status(500).json({ message: err.message }))
+});
+
+router.get('/district-ward-name', (req, res) => {
+    api
+        .getDistrictWardName(req.query.lat, req.query.lng)
+        .then((districtWardName) => res.status(200).json(districtWardName))
+        .catch((err) => res.status(500).json({ message: err.message }))
+  });
 
 export default router;

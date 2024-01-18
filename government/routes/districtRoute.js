@@ -20,7 +20,9 @@ router.post('/officer/:username', (req, res) => controller.infoController.update
 router.get("/reports", (req,res) => {
     controller.reportController.show(req,res);
 });
-router.get("/reports/:reportID");
+router.get("/reports/:reportID", (req,res) => {
+    controller.reportController.showDetail(req,res);
+});
 router.post("/reports/:reportID", (req,res) => {
     controller.reportController.updateReport(req,res);
 });
@@ -36,11 +38,17 @@ router.get("/advertisements", (req,res) => controller.adsController.show(req,res
 // /advertisements/new?category=Location
 router.get("/advertisements/new", (req, res) => controller.adsController.showAdd(req,res));
 router.post("/advertisements/new");
-router.get("/advertisements/:id");
-router.get("/advertisements/edit/:id");
-router.post("/advertisements");
+router.get("/advertisements/:id", (req,res) => controller.adsController.showDetail(req,res,false));
+router.get("/advertisements/:id/modify", (req,res) => controller.adsController.showDetail(req,res,true));
+router.post("/advertisements/:id", (req,res) => controller.adsController.request(req,res));
 
 // nhóm giấy phép (license)
-router.get("/license");
+router.get('/license', (req, res) => controller.licenseController.show(req, res));
+router.get('/license/create', (req, res) => controller.licenseController.showCreate(req, res));
+router.get('/license/:id', (req, res) => controller.licenseController.showDetail(req, res, true))
+router.delete('/license/:id', (req, res) => controller.licenseController.deleteRequest(req, res));
+router.post('/license', (req, res) => controller.licenseController.add(req, res));
+router.get('/license/extend/:id', (req, res) => controller.licenseController.showExtend(req, res));
+router.post('/license/extend/:id', (req, res) => controller.licenseController.add(req, res));
 
 export default router;

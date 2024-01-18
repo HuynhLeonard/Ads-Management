@@ -32,7 +32,10 @@ export const deleteUserByUsername = async (username) => {
 
 export const updateOfficer = async (username, updateData) => {
     try {
-        await User.findOneAndUpdate({username}, {$set: updateData});
+        console.log(username);
+        console.log(updateData);
+        await User.findOneAndUpdate({username: username.trim()}, {$set: updateData});
+
         return {message: 'Officer updated successfully'};
     } catch (error) {
         throw new Error('Error');

@@ -144,7 +144,6 @@ class RequestService {
         }
     }
 
-
     buildResult() {
         const commonProject = {
             _id: 0,
@@ -171,13 +170,14 @@ class RequestService {
                     objectID: 1,
                     editContent: 1,
                     requestTime: 1,
-
+                    reason: 1
                 }
         }
     }
 
     async create(data) {
         try {
+            console.log(data);
             const newRequest = new this.model(data);
             await newRequest.save();
             return { message: `${this.model.modelName} created successfully` }
@@ -245,10 +245,15 @@ class RequestService {
     async updateStatus(id, status) {
         try {
             await this.model.findOneAndUpdate({requestID: id}, {status: status});
+            return {message: 'Update status successfully'}
         } catch (error) {
             throw new Error('Error updating status')
         }
     }
 }
 
-export default new RequestService();
+const licensingRequestService = new RequestService(licensingRequest);
+const editRequestService = new RequestService(editRequest);
+
+export { editRequestService, licensingRequestService };
+

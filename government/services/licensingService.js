@@ -2,6 +2,7 @@ import LicensingRequest from '../models/licensingSchema.js';
 
 export const createLicense = async (data) => {
   try {
+    console.log(data);
     const newRequest = new LicensingRequest(data);
     await newRequest.save();
     return { message: 'Licensing request created successfully' };

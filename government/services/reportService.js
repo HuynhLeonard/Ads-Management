@@ -5,8 +5,9 @@ export const createReport = async (reportData) => {
         const newReport = new report(reportData);
         const count = await report.countDocuments();
         newReport.reportID = 'BC' + String(count + 1).padStart(3, '0');
+        console.log(newReport);
         const saveData = await newReport.save();
-        return saveData;
+        return newReport.reportID;
     } catch (error) {
         throw new Error('Error happen when creating report.')
     }
@@ -26,52 +27,46 @@ export const getAllReport = async () => {
     const option = [
         {
             $lookup: {
-                from: "reporttypes",
-                localField: "reportType",
-                foreignField: "reportTypeID",
-                as: "reporttype",
+                from: 'reporttypes',
+                localField: 'reportType',
+                foreignField: 'reportTypeID',
+                as: 'reportType'
             }
         },
         {
             $unwind: {
-                path: "$reporttype",
+                path: '$reportType',
                 preserveNullAndEmptyArrays: true
             }
         },
         {
             $lookup: {
-                from: "locations",
-                localField: "objectID",
-                foreignField: "locationID",
-                as: "locationInfo",
+                from: 'locations',
+                localField: 'objectID',
+                foreignField: 'locationID',
+                as: 'spotInfo'
             }
         },
         {
             $lookup: {
-                from: "boards",
-                localField: "objectID",
-                foreignField: "boardID",
-                as: "board",
+                from: 'boards',
+                localField: 'objectID',
+                foreignField: 'boardID',
+                as: 'boardInfo'
             }
         },
         {
             $unwind: {
-                path: "$board",
+                path: '$boardInfo',
                 preserveNullAndEmptyArrays: true
             }
         },
         {
             $lookup: {
-                from: "locations",
-                localField: "board.locationID",
-                foreignField: "locationID",
-                as: "location",
-            }
-        },
-        {
-            $unwind: {
-                path: "$location",
-                preserveNullAndEmptyArrays: true
+                from: 'locations',
+                localField: 'boardInfo.locationID',
+                foreignField: 'locationID',
+                as: 'boardSpotInfo'
             }
         },
         {
@@ -79,71 +74,55 @@ export const getAllReport = async () => {
                 _id: 0,
                 reportID: 1,
                 objectID: 1,
-                reportType: 1,
-                reportTypeName: "$reporttype.reportTypeName",
+                reportType: '$reportType.reportTypeName',
                 reporterName: 1,
                 sendTime: 1,
                 status: 1,
-                LocationDistrictID: {
+                spotDistrictID: {
                     $cond: {
-                        if: { $eq: ['$location', []] },
-                        then: '$locationInfo.districtID',
-                        else: '$location.districtID'
+                        if: { $eq: ['$boardSpotInfo', []] },
+                        then: '$spotInfo.districtID',
+                        else: '$boardSpotInfo.districtID'
                     }
                 },
-                LocationWardID: {
+                spotWardID: {
                     $cond: {
-                        if: { $eq: ['$location', []] },
-                        then: '$locationInfo.wardID',
-                        else: '$location.wardID'
+                        if: { $eq: ['$boardSpotInfo', []] },
+                        then: '$spotInfo.wardID',
+                        else: '$boardSpotInfo.wardID'
                     }
                 },
             }
         },
         {
             $lookup: {
-                from: "districts",
-                localField: "location.districtID",
-                foreignField: "districtID",
-                as: "district",
-            }
-        },
-        {
-            $unwind: {
-                path: "$district",
-                preserveNullAndEmptyArrays: true
+                from: 'districts',
+                localField: 'spotDistrictID',
+                foreignField: 'districtID',
+                as: 'spotDistrict'
             }
         },
         {
             $lookup: {
-                from: "wards",
-                localField: "location.wardID",
-                foreignField: "wardID",
-                as: "ward",
+                from: 'wards',
+                localField: 'spotWardID',
+                foreignField: 'wardID',
+                as: 'spotWard'
             }
         },
-        {
-            $unwind: {
-                path: "$ward",
-                preserveNullAndEmptyArrays: true
-            }
-        },
-
         {
             $project: {
-                _id: 0,
                 reportID: 1,
                 objectID: 1,
                 reportType: 1,
                 reporterName: 1,
                 sendTime: 1,
                 status: 1,
-                reportTypeName: "$reporttype.reportTypeName",
-                locationDistrictName: "$district.districtName",
-                locationWardName: "$ward.wardName",
+                spotDistrictName: '$spotDistrict.districtName',
+                spotWardName: '$spotWard.wardName'
             }
         }
-    ];
+    ]
     try {
         const reports = await report.aggregate(option);
         return reports;
@@ -222,7 +201,7 @@ export const getSingleReport = async (reportID) => {
                 _id: 0,
                 reportID: 1,
                 objectID: 1,
-                reportType: 1,
+                reportType: '$reporttype.reportTypeName',
                 reporterName: 1,
                 reporterEmail: 1,
                 phoneNumber: 1,
@@ -372,7 +351,8 @@ export const getReportByOfficerRole = async (officerRole) => {
                         { 'locationInfo.districtID': officerRole },
                         { 'locationInfo.wardID': officerRole },
                         { 'boardLocationInfo.districtID': officerRole },
-                        { 'boardLocationInfo.wardID': officerRole }
+                        { 'boardLocationInfo.wardID': officerRole },
+                        { 'objectID': { $regex: '^AD' } }
                     ]
                 }
             },

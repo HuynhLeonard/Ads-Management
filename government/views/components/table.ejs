@@ -25,14 +25,21 @@
           console.log(removeUrl)
         %>
         <% if (tableRow.actions.edit) { %>
-        <%- include('./edit_button.ejs', {target: '#editModal-' + i}) %>
+          <button class="btn p-0" data-bs-target="<%= '#editModal-' + i || ''%>" data-bs-toggle="modal" data-bs-dismiss="modal">
+            <img src="/assets/edit.svg" alt="Edit" class="bg-transparent">
+          </button>
         <% } %>
         <% if (tableRow.actions.remove) { %>
-        <%- include('./remove_button.ejs', {url: removeUrl, removeHandler: 'removeHandler'}) %>
+          <a role="button"
+            class="text-decoration-none mx-3 remove-button"
+            data-bs-url="<%= removeUrl %>"
+            href="<%= removeUrl %>" >
+            <img src="/assets/remove.svg" alt="Edit" class="bg-transparent">
+          </a>
         <% } %>
         <% if (tableRow.actions.info) { %>
           <a href='<%= infoUrl || "javascript:"%>' class="text-decoration-none">
-            <img src="/images/info.svg" alt="info" class="bg-transparent">
+            <img src="/assets/info.svg" alt="info" class="bg-transparent">
           </a>
         <% } %>
       </td>

@@ -25,12 +25,12 @@ $(document).ready(function (){
         let checkedValues = checkboxes.filter(':checked');
         if(checkboxHeaderText !== 'Quận'){
             checkedValues = checkedValues.map(function () {
-                return $(this).val().replace('Quận ', '');
+                return $(this).val().replace('', '');
             })
             .get();
         } else {
             checkedValues = checkedValues.map(function () {
-                return $(this).val().replace('Phường ', '');
+                return $(this).val().replace('', '');
             })
             .get();
         }

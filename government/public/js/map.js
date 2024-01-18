@@ -50,8 +50,8 @@ function generateSpotHTML(spot) {
             </div>
           </div>`;
   }
-  if(position == 1) href = `/district/license/create?spotID=${spot.spotID}`
-  if(position == 2) href = `/ward/license/create?spotID=${spot.spotID}`
+  if(position == 1) href = `/district/license/create?locationID=${spot.locationID}`
+  if(position == 2) href = `/ward/license/create?locationID=${spot.locationID}`
   
   return `<div class="card">
             <img src="${spot.images[0]}" class="card-img-top img-fluid" alt="...">
@@ -60,7 +60,7 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.locationTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
-              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.locationID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
               <button class="btn btn-success btn-sm text-white mt-2"><a href="${href}" style="text-decoration: none; color: #FFFFFF;">Thêm bảng quảng cáo</a></button>
             </div>
           </div>`;
@@ -97,7 +97,7 @@ async function getSpotsData() {
         }
       });
     });
-
+    console.log(spotsGeojson);
     return spotsGeojson;
   } catch (error) {
     console.log(error);
@@ -278,44 +278,46 @@ const closeBtn = document.getElementById('close-search-btn');
 const searchInput = document.getElementById('search-input');
 const resultBox = document.querySelector('.result-box');
 let lastSearch = '';
-// searchInput.addEventListener('keyup', (e) => {
-//   let searchValue = searchInput.value;
-//   searchValue = searchValue.trim();
-//   if (searchValue === '' || searchValue === lastSearch) {
-//     return;
-//   }
-//   const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
+searchInput.addEventListener('keyup', (e) => {
+  let searchValue = searchInput.value;
+  searchValue = searchValue.trim();
+  if (searchValue === '' || searchValue === lastSearch) {
+    return;
+  }
+  const autoCompleteApi = `https://revgeocode.search.hereapi.com/v1/autocomplete?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
 
-//   lastSearch = searchValue;
+  lastSearch = searchValue;
 
-//     fetch(api)
-//         .then((res) => res.json())
-//         .then((res) => {
-//             if (res && res.items && res.items.length > 0) {
-//             const result = res.items.map((item) => {
-//                 return {
-//                 title: item.address.label,
-//                 lat: item.position.lat,
-//                 lng: item.position.lng,
-//                 };
-//             });
-//             displaySearchResult(result);
-//             }
-//         });
-// });
-
+  // fetch after 500ms
+  setTimeout(() => {
+    if (searchValue === lastSearch) {
+      fetch(autoCompleteApi)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res && res.items && res.items.length > 0) {
+            const result = res.items.map((item) => {
+              return {
+                title: item.title,
+                label: item.address.label,
+              };
+            });
+            displaySearchResult(result);
+          }
+        });
+    }
+  }, 500);
+});
 const displaySearchResult = (result) => {
   const content = result.map((item) => {
     return `
-    <a  href='#'
-        class='list-group-item list-group-item-action border-0 rounded-0 list-search-item'
-        data-bs-lat='${item.lat}' 
-        data-bs-lng='${item.lng}'
-        data-bs-title='${item.title}'
-        style='cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem'>${item.title}    
+    <a  href="#"
+        class="list-group-item list-group-item-action border-0 rounded-0 list-search-item"
+        data-bs-title="${item.title}" 
+        data-bs-label="${item.label}"
+        style="cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem">${item.label}    
     </a>`;
   });
-  resultBox.innerHTML = `<div class='list-group'>${content.join('')}</div>`;
+  resultBox.innerHTML = `<div class="list-group">${content.join('')}</div>`;
 };
 
 mapboxScript.onload = async function() {
@@ -433,5 +435,29 @@ mapboxScript.onload = async function() {
   });
   map.on('dragend', () => {
     map.getCanvas().style.cursor = '';
+  });
+
+  resultBox.addEventListener('click', (e) => {
+    const listSearchItem = e.target.closest('.list-search-item');
+    if (!listSearchItem) return;
+    const label = listSearchItem.dataset.bsLabel;
+    const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${label}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=1`;
+
+    fetch(api)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.items && res.items.length > 0) {
+          map.flyTo({
+            center: [res.items[0].position.lng, res.items[0].position.lat],
+            essential: true,
+            zoom: 16,
+          });
+        }
+      });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    resultBox.innerHTML = '';
   });
 };

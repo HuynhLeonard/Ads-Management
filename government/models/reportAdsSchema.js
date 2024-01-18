@@ -52,6 +52,5 @@ const ReportAdsSchema = new mongoose.Schema({
 });
 
 // save with a custom number, also datetime format here
-
 const Report = mongoose.model('reports', ReportAdsSchema);
 export default Report;

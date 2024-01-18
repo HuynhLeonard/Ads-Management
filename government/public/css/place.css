@@ -1,6 +1,6 @@
 body {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 
     font-family: 'Montserrat';
 }
@@ -177,7 +177,7 @@ body {
     filter: brightness(.8);
 }
 
-.title {
+.title, .ads-title, .reports-title {
     font-size: 25px;
     font-weight: bold;
     text-align: center;
@@ -316,7 +316,7 @@ body {
     .ads-slider {
         aspect-ratio: 11/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 23px;
     }
     .detail, .address, .place-name {
@@ -328,7 +328,7 @@ body {
     .ads-slider {
         aspect-ratio: 10/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 21px;
     }
     .detail, .address, .place-name {
@@ -344,7 +344,7 @@ body {
     .ads-slider {
         aspect-ratio: 9/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 19px;
     }
     .detail, .address, .place-name {
@@ -359,7 +359,7 @@ body {
     .reports-slider {
         aspect-ratio: 13/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 19px;
     }
     .detail, .address, .place-name {
@@ -368,7 +368,7 @@ body {
 }
 
 @media only screen and (max-width: 1050px) {
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 19px;
     }
     .detail, .address, .place-name {
@@ -395,7 +395,7 @@ body {
     .reports-slider {
         aspect-ratio: 12/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 17px;
     }
     .detail, .address, .place-name {
@@ -417,7 +417,7 @@ body {
     .reports-slider {
         aspect-ratio: 9/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 15px;
     }
     .detail, .address, .place-name {
@@ -444,7 +444,7 @@ body {
     .ads-slider {
         aspect-ratio: 7.9/7;
     }
-    .title {
+    .title, .ads-title, .reports-title {
         font-size: 13px;
     }
     .detail, .address, .place-name {

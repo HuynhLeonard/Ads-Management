@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo cáo vi phạm</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" type="text/css" />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap Datatables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css" />
+
+  <!-- Bootstrap-table -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css">
+
+  <!-- Bootstrap-table -->
+  <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+  <script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/locale/bootstrap-table-vi-VN.min.js"></script>
+  <script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script defer src="js/table.js"></script>
+
+  <!-- CSS stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/carousel.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/carousel.css" />
+  <!-- Bootstrap icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Fontawesome icon -->
+  <link rel="stylesheet" href="css/all.css" />
+  <!-- TinyMCE -->
+  <script type="text/javascript" src='https://cdn.tiny.cloud/1/r48esfw27w6eey301xxsgf1pbt45hv51mbq5s97zr4ycrf02/tinymce/6/tinymce.min.js' referrerpolicy="origin"></script>
+  <script type="text/javascript">
+    tinymce.init({
+      selector: '#content',
+      height: 300,
+      plugins: ['searchreplace', 'wordcount', 'visualblocks', 'visualchars', 'code', 'fullscreen', 'insertdatetime', 'table', 'emoticons'],
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      menubar: 'favs file edit view insert format tools table help',
+      language: 'vi',
+    });
+  </script>
+
+  <!-- ReCaptchaV3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6LeRPU0pAAAAAO3wpsQevQMPg0qP6GyEZzAQ_0MU"></script>
+  <!-- Fetch Event -->
+  <script src="js/fetchEvent.js"></script>
+</head>
+
+<body>
+  <!-- Loader -->
+  <div class="spinner-wrapper" id="loaderContainer" style="display: none;">
+    <div class="spinner">
+        <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+        </div>
+    </div>
+  </div>
+  <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <aside class="row">
+      <!-- Sidebar -->
+      <div class="d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
+        <a href="/" class="d-block p-3 link-body-emphasis text-decoration-none logo-wrap" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon only">
+          <div class="icon-wrap">
+            <img class="SLogo-page" src="assets/logo.png"></img>
+          </div>
+        </a>
+        <!-- <hr /> -->
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+          <li class="nav-item">
+            <a href="/" class="nav-link rounded-0 py-3 border-bottom border-dark" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
+              <i class="fa-regular fa-house"></i>
+              <span>Trang chủ</span>
+            </a>
+          </li>
+          <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li class="nav-item">
+              <a href="/reports.html" class="nav-link rounded-0 py-3" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
+                <i class="fa-regular fa-pen-nib"></i>
+                <span>Danh sách báo cáo</span>
+              </a>
+            </li>
+          </ul>
+        </ul>
+      </div>
+    </aside>
+    <div class="container-fluid vw-100 pt-1">
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <!-- Back button -->
+        <div class="d-flex flex-wrap position-absolute top-0 start-0 translate-middle p-2 bg-transparent" style="max-width: fit-content;">
+          <button class="d-flex align-items-center justify-content-center text-white rounded-pill border-0" style="background-color: #3c77ff; height: 50px; width: 50px" onclick="window.history.back()">
+            <i class="fa-solid fa-arrow-turn-up fa-rotate-270"></i>
+          </button>
+        </div>
+        <!-- Title -->
+        <div class="d-flex flex-row align-items-center" style="gap: 10px">
+          <h1 class="fw-bolder m-0">BÁO CÁO VI PHẠM</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="container-fluid details px-0">
+          <!-- Row 1: 3 columns -->
+          <div class="row mt-2">
+            <div class="col-md-12 custom-col">
+              <label for="object-id" style="margin-bottom: 6px">ID Điểm đặt/ Bảng quảng cáo</label>
+              <input type="text" class="form-control" id="object-id" value="" disabled />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-4 custom-col">
+              <label for="sender-name" style="margin-bottom: 6px">Họ và tên người gửi <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="sender-name" placeholder="Họ và tên" required/>
+            </div>
+            <div class="col-md-4 custom-col">
+              <label for="phone" style="margin-bottom: 6px">Số điện thoại <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="phone" placeholder="0123456789" required/>
+            </div>
+            <div class="col-md-4 custom-col">
+              <label for="email" style="margin-bottom: 6px">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" placeholder="example@email.com" required/>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-12 custom-col">
+              <label for="report-type" style="margin-bottom: 6px">Loại hình báo cáo <span class="text-danger">*</span></label>
+              <select class="form-select" name="report-type" id="report-type" required>
+                <option selected>Chọn 1 loại hình báo cáo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-12 custom-col">
+              <label for="content" style="margin-bottom: 6px">Nội dung báo cáo <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="content" style="min-height: 100px" required></textarea>
+            </div>
+          </div>
+          <!-- Image chooser -->
+          <div class="container-fluid px-0">
+            <label style="margin-bottom: 6px">Ảnh minh chứng</label>
+            <div class="row position-relative h-100">
+              <!-- Badge -->
+              <div class="badge border border-dark top-0 start-0 translate-middle position-absolute rounded-pill bg-white text-center" style="width: 50px; height:50px;" hidden>
+                <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100" id="badge-text">1</span>
+              </div>
+              <label for="input-image" id="drop-area" class="bg-white rounded-5 p-3">
+                <input type="file" id="input-image" accept="image/*" hidden multiple />
+                <div id="img-view" class="d-flex flex-column align-items-center justify-content-center text-center rounded-4" style="border: 2px dashed #bbb5ff; width: 100%; height: 100%; background: #f7f8ff center; background-size: cover;">
+                  <img src="./assets/upload-icon.png" alt="Ảnh xem trước" class="img-fluid" />
+                  <p class="text-black">Drag and drop or click here <br>to upload image</p>
+                  <span class="d-block fw-lighter fs-6 text-body-secondary">Upload any images from desktop</span>
+                </div>
+              </label>
+            </div>
+            <script defer src="./js/uploadImage.js"></script>
+          </div>
+        </div>
+        <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px;">
+          <button id="cancelBtn" type="button" class="btn btn-danger" style="width: 150px;">Huỷ</button>
+          <button id="submitBtn" type="button" class="btn btn-success" style="width: 150px;">Gửi yêu cầu</button>
+        </div>
+      </div>
+    </div>
+    <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
+  </main>
+
+  <script defer type="module" src="js/reportCreate.js"></script>
+</body>
+
+</html>
