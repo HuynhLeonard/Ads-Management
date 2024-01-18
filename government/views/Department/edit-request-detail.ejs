@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include("../components/head.ejs"); %>
+  <link rel="stylesheet" href="/css/carousel.css" />
+</head>
+
+<body>
+  <header></header>
+
+  <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Cập nhật trạng thái thành công!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Có lỗi xảy ra khi cập nhật trạng thái!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <div class="row"><%- include("../components/sidebar.ejs"); %></div>
+    <div class="container-fluid vw-100 pt-1">
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <!-- Back button -->
+        <%- include("../components/back_button.ejs", {url: "/phuong/boards"}); %>
+        <!-- Title -->
+        <div class="d-flex flex-row align-items-center" style="gap: 10px">
+          <h1 class="fw-bolder m-0 text-uppercase">CHI TIẾT YÊU CẦU CHỈNH SỬA</h1>
+        </div>
+
+        <div class="container-fluid nd-chi-tiet px-0">
+          <!-- Row 1: 3 columns -->
+          <div class="row mt-2">
+            <div class="col-md-3 custom-col">
+              <label for="id-baocao" style="margin-bottom: 6px">ID Yêu cầu</label>
+              <input type="text" class="form-control" id="id-baocao" value='<%= requestID %>' disabled />
+            </div>
+            <div class="col-md-3 custom-col">
+              <label for="report-time" style="margin-bottom: 6px">Thời gian gửi</label>
+              <input type="text" class="form-control" id="report-time" value="<%= requestTime %>" disabled />
+            </div>
+            <div class="col-md-3 custom-col">
+              <label for="officer-username" style="margin-bottom: 6px">Người gửi</label>
+              <input type="text" class="form-control" id="officer-username" value="<%= officer %>" disabled />
+            </div>
+            <div class="col-md-3 custom-col">
+              <label for="status" style="margin-bottom: 6px">Trạng thái</label>
+              <input type="text" class="form-control fw-bold <%= status == 1 ? 'text-success-emphasis' : (status == 0 ? 'text-info-emphasis' : 'text-danger-emphasis') %>" id="status" value="<%= status == 1 ? 'Đã duyệt' : (status == 0 ? 'Đang chờ duyệt' : 'Đã từ chối') %>" disabled />
+
+              <!-- <select class="form-select d-block py-1 dropdown" style="flex: 0; line-height: 1.5;" id="status-menu" <% if (status != 0) { %> disabled <% } %>>
+                        <option selected value="-1">Đang chờ duyệt</option>
+                        <option value="1">Đã duyệt</option>
+                        <option value="0">Đã từ chối</option>
+                    </select> -->
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-2 border-top border border-dark my-5" />
+
+        <!-- Content -->
+        <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
+          <!-- Carousel -->
+          <%- include("../components/carousel.ejs", {imgUrls: editContent.image || editContent.images || [
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206' ]}); %>
+          <% if (type=='board') { %>
+          <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
+            <div class="container d-flex justify-content-between">
+              <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng quảng cáo</h4>
+            </div>
+            <div class="container mt-2 d-flex justify-content-between">
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="id-quangcao" style="margin-bottom: 6px;">ID Quảng cáo</label>
+                <input type="text" class="form-control" id="id-quangcao" value="<%= editContent.boardID %>" disabled />
+              </div>
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
+                <input type="text" class="form-control" id="id-diemdat" value="<%= editContent.locationID %>" disabled />
+              </div>
+            </div>
+            <div class="container mt-2">
+              <label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
+              <input type="text" class="form-control" id="diachi" value="<%= editContent.spotAddress %>" disabled />
+            </div>
+            <div class="container mt-2">
+              <label for="compName" style="margin-bottom: 6px">Công ty yêu cầu cấp phép</label>
+              <input type="text" class="form-control" id="compName" value="<%= editContent.compName %>" disabled />
+            </div>
+            <div class="container mt-2 d-flex justify-content-between">
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="compPhone" style="margin-bottom: 6px;">Số điện thoại</label>
+                <input type="text" class="form-control" id="compPhone" value="<%= editContent.compPhone %>" disabled />
+              </div>
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="compEmail" style="margin-bottom: 6px">Email</label>
+                <input type="text" class="form-control" id="compEmail" value="<%= editContent.compEmail %>" disabled />
+              </div>
+            </div>
+            <div class="container mt-2">
+              <label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
+              <input type="text" class="form-control" id="compAdress" value="<%= editContent.compAddress %>" disabled />
+            </div>
+            <div class="container mt-2 d-flex justify-content-between">
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>
+                <div class="input-group date" id="datepicker">
+                  <input type="text" class="form-control" id="startDate" value="<%= editContent.startDate %>" disabled />
+                  <span class="input-group-append">
+                    <span class="input-group-text h-100">
+                      <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
+                <div class="input-group date" id="datepicker">
+                  <input type="text" class="form-control" id="endDate" value="<%= editContent.endDate %>" disabled />
+                  <span class="input-group-append">
+                    <span class="input-group-text h-100">
+                      <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } else { %>
+          <div class="container-fluid px-0 nd-chi-tiet">
+            <div class="container d-flex justify-content-between">
+              <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
+            </div>
+            <div class="container mt-2">
+              <label for="spotId" style="margin-bottom: 6px">ID Điểm đặt</label>
+              <input type="text" class="form-control" id="spotId" value='<%= editContent.locationID %>' disabled />
+            </div>
+            <div class="container mt-2">
+              <label for="address" style="margin-bottom: 6px">Địa chỉ</label>
+              <input type="text" class="form-control" id="address" value='<%= editContent.address %>' disabled />
+            </div>
+            <div class="container mt-2 d-flex justify-content-between">
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="wardName" style="margin-bottom: 6px;">Phường</label>
+                <input type="text" class="form-control" id="wardName" value='<%= editContent.wardName %>' disabled />
+              </div>
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="districtName" style="margin-bottom: 6px">Quận</label>
+                <input type="text" class="form-control" id="districtName" value='<%= editContent.districtName %>' disabled />
+              </div>
+            </div>
+            <div class="container mt-2">
+              <label for="location-type" style="margin-bottom: 6px">Loại vị trí</label>
+              <input type="text" class="form-control" id="location-type" value='<%= editContent.spotTypeName %>' disabled />
+            </div>
+            <div class="container mt-2">
+              <label for="ads-type" style="margin-bottom: 6px">Hình thức quảng cáo</label>
+              <input type="text" class="form-control" id="ads-type" value='<%= editContent.adsFormName %>' disabled />
+            </div>
+            <div class="container mt-2">
+              <label for="plan" style="margin-bottom: 6px">Thông tin quy hoạch</label>
+              <input type="text" class="form-control" id="plan" value='<% if (editContent.planned == 1) { %> Đã quy hoạch <% } else { %> Chưa quy hoạch <% } %>' disabled />
+            </div>
+          </div>
+          <% } %>
+        </div>
+        <!-- Dưới ảnh -->
+        <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+          <% if (type=='board') { %>
+          <div class="container mt-2 d-flex justify-content-between">
+            <div style="width: calc((100% - 3rem) / 3);">
+              <label for="adsType" style="margin-bottom: 6px;">Loại quảng cáo</label>
+              <input type="text" class="form-control" id="adsType" value="<%= editContent.boardTypeName %>" disabled />
+            </div>
+            <div style="width: calc((100% - 3rem) / 3);">
+              <label for="count" style="margin-bottom: 6px">Số lượng</label>
+              <input type="text" class="form-control" id="count" value="<%= editContent.quantity %>" disabled />
+            </div>
+            <div style="width: calc((100% - 3rem) / 3);">
+              <label for="size" style="margin-bottom: 6px">Kích thước</label>
+              <input type="text" class="form-control" id="size" value="<%= editContent.height %>x<%= editContent.width %>m" disabled />
+            </div>
+          </div>
+          <div class="container mt-2 d-flex justify-content-between">
+            <div style="width: calc((100% - 2rem) / 2);">
+              <label for="locationType" style="margin-bottom: 6px;">Phân loại</label>
+              <input type="text" class="form-control" id="locationType" value="<%= editContent.spotTypeName %>" disabled />
+            </div>
+            <div style="width: calc((100% - 2rem) / 2);">
+              <label for="adsForm" style="margin-bottom: 6px">Hình thức</label>
+              <input type="text" class="form-control" id="adsForm" value="<%= editContent.adsFormName %>" disabled />
+            </div>
+          </div>
+          <% } %>
+          <div class="container mt-2">
+            <label for="reason" style="margin-bottom: 6px">Lý do chỉnh sửa</label>
+            <textarea class="form-control" id="reason" style="min-height: 170px" disabled><%= reason %></textarea>
+          </div>
+
+        </div>
+
+        <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px; padding: 0 12px">
+          <button type="button" class="btn btn-danger" style="width: 130px;" onclick="process(event, -1)" <% if (status != 0) { %> hidden <% } %>>Từ chối</button>
+          <button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn" onclick="process(event, 1)" <% if (status != 0) { %> hidden <% } %>>Phê duyệt</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Ads list -->
+
+
+  <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+  <script defer>
+    async function process(event, status) {
+      event.preventDefault();
+      const response = await fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          requestID: '<%= id %>',
+          status: status
+        })
+      })
+
+      // ......... Xu ly ket qua va hien thong bao ............
+
+      if (response.status == 200) {
+        document.getElementById('alert-success').removeAttribute('hidden');
+        // clear all inputs
+        document.querySelectorAll('.form-control').forEach(input => {
+          input.value = '';
+        });
+        // when the alert is closed, redirect
+        document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+          window.location.href = result.url;
+        });
+      } else {
+        document.getElementById('alert-danger').removeAttribute('hidden');
+      }
+
+      // .......................................................
+
+      console.log(response)
+      // when alert is closed, reload page
+      $('.alert').on('closed.bs.alert', function() {
+        location.reload();
+      })
+    }
+  </script>
+</body>
+
+</html>

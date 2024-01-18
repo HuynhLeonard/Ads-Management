@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("../components/head.ejs"); %>
+</head>
+<body>
+<main class="container-fluid d-flex bg-light" style="min-height: 100vh;">
+    <div class="row">
+        <%- include("../components/sidebar.ejs"); %>
+    </div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative" style="min-height: 80vh;">
+            <%- include("../partials/back_button.ejs"); %>
+            <!-- Title -->
+            <div class="d-flex flex-row align-items-center" style="gap: 10px">
+                <h2 class="fw-bolder m-0 text-uppercase"><%= title%></h2>
+            </div>
+
+            <!-- Content -->
+            <div class="container-fluid nd-chi-tiet px-0">
+                <!-- Row 2: 2 columns -->
+                <div class="row mt-2">
+                    <div class="col-md-6 custom-col">
+                        <label for="ads_id" style="margin-bottom: 6px">Mã Loại</label>
+                        <input type="text" class="form-control" id="ads_id" value='<%= detail.id %>' disabled/>
+                    </div>
+                    <div class="col-md-6 custom-col">
+                        <label for="report_type" style="margin-bottom: 6px">Tên Loại</label>
+                        <input type="text" class="form-control" id="report_type" value='<%= detail.name %>'
+                               disabled/>
+                    </div>
+                </div>
+
+                <!-- Rows 4, 5, 6: 1 column each -->
+                <div class="row mt-2">
+                    <div class="col-md-12 custom-col">
+                        <label for="content" style="margin-bottom: 6px">Mô tả</label>
+                        <textarea class="form-control" id="content" disabled
+                                  style="min-height: 100px"><%= detail.description %></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</html>

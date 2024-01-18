@@ -1,0 +1,141 @@
+<% const keys = (tableData && tableData.length > 0) ? Object.keys(tableData[0]) : [] %>
+<table id="table" data-toggle="table" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, ALL]" data-locale="vi-VN" data-buttons-class="primary" data-buttons=<%= (locals.add_button) ? "buttons" : "" %> data-show-button-text="true" data-icons-prefix="fa" class="table table-striped table-bordered table-hover table-responsive-md rounded" smart-display>
+  <thead>
+    <tr>
+      <% for (let i = 0; i < tableHeads.length; i++) { %>
+      <th data-field="<%= keys[i] %>" data-align="center" data-sortable="true">
+        <%= tableHeads[i] %>
+      </th>
+      <% } %>
+      <th data-align="center" data-field="actions">
+        Hành động
+      </th>
+    </tr>
+  </thead>
+  <tbody id="table-content">
+    <% tableData.forEach((tableRow, i) => { %>
+    <tr>
+      <% keys.forEach((key) => { %>
+      <% if (key === 'actions') { %>
+      <td>
+        <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null 
+          console.log(infoUrl)
+        %>
+        <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null 
+          console.log(removeUrl)
+        %>
+        <% if (tableRow.actions.edit) { %>
+          <button class="btn p-0" data-bs-target="<%= '#editModal-' + i || ''%>" data-bs-toggle="modal" data-bs-dismiss="modal">
+            <img src="/assets/edit.svg" alt="Edit" class="bg-transparent">
+          </button>
+        <% } %>
+        <% if (tableRow.actions.remove) { %>
+          <a role="button"
+            class="text-decoration-none mx-3 remove-button"
+            data-bs-url="<%= removeUrl %>"
+            href="<%= removeUrl %>" >
+            <img src="/assets/remove.svg" alt="Edit" class="bg-transparent">
+          </a>
+        <% } %>
+        <% if (tableRow.actions.info) { %>
+          <a href='<%= infoUrl || "javascript:"%>' class="text-decoration-none">
+            <img src="/assets/info.svg" alt="info" class="bg-transparent">
+          </a>
+        <% } %>
+      </td>
+      <% }else if (tableRow[key] !== undefined) { %>
+      <td><%= tableRow[key] %></td>
+      <% } %>
+      <% }) %>
+    </tr>
+    <% }) %>
+
+  </tbody>
+</table>
+
+<script defer type="module">
+  import {
+    ezBSAlert
+  } from '/js/customizedModal.js';
+
+
+  const alertPlaceholder = document.getElementById('alertConfirm')
+  const appendAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      <strong>${message}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`
+
+
+    alertPlaceholder.innerHTML = wrapper.innerHTML
+    if (alertPlaceholder) console.log("alertPlaceholder exists", alertPlaceholder)
+    else console.log("alertPlaceholder doesn't exist")
+
+    console.log('Appended alert!')
+  }
+
+  const confirmDelete = async (e) => {
+    e.preventDefault();
+    const event = e;
+    const url = e.target.parentElement.dataset.bsUrl;
+    ezBSAlert({
+      type: "confirm",
+      messageText: "Bạn có chắc chắn muốn xóa?",
+      alertType: "danger",
+    }).done(e => {
+      if (e) {
+        removeHandler(event, url);
+      }
+    })
+
+  }
+
+  const removeHandler = async (e, url) => {
+    // console.log(url);
+    try {
+      e.preventDefault();
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      // location.reload();
+      if (!response.ok) throw new Error('Xóa thất bại');
+      appendAlert('Xoá thành công', 'success');
+    } catch (error) {
+      console.log(error);
+      appendAlert('Xoá thất bại', 'danger');
+    } finally {
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
+  };
+
+  const updateHandler = async (e, url, data) => {
+    try {
+      e.preventDefault();
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      // location.reload();
+      if (!response.ok) throw new Error('Cập nhật thất bại');
+      appendAlert('Cập nhật thành công', 'success');
+    } catch (error) {
+      console.log(error);
+      appendAlert('Cập nhật thất bại', 'danger');
+    } finally {
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
+  };
+
+  $("#table").on('click', '.remove-button', confirmDelete);
+</script>

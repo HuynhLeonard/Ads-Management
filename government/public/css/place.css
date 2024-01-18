@@ -1,0 +1,468 @@
+body {
+    display: flex;
+    justify-content: center;
+
+    font-family: 'Montserrat';
+}
+
+.container {
+    width: 35vw;
+    height: 100%;
+
+    background-color: #08a5a0;
+    border: 3px solid black;
+    border-radius: 13px;
+    padding-bottom: 20px;
+
+    margin: auto 0;
+}
+
+.slider-wrapper {
+    position: relative;
+    max-width: 40rem;
+}
+
+.image {
+    position: relative;
+    max-width: 40rem;
+}
+
+.slider {
+    display: flex;
+    aspect-ratio: 16/10;
+
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0);
+    border-radius: 10px 10px 0 0;
+}
+
+.slider img {
+    flex: 1 0 100%;
+    scroll-snap-align: start;
+    object-fit: cover;
+}
+
+.slider-nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.slider-nav a {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+
+.slider-nav a:hover {
+    opacity: 1;
+}
+
+.place-info {
+    font-size: 18px;
+    padding: 20px;
+
+    position: relative;
+    color: white;
+}
+
+.place-info button {
+    margin-top: 10px !important;
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.place-btn {
+    --color: #f0520e;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 400;
+    font-size: 12px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+}
+
+.raw-color {
+    color: white;
+}
+
+.report-btn {
+    --color: #ff3838;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 400;
+    font-size: 12px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+}
+
+.info-btn {
+    --color: #039924;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 400;
+    font-size: 12px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+}
+
+.report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    background-color: var(--color);
+    transition: 1s ease;
+}
+
+.report-btn::before, .info-btn::before, .place-btn::before {
+    top: -1em;
+    left: -1em;
+}
+
+.report-btn::after, .info-btn::after, .place-btn::after {
+    left: calc(100% + 1em);
+    top: calc(100% + 1em);
+}
+
+.report-btn:hover::before, .report-btn:hover::after, .info-btn:hover::before, .info-btn:hover::after, .place-btn:hover::before, .place-btn:hover::after {
+    height: 410px;
+    width: 410px;
+}
+
+.report-btn:hover, .info-btn:hover, .place-btn:hover {
+    color: rgb(10, 25, 30);
+    font-weight: bold;
+}
+
+.report-btn:active, .info-btn:active, .place-btn:active {
+    filter: brightness(.8);
+}
+
+.title, .ads-title, .reports-title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.place-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.address {
+    font-size: 16px;
+}
+
+.ads-info {
+    margin: 0 auto;
+    background-color: #fff;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.ads-wrapper {
+    position: relative;
+    max-width: 40rem;
+}
+
+.ads-slider {
+    display: flex;
+    aspect-ratio: 12/7;
+
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0);
+    border-radius: 10px;
+}
+
+.ads-slider .ads {
+    flex: 1 0 100%;
+    scroll-snap-align: start;
+    object-fit: cover;
+}
+
+.data {
+    padding: 5px 10px;
+}
+
+.ads-nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.ads-nav a {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #000;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+
+.ads-nav a:hover {
+    opacity: 1;
+}
+
+.butn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.reports-info {
+    margin: 0 auto;
+    background-color: #fff;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.reports-wrapper {
+    position: relative;
+    max-width: 40rem;
+}
+
+.reports-slider {
+    display: flex;
+    aspect-ratio: 12/5.5;
+
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0);
+    border-radius: 10px;
+}
+
+.reports-slider .reports {
+    flex: 1 0 100%;
+    scroll-snap-align: start;
+    object-fit: cover;
+}
+
+.reports-nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.reports-nav a {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #000;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+
+.reports-nav a:hover {
+    opacity: 1;
+}
+
+.fade {
+    display: none;
+}
+
+@media only screen and (max-width: 1500px) {
+    .ads-slider {
+        aspect-ratio: 11/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 23px;
+    }
+    .detail, .address, .place-name {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .ads-slider {
+        aspect-ratio: 10/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 21px;
+    }
+    .detail, .address, .place-name {
+        font-size: 14px;
+    }
+    button {
+        font-size: 10px !important;
+        padding: 0.6em 1.5em !important;
+    }
+}
+
+@media only screen and (max-width: 1220px) {
+    .ads-slider {
+        aspect-ratio: 9/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 19px;
+    }
+    .detail, .address, .place-name {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .ads-slider {
+        aspect-ratio: 9/7;
+    }
+    .reports-slider {
+        aspect-ratio: 13/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 19px;
+    }
+    .detail, .address, .place-name {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .title, .ads-title, .reports-title {
+        font-size: 19px;
+    }
+    .detail, .address, .place-name {
+        font-size: 12px;
+    }
+    button {
+        font-size: 8px !important;
+        padding: 0.4em 1.3em !important;
+    }
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
+        width: 20px;
+        height: 20px;
+    }
+    .ads-nav a, .slider-nav a, .reports-nav a {
+        width: 0.4rem;
+        height: 0.4rem;
+    }
+    .slider-nav, .ads-nav, .reports-nav {
+        bottom: 0.8rem;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .reports-slider {
+        aspect-ratio: 12/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 17px;
+    }
+    .detail, .address, .place-name {
+        font-size: 10px;
+    }
+    .ads-nav a, .slider-nav a, .reports-nav a {
+        width: 0.3rem;
+        height: 0.3rem;
+    }
+    .slider-nav, .ads-nav, .reports-nav {
+        bottom: 0.6rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .ads-slider {
+        aspect-ratio: 8/7;
+    }
+    .reports-slider {
+        aspect-ratio: 9/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 15px;
+    }
+    .detail, .address, .place-name {
+        font-size: 8px;
+    }
+    button {
+        font-size: 6px !important;
+        padding: 0.2em 1.1em !important;
+    }
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
+        width: 10px;
+        height: 10px;
+    }
+    .ads-nav a, .slider-nav a, .reports-nav a {
+        width: 0.2rem;
+        height: 0.2rem;
+    }
+    .slider-nav, .ads-nav, .reports-nav {
+        bottom: 0.4rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .ads-slider {
+        aspect-ratio: 7.9/7;
+    }
+    .title, .ads-title, .reports-title {
+        font-size: 13px;
+    }
+    .detail, .address, .place-name {
+        font-size: 6px;
+    }
+    button {
+        font-size: 4px !important;
+        padding: 0.1em 1em !important;
+    }
+    .report-btn::before, .report-btn::after, .info-btn::before, .info-btn::after, .place-btn::before, .place-btn::after {
+        width: 10px;
+        height: 10px;
+    }
+    .ads-nav a, .slider-nav a, .reports-nav a {
+        width: 0.1rem;
+        height: 0.1rem;
+    }
+    .slider-nav, .ads-nav, .reports-nav {
+        bottom: 0.2rem;
+    }
+}

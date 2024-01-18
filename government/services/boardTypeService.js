@@ -1,69 +1,68 @@
 import BoardType from "../models/boardTypeSchema.js";
 
-export const createBoardType = async (req,res,next) => {
+// Done
+export const createBoardType = async (boardTypeData) => {
     try {
-        const newData = new BoardType(req.body);
+        const newData = new BoardType(boardTypeData);
 
-        const savedData = await newData.save();
-        res.status(200).json({
-            savedData
-        })
+        await newData.save();
+        return { message: "Board type created successfully" };
     } catch (error) {
-        throw new Error('Error')
+        throw new Error("Error");
     }
 };
 
-export const getSingleBoardType = async (req,res,next) => {
+// Done
+export const getSingleBoardType = async (boardTypeID) => {
     try {
-        const boardType = await BoardType.find({boardTypeID: req.params.id});
+        const boardType = await BoardType.findOne({ boardTypeID: boardTypeID });
 
-        if(!boardType) {
-            res.status(500).json({
-                message: 'Invalid ID'
-            })
+        if (!boardType) {
+            return { message: "Invalid ID" };
         } else {
-            res.status(200).json({
-                boardType
-            })
+            return boardType;
         }
-
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };
 
-export const getAllBoardType = async (req,res,next) => {
+// Done
+export const getAllBoardType = async () => {
     try {
-        const boardTypes = await BoardType.find();
+        const boardTypes = await BoardType.find().sort({ boardTypeID: 1 });
 
-        res.status(200).json({
-            boardTypes
-        })
+        return boardTypes;
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };
 
-export const updateBoardType = async (req,res,next) => {
+// Done
+export const updateBoardType = async (boardTypeID, updateData) => {
     try {
-        const updatedBoardType = await BoardType.findOneAndUpdate({boardTypeID: req.params.id}, {
-            $set: req.body
-        });
+        const updatedBoardType = await BoardType.findOneAndUpdate(
+            { boardTypeID: boardTypeID },
+            {
+                $set: updateData,
+            }
+        );
 
-        res.status(200).json({
-            updatedBoardType
-        });
+        return { message: "Board type update successfully" };
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };
 
-export const deleteBoardType = async (req,res,next) => {
+// Done
+export const deleteBoardType = async (boardTypeID) => {
     try {
         await BoardType.findOneAndDelete({
-            boardTypeID: req.params.id
-        })
+            boardTypeID: boardTypeID,
+        });
+
+        return { message: "Board type delete successfully" };
     } catch (error) {
-        throw new Error('Error');
+        throw new Error("Error");
     }
 };

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include("./components/head.ejs"); %>
+</head>
+
+<body>
+  <header></header>
+  <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <aside class="row">
+      <%- include("./components/sidebar.ejs"); %>
+    </aside>
+    <div class="container-fluid vw-100 pt-1">
+      <% if (typeof message !== undefined) {%>
+      <% if (message.success) {%>
+      <div class="alert alert-success alert-dismissible position-absolute top-0 start-50" role="alert">
+        <strong>Thành công!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+      </div>
+      <% } else if (message.error) {%>
+      <div class="alert alert-danger alert-dismissible position-absolute top-0 start-50" role="alert">
+        <strong>Thất bại!</strong> <%= message.error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+      <% } %>
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <!-- Profile -->
+        <%- include("./components/card.ejs"); %>
+        <!-- Back button -->
+        <%- //include("./partials/back_button.ejs"); %>
+        <!-- Title -->
+        <div class="d-flex flex-row align-items-center" style="gap: 10px">
+          <h1 class="fw-bolder m-0 text-uppercase"><%- title %></h1>
+        </div>
+
+        <!-- Content -->
+        <div class="container-fluid nd-chi-tiet px-0">
+          <form method="POST" action="<%= `/${role}/officer/${info.username}` %>">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="username" id="username" value="<%= info.username %>" disabled />
+              <label for="username" class="form-label"">Username</label>
+            </div>
+
+            <div class=" form-floating mb-3">
+                <input type="text" class="form-control" name="name" id="name" placeholder="abc@mail.com" value="<%= info.name || null %>" />
+                <label for="name" class="form-label"">Họ và tên</label>
+            </div>
+
+            <div class=" form-floating mb-3">
+                  <input type="text" class="form-control" name="role" id="role" placeholder="abc@mail.com" value="<%= info.roleName || null %>" disabled />
+                  <label for="role" class="form-label"">Chức vụ</label>
+            </div>
+
+            <% if (info.position > 1) { %>
+            <div class=" form-floating mb-3">
+                    <input type="text" class="form-control" name="manage" id="manage" placeholder="abc@mail.com" value="<%= info.managePlace || null %>" disabled />
+                    <label for="manage" class="form-label"">Quản lý</label>
+            </div>
+            <% } %>
+
+            <div class=" form-floating mb-3">
+                      <input type="email" class="form-control" name="email" id="email" placeholder="abc@mail.com" value="<%= info.email || null %>" />
+                      <label for="email" class="form-label">Email</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="tel" class="form-control" name="phone" id="phone" placeholder="012345678" value="<%= info.phone || null %>" />
+              <label for="phone" class="form-label">SĐT</label>
+            </div>
+            <div class="form-floating mb-3 ">
+              <input type="date" class="form-control" id="birthday" name="dob" value="<%= //info.dob.toISOString().slice(0, 10) || null %>" />
+              <label for="birthday" class="form-label">Ngày sinh</label>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Submit
+            </button>
+            <a class="btn btn-success" href="#" data-bs-target="#changePassModal" data-bs-toggle="modal">Đổi mật khẩu</a></li>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+<!-- Change password modal -->
+<div class="modal fade" id="changePassModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4">
+          <div class="modal-header pb-3 border-0 position-relative text-center justify-content-center">
+              <button type="button"
+                      class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                      data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+              <h5 class="modal-title mx-auto pb-2 text-center fw-bold text-uppercase fs-3">Thay đổi mật khẩu</h5>
+          </div>
+          <div class="modal-body border-0">
+              <form id="changePassForm">
+                  <div id="change-password-success" class="alert alert-success" hidden>
+                      Cập nhật mật khẩu thành công
+                  </div>
+                  <div id="change-password-error" class="alert alert-danger" hidden>
+                      Cập nhật mật khẩu thất bại
+                  </div>
+                  <input type="text" id="username-change" value="<%= user.username %>" hidden>
+                  <div class="mb-3 form-floating">
+                      <input type="password" id="password-change" class="form-control" placeholder="Nhập mật khẩu cũ"
+                             name="password"
+                             required>
+                      <label for="password-change" class="form-label">Mật khẩu cũ<span
+                                  class="text-danger">*</span></label>
+                  </div>
+                  <div class="mb-3 form-floating">
+                      <input type="password" id="password1-change" class="form-control" placeholder="Nhập mật khẩu mới"
+                             name="password1"
+                             required>
+                      <label for="password1-change" class="form-label">Mật khẩu mới<span
+                                  class="text-danger">*</span></label>
+                  </div>
+                  <div class="form-floating">
+                      <input type="password" id="password2-change" class="form-control"
+                             placeholder="Nhập lại mật khẩu mới"
+                             name="password2"
+                             required>
+                      <label for="password2-change" class="form-label">Nhập lại mật khẩu mới<span
+                                  class="text-danger">*</span></label>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer d-flex flex-row justify-content-around bg-transparent border-0">
+              <button class="btn flex-fill" style="min-width: 6.5rem; color: #f7fafc; background-color: #e84747"
+                      data-bs-target="#verifyCodeModal" data-bs-toggle="modal" data-bs-dismiss="modal">
+                  Quay lại
+              </button>
+              <button class="btn flex-fill" style="min-width: 6.5rem; color: #f7fafc; background-color: #60C98B"
+                      onclick="changePassHandler(event)">
+                  Xác nhận
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Scrip để thay đổi mật khẩu -->
+<script defer>
+  const changePassHandler = async (event) => {
+    event.preventDefault();
+    const password = document.getElementById('password-change').value;
+    const password1 = document.getElementById('password1-change').value;
+    const password2 = document.getElementById('password2-change').value;
+    const username = '<%= user.username %>'
+
+    console.log("Username: ", username);
+
+    if (password === '' || password1 === '' || password2 === '') {
+      alert('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
+
+    if (password1 !== password2) {
+      alert('Mật khẩu mới không khớp');
+      return;
+    }
+    const response = await fetch('/change-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, oldPassword: password, newPassword: password1 })
+    });
+    if (response.status === 200) {
+      const msg = await response.json();
+      const changePassSuccess = document.getElementById('change-password-success');
+      changePassSuccess.innerText = msg.message;
+      changePassSuccess.hidden = false;
+      // clear form
+      document.getElementById('password-change').value = '';
+      document.getElementById('password1-change').value = '';
+      document.getElementById('password2-change').value = '';
+      setTimeout(() => {
+        changePassSuccess.hidden = true;
+        bootstrap.Modal.getInstance(document.getElementById('changePassModal')).hide();
+      }, 3000);
+    } else {
+      const msg = await response.json();
+      const changePassError = document.getElementById('change-password-error');
+      changePassError.innerText = msg.message;
+      changePassError.hidden = false;
+      setTimeout(() => {
+        changePassError.hidden = true;
+      }, 3000);
+    }
+  }
+</script>
+
+</html>

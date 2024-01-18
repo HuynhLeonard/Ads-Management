@@ -2,21 +2,20 @@ import Location from '../models/locationSchema.js';
 import District from '../models/districtSchema.js';
 import Ward from '../models/wardSchema.js';
 
-export const createNewLocation = async (req,res,next) => {
+// Contruct this file Done
+// Done
+export const createNewLocation = async (locationData) => {
     try {
-        const newLocation = new Location(req.body);
-        const existedDistrict = await District.find({districtID: req.body.districtID});
-        const existedWard = await Ward.find({wardID: req.body.wardID});
+        console.log(locationData)                                                                                                                                                           
+        const newLocation = new Location(locationData);
+        const existedDistrict = await District.find({districtID: locationData.districtID});
+        const existedWard = await Ward.find({wardID: locationData.wardID});
         
         if(!existedDistrict || !existedWard) {
-            res.status(400).json({
-                message: 'Error'
-            })
+            return {message: 'Error'};
         } else {
             await newLocation.save();
-            res.status(200).json({
-                newLocation
-            });
+            return {message: 'Location created successfully'};
         }
 
     } catch (error) {
@@ -24,111 +23,488 @@ export const createNewLocation = async (req,res,next) => {
     }
 };
 
-export const getAllLocation = async (req,res,next) => {
-    try {
-        const locations = await Location.find();
+// Done
+export const getAllLocation = async () => {
+    try {                                                                                                   
+        const option = [
+            {
+                $lookup: {
+                    from: "districts",
+                    localField: "districtID",
+                    foreignField: "districtID",
+                    as: "district",
+                }
+            },
+            {
+                $unwind: {
+                    path: "$district",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "wards",
+                    localField: "wardID",
+                    foreignField: "wardID",
+                    as: "ward"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$ward",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "locationtypes",
+                    localField: "locationType",
+                    foreignField: "locationTypeID",
+                    as: "locationtype"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$locationtype",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "adscategories",
+                    localField: "adsForm",
+                    foreignField: "CategoriesID",
+                    as: "adscategory"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$adscategory",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    adsForm: 1,
+                    address: 1,
+                    districtID: 1,
+                    wardID: 1,
+                    locationID: 1,
+                    locationName: 1,
+                    locationType: 1,
+                    latitude: 1,
+                    longitude: 1,
+                    planned: 1,
+                    districtName: "$district.districtName",
+                    wardName: "$ward.wardName",
+                    locationtypeName: "$locationtype.locationTypeName",
+                    adsFormName: "$adscategory.CategoriesName"
+                }
+            },
+            {
+                $sort: {
+                    locationID: 1
+                }
+            },
+        ]
 
-        res.status(200).json({
-            locations
-        })
+        return await Location.aggregate(option);
     } catch (error) {
         throw new Error('Error happened when getting all locations data.');
     }
 };
 
-export const updateLocation = async (req,res,next) => {
+// Done
+export const updateLocation = async (locationID,updateData) => {
     try {
-        const updatedLocation = await Location.findOneAndUpdate({locationID: req.params.id}, {$set: req.body});
+        const updatedLocation = await Location.findOneAndUpdate({locationID: locationID}, {$set: updateData});
 
-        res.status(200).json({
-            message: 'Location update successfully'
-        })
+        return {message: 'Location update successfully'};
     } catch (error) {
         throw new Error('Error happened when update location.')
     }
 };
 
-export const deleteLocation = async (req,res,next) => {
+// Done
+export const deleteLocation = async (locationID) => {
     try {
-        await Location.findOneAndDelete({locationID: req.params.id});
-        res.status(200).json({
-            message: 'Location deleted successfully'
-        })
+        await Location.findOneAndDelete({locationID: locationID});
+        return {message: 'Location deleted'};
     } catch (error) {
         throw new Error('Error happened when deleting location');
     }
 };
 
 // using locationID
-export const getSingleLocation = async (req,res,next) => {
+export const getSingleLocation = async (locationID) => {
     try {
-        const location = await Location.findOne({locationID: req.params.locationID});
+        const option = [
+            {
+                $match: {
+                    locationID: locationID
+                }
+            },
+            {
+                $lookup: {
+                    from: "districts",
+                    localField: "districtID",
+                    foreignField: "districtID",
+                    as: "district",
+                }
+            },
+            {
+                $unwind: {
+                    path: "$district",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "wards",
+                    localField: "wardID",
+                    foreignField: "wardID",
+                    as: "ward"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$ward",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "locationtypes",
+                    localField: "locationType",
+                    foreignField: "locationTypeID",
+                    as: "locationtype"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$locationtype",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "adscategories",
+                    localField: "adsForm",
+                    foreignField: "CategoriesID",
+                    as: "adscategory"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$adscategory",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    adsForm: 1,
+                    address: 1,
+                    districtID: 1,
+                    wardID: 1,
+                    locationID: 1,
+                    locationName: 1,
+                    locationType: 1,
+                    planned: 1,
+                    districtName: "$district.districtName",
+                    wardName: "$ward.wardName",
+                    locationtypeName: "$locationtype.locationTypeName",
+                    adsFormName: "$adscategory.CategoriesName",
+                    images: 1,
+                    longitude: 1,
+                    latitude: 1
+                }
+            },
+            {
+                $sort: {
+                    locationID: 1
+                }
+            },
+        ]
 
-        res.status(200).json({
-            location
-        })
+        const data = await Location.aggregate(option);
+        return data[0];
     } catch (error) {
         throw new Error('Error');
     }
 };
 
-// sort by type
-export const getLocationByType = async (req,res,next) => {
+// sort by type (Done)
+export const getLocationByType = async (spotType) => {
     try {
-        const locations = await Location.find({spotType: req.params.spotType});
-
-        res.status(200).json({
-            location
-        });
+        return await Location.find({spotType: spotType});
     } catch (error) {
         throw new Error('Error');
     }
 };
 
-// using districtID
-export const getLocationFromDistricts = async (req,res,next) => {
+export const getLocationByPlanned = async (planned) => {
     try {
-        const locations = await Location.findOne({districtID: req.params.districtID});
+        return await Location.find({planned: planned});
+    } catch (error) {
+        throw new Error('Error');
+    }
+}
 
-        res.status(200).json({
-            locations
-        });
+// using districtID (Done)
+export const getLocationFromDistricts = async (districtID) => {
+    try {
+        const option = [
+            {
+                $match: {
+                    districtID: districtID
+                }
+            },
+            {
+                $lookup: {
+                    from: "districts",
+                    localField: "districtID",
+                    foreignField: "districtID",
+                    as: "district",
+                }
+            },
+            {
+                $unwind: {
+                    path: "$district",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "wards",
+                    localField: "wardID",
+                    foreignField: "wardID",
+                    as: "ward"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$ward",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "locationtypes",
+                    localField: "locationType",
+                    foreignField: "locationTypeID",
+                    as: "locationtype"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$locationtype",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "adscategories",
+                    localField: "adsForm",
+                    foreignField: "CategoriesID",
+                    as: "adscategory"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$adscategory",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    adsForm: 1,
+                    address: 1,
+                    districtID: 1,
+                    wardID: 1,
+                    locationID: 1,
+                    locationName: 1,
+                    locationType: 1,
+                    planned: 1,
+                    districtName: "$district.districtName",
+                    wardName: "$ward.wardName",
+                    locationtypeName: "$locationtype.locationTypeName",
+                    adsFormName: "$adscategory.CategoriesName",
+                    images: 1,
+                }
+            },
+            {
+                $sort: {
+                    locationID: 1
+                }
+            },
+        ]
+
+        return await Location.aggregate(option);
     } catch (error) {
         throw new Error('Error');
     }
 };
 
 // using wardID
-export const getLocationFromWard = async (req,res,next) => {
+export const getLocationFromWard = async (wardID) => {
     try {
-        const locations = await Location.findOne({wardID: req.params.wardID});
-        res.status(200).json({
-            locations
-        });
+        const option = [
+            {
+                $match: {
+                    wardID: wardID
+                }
+            },
+            {
+                $lookup: {
+                    from: "districts",
+                    localField: "districtID",
+                    foreignField: "districtID",
+                    as: "district",
+                }
+            },
+            {
+                $unwind: {
+                    path: "$district",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "wards",
+                    localField: "wardID",
+                    foreignField: "wardID",
+                    as: "ward"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$ward",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "locationtypes",
+                    localField: "locationType",
+                    foreignField: "locationTypeID",
+                    as: "locationtype"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$locationtype",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "adscategories",
+                    localField: "adsForm",
+                    foreignField: "CategoriesID",
+                    as: "adscategory"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$adscategory",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    adsForm: 1,
+                    address: 1,
+                    districtID: 1,
+                    wardID: 1,
+                    locationID: 1,
+                    locationName: 1,
+                    locationType: 1,
+                    planned: 1,
+                    districtName: "$district.districtName",
+                    wardName: "$ward.wardName",
+                    locationtypeName: "$locationtype.locationTypeName",
+                    adsFormName: "$adscategory.CategoriesName",
+                    images: 1,
+                }
+            },
+            {
+                $sort: {
+                    locationID: 1
+                }
+            },
+        ]
+
+        return await Location.aggregate(option);
     } catch (error) {
         throw new Error('Error')
     }
 };
 
 // count all place
-export const countAll = async (req,res,next) => {
+export const countAll = async () => {
     try {
         const countDoc = await Location.countDocuments();
-        res.status(200).json({
-            countDoc
-        })
+        return countDoc
     } catch (error) {
         throw new Error('Error');
     }
 };
 
-export const countByDistrict = async (req,res,next) => {
+// Done
+export const countByDistrict = async (districtID) => {
     try {
-        const countDoc = await location.countDocuments({districtID: req.params.districtID});
-        res.status(200).json({
-            countDoc
-        })
+        return location.countDocuments({districtID: districtID});
     } catch (error) {
         throw new Error('Error');
+    }
+};
+
+export const countByWard = async (wardID) => {
+    try {
+        return Location.countDocuments({wardID: wardID});
+    } catch (error) {
+        throw new Error('Error');
+    }
+};
+
+export const getAdsCategoryByID = async (locationID) => {
+    try {
+        const option = [
+            {
+                $match: {
+                    locationID: locationID
+                }
+            },
+            {
+                $lookup: {
+                    from: 'adscategory',
+                    localField: 'adsForm',
+                    foreignField: 'CategoriesID',
+                    as: 'adsform'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$adsform',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    adsForm: 1,
+                    adsFormName: '$adsform.CategoriesName',
+                    adsFormDescription: '$adsform.description'
+                }
+            }
+        ];
+
+        return await Location.aggregate(option);
+    } catch (error) {
+        throw new Error(error);
     }
 }

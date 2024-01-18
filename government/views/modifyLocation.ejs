@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include("./components/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css" />
+  </head>
+
+  <body>
+    <header></header>
+
+    <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
+      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+      <button type="button" class="btn-close"></button>
+    </div>
+
+    <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+      <div class="row"><%- include("./components/sidebar.ejs"); %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <!-- Back button -->
+          <%- include("./components/back_button.ejs"); %>
+          <!-- Title -->
+          <div class="d-flex flex-row align-items-center" style="gap: 10px">
+            <h1 class="fw-bolder m-0 text-uppercase" contenteditable="true" id="spotName"><%= spotTitle %></h1>
+          </div>
+
+          <!-- Content -->
+          <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
+            <!-- Carousel -->
+            <%- include("./components/carousel.ejs",
+            {imgUrls: imgUrls}); %>
+            <div class="container-fluid px-0 nd-chi-tiet">
+              <div class="container d-flex justify-content-between">
+                  <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chỉnh sửa điểm
+                      đặt</h4>
+                  <a href="#" hidden><img src="/images/cancel.svg" alt="edit-icon"></a>  
+              </div>
+              <div class="container mt-2">
+                  <label for="spotID" style="margin-bottom: 6px">ID Điểm đặt</label>
+                  <input type="text" class="form-control" id="spotID" value='<%= spotId %>' disabled/>
+              </div>
+              <div class="container mt-2">
+                  <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                  <input type="text" class="form-control" id="spotAddress" value='<%= spotAddress %>' disabled/>
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                  <div style="width: calc((100% - 2rem) / 2);">
+                      <label for="wardName" style="margin-bottom: 6px;">Phường</label>
+                      <input type="text" class="form-control" id="wardName" value='<%= wardName %>' disabled/>
+                      <input type="text" id="ward" value="<%= ward %>" hidden>
+                  </div>
+                  <div style="width: calc((100% - 2rem) / 2);">
+                      <label for="districtName" style="margin-bottom: 6px">Quận</label>
+                      <input type="text" class="form-control" id="districtName" value='<%= districtName %>' disabled/>
+                      <input type="text" id="district" value="<%= district %>" hidden>
+                  </div>
+              </div>
+              <div class="container mt-2">
+                  <label for="location-type" style="margin-bottom: 6px">Loại vị trí</label>
+                  <input type="text" class="form-control" id="spotTypeName" list="spotTypeList" value='<%= locationtypeName %>'/>
+                  <input type="text" id="spotType" value="<%= spotType %>" hidden>
+                  <datalist id="spotTypeList" style="display: none;">
+                    <% other.spottypes.forEach((type)=> { %>
+                      <option value="<%= type.locationTypeName; %>"></option>
+                      <% }); %>
+                  </datalist>
+              </div>
+              <div class="container mt-2">
+                  <label for="adsForm" style="margin-bottom: 6px">Hình thức quảng cáo</label>
+                  <input type="text" class="form-control" id="adsFormName" list="adsFormList" value='<%= adsFormName %>'/>
+                  <input type="text" id="adsForm" value="<%= adsForm %>" hidden>
+                  <datalist id="adsFormList" style="display: none;">
+                    <% other.adsforms.forEach((form)=> { %>
+                      <option value="<%= form.CategoriesName; %>"></option>
+                      <% }); %>
+                  </datalist>
+              </div>
+              <div class="container mt-2">
+                  <label for="planned" style="margin-bottom: 6px">Thông tin quy hoạch</label>
+                  <input type="text" class="form-control" id="planned" list="planList" value='<%= planned %>'/>
+                  <datalist id="planList" style="display: none;">
+                    <option value="Đã quy hoạch"></option>
+                    <option value="Chưa quy hoạch"></option>
+                  </datalist>
+              </div>
+            </div>
+          </div>
+          <!-- Ly do chinh sua -->
+          <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+            <div class="container px-0 d-flex justify-content-evenly ms-0 position-relative mb-3" style="max-width: 50%;">
+              <div class="badge border border-dark top-50 start-10 translate-middle position-absolute rounded-pill bg-white text-center" style="width: 50px; height:50px;" hidden>
+                <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100" id="badge-text">1</span>
+              </div>
+              <input type="file" id="input-image" accept="image/*" hidden multiple>
+              <button id="add-button" type="button" class="btn btn-success" style="min-width: 7rem;">Thêm ảnh</button>
+              <button id="remove-button" type="button" class="btn btn-danger" style="min-width: 7rem;" onclick="removeCurrentImage()">Xóa ảnh</button>
+
+              <!-- ... Them de khong loi js ... -->
+              <div id="drop-area" hidden></div>
+              <div id="img-view" hidden></div>
+              <!-- ............................ -->
+
+              <script defer src="/js/uploadImage.js"></script>
+            </div>
+            <label for="reason" style="margin-bottom: 6px">Lý do chỉnh sửa</label>
+            <textarea class="form-control" id="reason" 
+              style="min-height: 170px" placeholder="Nhập lý do chỉnh sửa"></textarea>
+          </div>
+          <!-- button -->
+          <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px;">
+            <a href="/so/spots"><button type="button" class="btn btn-danger" style="width: 130px;">Hủy</button></a>
+            <a href="/so/spots"><button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn">Gửi yêu cầu</button></a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Ads list -->
+
+    
+    <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+    <script defer>
+      const spotAddressInput = document.getElementById('spotAddress');
+      let long = parseFloat(`<%= longitude %>`);
+      let lat = parseFloat(`<%= latitude %>`);
+      let miniMapWindow = null;
+
+      spotAddressInput.addEventListener('focus', (e) => {
+        if (miniMapWindow) {
+          miniMapWindow.close();
+        }
+      })
+
+      spotAddressInput.addEventListener('dblclick', (e) => {
+        const width = 900;
+        const height = 700;
+
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        console.log('Open mini map window');
+
+        if (miniMapWindow) {
+          miniMapWindow.close();
+        }
+
+        miniMapWindow = window.open('/mini-map', 'Mini Map', `width=${width},height=${height},left=${left},top=${top}`);
+      })
+
+      window.addEventListener('message', (event) => {
+        // Check the origin to ensure it's from the correct window
+        if (event.origin !== window.location.origin || !miniMapWindow) {
+            return;
+        }
+
+        // console.log('Received coordinates:', event.data);
+        const receivedData = event.data;
+        const receivedDistrict = receivedData.district;
+        const receivedWard = receivedData.ward;
+        console.log(receivedWard);
+        
+        long = parseFloat(receivedData.long);
+        lat = parseFloat(receivedData.lat);
+        document.getElementById('spotAddress').value = receivedData.number;
+        document.getElementById('wardName').value = receivedWard.length == 1 ? '0' + receivedWard : receivedWard;
+        document.getElementById('districtName').value = receivedDistrict.length == 1 ? '0' + receivedDistrict : receivedDistrict;
+        miniMapWindow.close();
+      });
+
+      const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+      const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+      const spottypeInput = document.getElementById('spotTypeName');
+      const adsformInput = document.getElementById('adsFormName');
+      const spottypeIdInput = document.getElementById('spotType');
+      const adsformIdInput = document.getElementById('adsForm');
+
+      spottypeInput.addEventListener('change', (e) => {
+        const spottype = spottypes.find(type => type.typeName == spottypeInput.value);
+        spottypeIdInput.value = spottype.typeID;
+      });
+      adsformInput.addEventListener('change', (e) => {
+        const adsform = adsforms.find(form => form.formName == adsformInput.value);
+        adsformIdInput.value = adsform.formID;
+      });
+
+    </script>
+
+    <script defer>
+      const addBtn = document.getElementById('add-button');
+      let imgUrls = Array.from(document.querySelectorAll('.thumbnails-item img')).map(img => img.src);
+      const loader = document.getElementById('loaderContainer');
+
+      // Add new image
+
+      addBtn.addEventListener('click', () => {
+        inputImage.click();
+      });
+
+
+
+      const upload2Imgur = async (files) => {
+        const links = []
+        for (let i = 0; i < files.length; i++) {
+          const formData = new FormData()
+          formData.append('image', files[i])
+          console.log('Uploading: ', files[i].name);
+          const response = await fetch('/pic/posts', {
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+          });
+          const data = await response.json()
+        }
+        console.log(links);
+        return links;
+      }
+
+      document.querySelectorAll('.btn-close').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.target.parentElement.hidden = true;
+          });
+      });
+
+      document.getElementById('warning-text').textContent = "BẠN CÓ THỂ CHỈNH SỬA TÊN ĐIỂM ĐẶT Ở PHÍA TRÊN KHUNG ẢNH VÀ ĐỊA CHỈ BẰNG VIỆC DOUBLE-CLICK";
+      document.getElementById('alert-warning').hidden = false;
+
+      const submitHandler = async (e) => {
+        e.preventDefault();
+        // ... get districtID and wardID ....................
+        const districts = JSON.parse('<%- JSON.stringify(other.districts) %>');
+        const wards = JSON.parse('<%- JSON.stringify(other.wards) %>');
+        const districtInput = document.getElementById('districtName');
+        const wardInput = document.getElementById('wardName');
+        const districtIdInput = document.getElementById('district');
+        const wardIdInput = document.getElementById('ward');
+
+        const district = districts.find(district => district.districtName == districtInput.value);
+        districtIdInput.value = (district) ? district.districtID : '';
+
+        const ward = wards.find(ward => (ward.wardName == wardInput.value.trim() && ward.districtID == districtIdInput.value));
+        wardIdInput.value = (ward) ? ward.wardID : '';
+        // ... Check valid of fields BEFORE updating images.................
+        const spotID = document.getElementById('spotID').value;
+        const address = document.getElementById('spotAddress').value;
+        const wardID = document.getElementById('ward').value;
+        const wardName = document.getElementById('wardName').value;
+        const districtID = document.getElementById('district').value;
+        const districtName = document.getElementById('districtName').value;
+        const latitude = lat;
+        const longtitude = long;
+        const spotType = document.getElementById('spotType').value;
+        const spotTypeName = document.getElementById('spotTypeName').value.trim();
+        const adsForm = document.getElementById('adsForm').value;
+        const adsFormName = document.getElementById('adsFormName').value.trim();
+        const spotName = document.getElementById('spotName').innerText;
+        const planned = document.getElementById('planned').value;
+        const reason = document.getElementById('reason').value || 'Không có lý do chỉnh sửa';
+
+        if(spotID == '' || address == '' || latitude == '' || longtitude == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng chọn TỌA ĐỘ ĐIỂM ĐẶT bằng cách double-click vào ĐỊA CHỈ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(districtID == '' || wardID == ''){
+          document.getElementById('warning-text').textContent = "Khu vực (Quận / Phường) bạn chọn không nằm trong quyền quản lý của chúng tôi, vui lòng chọn lại bằng cách double-click vào ĐỊA CHỈ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const spottypeList = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+        const adsformList = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+
+        if(spotTypeName == '' || !(spottypeList.some(type => type.locationTypeName === spotTypeName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI VỊ TRÍ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(adsFormName == '' || !(adsformList.some(form => form.CategoriesName === adsFormName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng HÌNH THỨC QUẢNG CÁO.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(planned != 'Đã quy hoạch' && planned != 'Chưa quy hoạch'){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng THÔNG TIN QUY HOẠCH.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(spotName == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN ĐIỂM ĐẶT.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        // ................................................
+        const inputImage = document.getElementById('input-image');
+        const files = inputImage.files;
+
+        
+        let imgUrlsData = [];
+        if (files.length > 0) {
+          imgUrlsData = await upload2Imgur(files);
+        }
+        getUpdatedImgUrls();
+        imgUrlsData = imgUrlsData.concat(imgUrls);
+        // console.log("Image URLs: ", imgUrlsData);
+        if(imgUrlsData.length == 0){
+            document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về điểm đặt quảng cáo.";
+            document.getElementById('alert-warning').hidden = false;
+            loader.style.display = 'none';
+            return;
+        }
+
+        // ................................................
+
+        const data = {
+            locationID: spotID,
+            images: imgUrlsData,
+            address: address,
+            wardID: wardID,
+            wardName: wardName,
+            districtID: districtID,
+            districtName: districtName,
+            latitude: latitude,
+            longtitude: longtitude,
+            locationType: spotType,
+            spotTypeName: spotTypeName,
+            adsForm: adsForm,
+            adsFormName: adsFormName,
+            locationName: spotName,
+            planned: (planned == 'Đã quy hoạch') ? 1 : 0,
+            reason: reason,
+            officerUsername: '<%= user.username %>'
+        }
+        console.log(data);
+        const url = '<%= url %>';
+        const requestUrl = url.replace('/modify', '');
+        // console.log('Request URL: ', requestUrl);
+        const result = await fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+
+        // console.log(result);
+
+        // ......... Xu ly ket qua va hien thong bao ............
+        
+        if (result.status == 200) {
+          document.getElementById('alert-success').removeAttribute('hidden');
+          // clear all inputs
+          document.querySelectorAll('.form-control').forEach(input => {
+            input.value = '';
+          });
+          // when the alert is closed, redirect
+          document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+            window.location.href = result.url;
+          });
+        } else {
+          document.getElementById('alert-danger').removeAttribute('hidden');
+        }
+        // hide loader
+        loader.style.display = 'none';
+
+        // .......................................................
+      }
+
+      document.getElementById('submitBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        // console.log('====================================');
+        // console.log('submit');
+        // console.log('====================================');
+        submitHandler(e);
+      });
+
+
+
+      // Remove image
+
+      const removeCurrentImage = () => {
+        const currentMainImg = document.getElementById('mainImg');
+        const currentThumbnails = document.querySelector('.thumbnails-item:not(.d-none)');
+        const currentIndex = Array.from(currentThumbnails.children).findIndex((child) => child.children[0].classList.contains('border-primary'));
+
+        if (currentIndex !== -1) {
+            // get the current image link
+            const currentImgLink = currentMainImg.src;
+            const placeHolderImg = '/images/placeholder.jpg';
+            // remove all the images with the same link
+            imgUrls = imgUrls.filter(url => url !== currentImgLink);
+            // remove repeated images
+            imgUrls = imgUrls.filter((url, index) => imgUrls.indexOf(url) === index);
+            // if there is no image left, add the placeholder image
+            if (imgUrls.length === 0) {
+                imgUrls.push(placeHolderImg);
+            }
+
+            imgUrls = createCircularArray(imgUrls);
+            // console.log("imgUrls: ", imgUrls);
+
+            // Refresh the thumbnails
+            refreshThumbnails();
+
+            // Show the next image in the carousel
+            moveSlides('right');
+        }
+      }
+
+      const refreshThumbnails = () => {
+          // Update the thumbnails based on the modified imgUrls array
+          let subImages= document.querySelector('#sub-images');
+          subImages.innerHTML = '';
+
+          for (let i=0; i<Math.max(imgUrls.length/3, 2); i++) {
+              const rowElement = document.createElement('div');
+              rowElement.className = 'row thumbnails-item d-none mt-2';
+              if (i === 0) rowElement.classList.remove('d-none');
+              for (let j = i * 3; j < (i + 1) * 3; j++) {
+                  const imgSrc = imgUrls[j % imgUrls.length];
+                  const imgElement = document.createElement('img');
+                  imgElement.src = imgSrc;
+                  imgElement.alt = `Thumbnail ${j}`;
+                  imgElement.className = 'img-fluid';
+                  if (i === 0 && j === 0) imgElement.classList.add('border', 'border-primary');
+                  imgElement.style = 'object-fit: cover; height: 10rem; width: 100%';
+                  const colElement = document.createElement('div');
+                  colElement.className = 'col-4';
+                  colElement.appendChild(imgElement);
+                  colElement.onclick = () => changeMainImg(imgElement);
+                  rowElement.appendChild(colElement);
+              }
+              // console.log(rowElement);
+              subImages.appendChild(rowElement);
+          }
+          // console.log(subImages);
+      }
+
+      const getUpdatedImgUrls = () => {
+        imgUrls = imgUrls.filter(url => url !== '/images/placeholder.jpg');
+        // remove repeated images
+        imgUrls = imgUrls.filter((url, index) => imgUrls.indexOf(url) === index);
+      }
+
+      const createCircularArray = (originalArray) => {
+        if (originalArray.length === 0) return originalArray;
+        if (originalArray.length < 3) return originalArray.concat(originalArray.concat(originalArray));
+        const circularArray = [];
+        let i=0;
+        for (let i=0; i<originalArray.length; i++) {
+            for (let j = 0; j < originalArray.length; j++) {
+                circularArray.push(originalArray[(i+j) % originalArray.length]);
+            }
+        }
+        return circularArray;
+      };
+
+    </script>
+  </body>
+</html>

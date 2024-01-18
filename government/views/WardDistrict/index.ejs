@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>So Van Hoa</title>
+    <%- include("../components/head.ejs"); %>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/mapbox.css">
+</head>
+
+<body>
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css" />
+    <header></header>
+    <aside class="position-absolute z-3 h-100">
+        <%- include('../components/sidebar.ejs'); %>
+    </aside>
+
+    <div id="user-data" hidden><%= user.districtID %>,<%= user.wardID %></div>
+
+    <main class="container-fluid d-flex bg-light p-0">
+        <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
+
+        <!-- Search bar -->
+        <div id="search-bar" class="position-absolute top-0 start-0 z-index-3" style="margin: 1.25rem 6.25rem;">
+          <div class="input-group" style="width: 23.5rem">
+            <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Tìm kiếm" aria-describedby="close-search-btn" id="search-input" />
+            <button class="btn btn-light" type="button" id="close-search-btn">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+
+          <!-- Result box -->
+          <div class="result-box">
+
+          </div>
+        </div>
+
+        <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3" style="left: 5rem">
+            <div id="toggle-container" class="row align-items-center justify-content-start mx-2">
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="all-toggle" aria-checked="false" checked />
+                        <label class="form-check-label" for="all-toggle">Hiện tất cả</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSpotDetail" aria-labelledby="offcanvasSpotDetailLabel">
+            <div class="offcanvas-header container-fluid">
+                <img loading="lazy" decoding="async" src="" class="img-fluid"
+                    alt="Nhà thi đấu Phú Thọ" style="background-size: cover; margin: 0; content-visibility: auto;" />
+                <h4 class="offcanvas-title fw-bold text-uppercase mt-3" id="offcanvasSpotDetailLabel">Nhà thi đấu Phú
+                    Thọ</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                    id="btn-close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
+                            data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="info-tab-pane"
+                            aria-selected="true">
+                            Thông tin
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="ads-tab" data-bs-toggle="tab" data-bs-target="#ads-tab-pane"
+                            type="button" role="tab" aria-controls="ads-tab-pane" aria-selected="false">
+                            B.Quảng cáo
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report-tab-pane"
+                            type="button" role="tab" aria-controls="report-tab-pane" aria-selected="false">
+                            Báo cáo
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"
+                        tabindex="0">
+                    </div>
+                    <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel"
+                        aria-labelledby="ads-tab" tabindex="0">
+                    </div>
+                    <div class="tab-pane list-group fade p-0 overflow-auto" id="report-tab-pane" role="tabpanel"
+                        aria-labelledby="report-tab" tabindex="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+<script defer type="module">
+  const pathname = window.location.pathname;
+  console.log(pathname);
+  let setupData = false;
+
+  const formatter = new Intl.DateTimeFormat('vi-VN', { // <- re-use me
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+
+  document.getElementById('offcanvasSpotDetail').addEventListener('show.bs.offcanvas', async (e) => {
+    console.log(e);
+    console.log(setupData)
+    if (setupData) {
+      setupData = false;
+      return;
+    }
+    e.preventDefault();
+    const spotID = e.relatedTarget.dataset.bsSpotId;
+
+    // get detail spot
+    let hostName = ''
+    if (window.location.hostname.includes('localhost')) {
+      hostName = 'http://localhost:3000/'
+    } else {
+      hostName = 'https://ads-manager-1aai.onrender.com/'
+    }
+    let detailSpot = await fetch(`${hostName}api/locations/${spotID}?role=officer`, {
+      method: 'GET',
+      mode: 'cors',
+    }).then(res => res.json());
+
+
+    detailSpot = detailSpot[0];
+    console.log(detailSpot);
+
+    // attach data to offcanvas
+    const offcanvas = document.getElementById('offcanvasSpotDetail');
+    offcanvas.dataset.bsSpotId = spotID;
+
+    // update offcanvas header
+    const offcanvasHeader = offcanvas.querySelector('.offcanvas-header');
+    offcanvasHeader.querySelector('img').src = detailSpot.images[0];
+    offcanvasHeader.querySelector('#offcanvasSpotDetailLabel').textContent = detailSpot.spotName;
+    // update info tab pane
+    const infoTabPane = offcanvas.querySelector('#info-tab-pane');
+    const infoHTML = `<p>Địa chỉ: <b>${detailSpot.address}</b></p>
+      <p>Loại hình: <b>${detailSpot.adsFormNme}</b></p>
+      <p>Hình thức: <b>${detailSpot.locationTypeName} </b></p>
+      <p class="text-uppercase fw-bold fst-italic">${detailSpot.planned}</p>
+      <div class="options">
+            <a href="${pathname}/advertisements/${detailSpot.locationID}?category=Location" class="btn btn-icon" role="button">
+              <i class="bi bi-info-circle"></i>
+            </a>
+          </div>`;
+    infoTabPane.innerHTML = infoHTML;
+
+    // update ads tab pane
+    const adsTabPane = offcanvas.querySelector('#ads-tab-pane');
+    const adsHTML = detailSpot.boards.map(ad => {
+      let res = `<div class="list-group-item list-group-item-action">
+      <h5 class="mb-1 fw-semibold">${ad.boardType}</h5>
+      <small>${detailSpot.address}</small>
+      <p class="mb-1">Kích thước: <b>${ad.boardSize}m</b></p>
+      <p class="mb-1">Số lượng: <b>${ad.quantity}<b></p>
+      <p class="mb-1">Hình thức: <b>${detailSpot.adsFormNme}</b></p>
+      <p class="mb-1">Loại hình: <b>${detailSpot.locationTypeName}</b></p>
+      <div class="options">
+        <a href="${pathname}/advertisements/${ad.boardID}?category=Board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>`;
+      
+      const currentDate = new Date();
+      const endDate = new Date(ad.expiredDate);
+      if (currentDate > endDate) {
+        res += `<button class="btn btn-outline-danger" disabled >
+          <i class="bi bi-exclamation-triangle"></i>
+          Hợp đồng hết hạn
+        </button>`
+      }
+      res += `</div></div>`;
+      return res;
+    });
+    // check if adsHTML is empty hide ads tab pane, also hide ads toggle
+    if (adsHTML.length === 0) {
+      console.log('empty')
+      adsTabPane.classList.add('d-none');
+      document.getElementById('ads-tab').parentElement.classList.add('d-none');
+    } else {
+      adsTabPane.innerHTML = '';
+      adsTabPane.classList.remove('d-none');
+      document.getElementById('ads-tab').parentElement.classList.remove('d-none');
+    }
+
+    adsHTML.forEach(html => {
+      let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+      adsTabPane.appendChild(newItem);
+    });
+
+    // update report tab pane
+    // combine report of spot and report of boards
+
+    let reports = detailSpot.reports;
+    detailSpot.boards.forEach(board => {
+      reports = reports.concat(board.reports);
+    });
+
+    // sort report by sendTime
+    reports = reports.sort((a, b) => a.sendTime.localeCompare(b.sendTime));
+    console.log(reports);
+
+    const reportTabPane = offcanvas.querySelector('#report-tab-pane');
+    let reportHTML = reports.map(report => `<div class="list-group-item list-group-item-action position-relative">
+      <h5 class="mb-1 fw-semibold">${report.reportType}</h5>
+      <p class="mb-1">${report.reporterName}</p>
+      <p class="mb-1">Ngày gửi: <b>${formatter.format(new Date(report.sendTime))}</b></p>
+      <p class="mb-1">Tình trạng: <b>${report.status ? 'Đã xử lý' : 'Chưa xử lý'}</b></p>
+      <div class="options">
+        <a href="${pathname}/reports/${report.reportID}" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>
+      </div>
+      </div>`);
+
+    // check if reportHTML is empty hide report tab pane, also hide report toggle
+    if (reportHTML.length == 0) {
+      console.log('empty')
+      reportTabPane.classList.add('d-none');
+      document.getElementById('report-tab').parentElement.classList.add('d-none');
+    } else {
+      reportTabPane.innerHTML = '';
+      reportTabPane.classList.remove('d-none');
+      document.getElementById('report-tab').parentElement.classList.remove('d-none');
+    }
+
+    reportHTML.forEach(html => {
+      let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+      reportTabPane.appendChild(newItem);
+    });
+
+
+    setupData = true;
+    // trigger this canvas again
+    const offcanvasBS = new bootstrap.Offcanvas(offcanvas);
+    // show first tab
+    const triggerFirstTabEl = document.querySelector('#myTab li:first-child button')
+          bootstrap.Tab.getInstance(triggerFirstTabEl).show()
+    offcanvasBS.show();
+    console.log('done');
+  });
+</script>
+<script> let position = '<%= user.position %>'; </script>
+<script defer src="/js/map.js"></script>
+
+</html>

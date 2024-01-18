@@ -6,6 +6,10 @@ const LocationSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    locationName: {
+        type: String,
+        required: true
+    },
     locationType: {
         type: String,
         required: true
@@ -28,7 +32,7 @@ const LocationSchema = new mongoose.Schema({
     },
     images: {
         type: Array,
-        required: true
+        // required: true
     },
     planned: {
         type: Number,
@@ -43,6 +47,13 @@ const LocationSchema = new mongoose.Schema({
         required: true
     }
 });
+
+// LocationSchema.pre('save', async function(next){
+//     const location = this;
+//     const count = await LocationSchema.countDocuments();
+//     location.locationID = 'LC' + String(count + 1).padStart(3,'0');
+//     next();
+// });
 
 const Location = mongoose.model('locations', LocationSchema);
 export default Location;

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("./components/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css"/>
+</head>
+
+<body>
+<header></header>
+<main class="container-fluid d-flex bg-light">
+    <div class="row"><%- include("./components/sidebar.ejs"); %></div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <!-- Back button -->
+            <%- include("./components/back_button.ejs", {url: "/phuong/boards"}); %>
+            <!-- Title -->
+            <div class="d-flex flex-row align-items-center justify-content-between" style="gap: 10px">
+                <h1 class="fw-bolder m-0 text-uppercase">CHI TIẾT BẢNG QUẢNG CÁO</h1>
+            </div>
+
+            <!-- Content -->
+            <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4"
+                 style="gap: 1rem;">
+                <!-- Carousel -->
+                <%- include("./components/carousel.ejs",{imgUrls: imgUrls}); %>
+                <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
+                    <% if(!url.includes('department') && isOutDated) { %>
+                        <div class="container d-flex justify-content-between" style="height: fit-content;">
+                            <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng
+                                quảng cáo (ĐÃ HẾT HẠN)</h4>
+                            
+                            <% if (role !== 'so') { %>
+                            <a href="<%= '/' + role + '/license/extend/' + id %>" class="btn btn-primary" tabindex="-1"
+                               role="button" aria-disabled="true">Gia hạn</a>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <div class="container d-flex justify-content-between" style="height: fit-content;">
+                            <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng
+                                quảng cáo</h4>
+                            <% const [baseUrl, queryParams] = url.split('?'); %>
+                            <% if (role !== 'department') { %>
+                            <a href="<%= baseUrl + '/modify?' + queryParams %>" class="btn btn-primary" tabindex="-1"
+                               role="button" aria-disabled="true">Yêu cầu chỉnh sửa</a>
+                            <% } %>
+                        </div>
+                    <% } %>
+
+                    
+
+                    <div class="container mt-2 d-flex justify-content-between">
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="id-quangcao" style="margin-bottom: 6px;">ID Quảng cáo</label>
+                            <input type="text" class="form-control" id="id-quangcao" value="<%= id %>" disabled/>
+                        </div>
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
+                            <input type="text" class="form-control" id="id-diemdat" value="<%= spotID %>" disabled/>
+                        </div>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
+                        <input type="text" class="form-control" id="diachi" value="<%= spotAddress %>" disabled/>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="compName" style="margin-bottom: 6px">Công ty yêu cầu cấp phép</label>
+                        <input type="text" class="form-control" id="compName" value="<%= authCompany %>"
+                               disabled/>
+                    </div>
+                    <div class="container mt-2 d-flex justify-content-between">
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="compPhone" style="margin-bottom: 6px;">Số điện thoại</label>
+                            <input type="text" class="form-control" id="compPhone" value="<%= authCompanyPhone %>" disabled/>
+                        </div>
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="compEmail" style="margin-bottom: 6px">Email</label>
+                            <input type="text" class="form-control" id="compEmail" value="<%= authCompanyEmail %>" disabled/>
+                        </div>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
+                        <input type="text" class="form-control" id="compAdress"
+                               value="<%= authCompanyAddress %>"
+                               disabled/>
+                    </div>
+                    <div class="container mt-2 d-flex justify-content-between">
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>
+                            <div class="input-group date" id="datepicker">
+                                <input type="text" class="form-control" id="startDate" value="<%= startDate %>" disabled/>
+                                <span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+                            </div>
+                        </div>
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
+                            <div class="input-group date" id="datepicker">
+                                <input type="text" class="form-control" id="endDate" value="<%= endDate %>" disabled/>
+                                <span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dưới ảnh -->
+            <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+                <div class="container mt-2 d-flex justify-content-between">
+                    <div style="width: calc((100% - 2rem) / 4);">
+                        <label for="boardTypeName" style="margin-bottom: 6px">Loại bảng</label>
+                        <input type="text" class="form-control" id="boardTypeName" value="<%= boardTypeName %>"disabled/>
+                    </div>
+                    <div style="width: calc((100% - 2rem) / 4);">
+                        <label for="board-quantity" style="margin-bottom: 6px">Số lượng (trụ/bảng)</label>
+                        <input type="number" class="form-control" id="board-quantity" min="0" max="10" value="<%= quantity %>"disabled />
+                    </div>
+                    <div style="width: calc((100% - 2rem) / 4);">
+                        <label for="board-height" style="margin-bottom: 6px;">Chiều cao (m)</label>                  
+                        <input type="number" class="form-control" id="board-height" min="0" max="50" step="0.01" value="<%= height %>"disabled/>
+                    </div>
+                    <div style="width: calc((100% - 2rem) / 4);">
+                        <label for="board-width" style="margin-bottom: 6px">Chiều rộng (m)</label>
+                        <input type="number" class="form-control" id="board-width" min="0" max="50" step="0.01" value="<%= width %>"disabled/>
+                    </div>
+                </div>
+                <div class="container mt-2 d-flex justify-content-between">
+                    <div style="width: calc((100% - 2rem) / 2);">
+                        <label for="locationType" style="margin-bottom: 6px;">Phân loại</label>
+                        <input type="text" class="form-control" id="locationType"
+                               value="<%= spotTypeName %>" disabled/>
+                    </div>
+                    <div style="width: calc((100% - 2rem) / 2);">
+                        <label for="adsForm" style="margin-bottom: 6px">Hình thức</label>
+                        <input type="text" class="form-control" id="adsForm" value="<%= adsFormName %>" disabled/>
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="col-md-12 custom-col">
+                        <label for="content" style="margin-bottom: 6px">Nội dung quảng cáo</label>
+                        <div id="content" class="form-control"
+                             style="min-height: 6.25rem; border-radius: 0; background-color: var(--bs-secondary-bg) !important; border-bottom-color: var(--Neutral-5);">
+                            <%- content %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Ads list -->
+
+
+<script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+</body>
+</html>

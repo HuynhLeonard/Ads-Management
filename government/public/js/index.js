@@ -108,7 +108,7 @@ const handleAddAdsPanel = (ad) => {
 const getLocationData = async () => {
 	const response = await fetch("http://localhost:3000/api/location/");
 	const locations = await response.json();
-	console.log(locations.locations);
+	console.log(locations);
 	locations.locations.map((location) => {
 		handleAddAdsPanel(location);
 	})
@@ -216,10 +216,11 @@ function addAdvertisementSource(map) {
 			zoom:16
 		});
 		// toggle #offcanvas element
-		var offcanvas = document.getElementById('offcanvasRight');
-		var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-		bsOffcanvas.toggle();
-		const feature = e.feature[0];
+		// var offcanvas = document.getElementById('offcanvasRight');
+		// var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+		// bsOffcanvas.toggle();
+		// const feature = e.feature[0];
+		document.querySelector("#container").classList.remove("fade");
 	});
 		
 
@@ -358,9 +359,9 @@ mapboxScript.onload = function () {
 		showAccuracyCircle: true,
 		showUserLocation: true
 	});
-	map.addControl(geolocation, 'bottom-right');
-	map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
-	map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+	map.addControl(geolocation, 'bottom-left');
+	map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+	map.addControl(new mapboxgl.FullscreenControl(), 'bottom-left');
 
 
 	const geocoder = new MapboxGeocoder({
@@ -390,14 +391,41 @@ mapboxScript.onload = function () {
 		attachToggle('quang-cao', 'quang-cao', map);
 	});
 	
-	map.on('style.load', function(e) {
-		map.on('click', function(e) {
-			var coor = e.lngLat;
-			new mapboxgl.Popup()
-				.setLngLat(coor)
-				.setHTML(coor)
-				.addTo(map)
-		})
-	});
+	// hien thong tin dia diem bat ki
+	map.on('click', (e) => {
+		if(map.getCanvas().style.cursor === 'pointer') {
+			return;
+		};
+		marker.setLngLat(e.lngLat).addTo(map);
+		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+		// console.log(e.lngLat.lat);
+		fetch(api)
+			.then((res) => res.json())
+			.then((res) => {
+				console.log(res.features);
+				const coordinate = res.features[0].geometry.coordinates.slice();
+				let description = res.features[0].place_name
+					.replace(/,\s*\d+,\s*Vietnam/, '')
+					.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
+					.replace(/,.*Dist\.|,.*Ward\./, '');
+
+				description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
+				
+				console.log(description);
+
+				const content = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+				const element = document.createElement('div');
+
+				element.innerHTML = content;
+				
+				const newButton = document.createElement('div');
+				newButton.innerHTML = '<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Thêm Điểm Đặt</button>'
+				element.appendChild(newButton);
+				element.setAttribute('class', 'p-2');
+
+				// hien popup
+				new mapboxgl.Popup({offset: [0, -30]}).setLngLat(coordinate).setDOMContent(element).addTo(map);
+			}); 
+	})
 }
 

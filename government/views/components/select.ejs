@@ -1,0 +1,16 @@
+<div class="dropdown h-100">
+    <a  class="btn dropdown-toggle py-0 h-100" href="#" role="button" id="dropdownMenuLink"
+        data-bs-toggle="dropdown" aria-expanded="true" style="line-height: 3rem; min-width: 10rem;">
+        <%= options[current % options.length].name %>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="dropdownMenuLink"
+        style="line-height: 3rem">
+      <% options.forEach((option, index) => { %>
+        <li>
+          <a class="dropdown-item" href="<%= option.link %>" data-index="<%= index %>" data-name="<%= option.name %>">
+            <%= option.name %>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>

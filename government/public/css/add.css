@@ -1,0 +1,337 @@
+body {
+  font-family: "Montserrat";
+  display: flex;
+  flex-direction: row;
+}
+
+label {
+  color: #08a5a0;
+  font-size: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  margin-block-start: 20px;
+  margin-block-end: 30px;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+#special {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item {
+  width: 45%;
+}
+
+.container span {
+  color: red;
+  font-weight: bold;
+}
+
+#must {
+  color: red;
+  font-weight: bold;
+}
+
+.item-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%; /* Full width */
+  padding: 9px; /* Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="text"],
+select,
+button {
+  padding: 9px; /* Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="email"],
+select,
+textarea {
+  width: 100%; /* Full width */
+  padding: 9px; /* Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="number"] {
+  width: 100%; /* Full width */
+  padding: 9px; /* Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+input[type="file"] {
+  font-size: unset;
+  width: 100%; /* Full width */
+  /* padding: 12px; Some padding */
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+.input-group {
+  margin-top: 6px; /* Add a top margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+  margin-bottom: -15px !important;
+}
+
+.captcha-input {
+  margin-bottom: -10px;
+}
+
+.submit {
+  margin: 0 auto;
+  background-color: #0058bc;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  margin-top: 10px;
+}
+
+.submit:hover {
+  background-color: rgb(125, 240, 255);
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image {
+  width: 45%;
+}
+
+.formContent {
+  width: 50%;
+}
+
+.coor,
+.addDetail {
+  display: flex;
+  justify-content: space-between;
+}
+
+.coor .item-container,
+.addDetail .item-container {
+  width: 48%;
+}
+
+.image {
+  border: 2px dashed black;
+  border-radius: 15px;
+  background-color: white;
+  position: relative;
+}
+
+.image img {
+  display: block;
+  margin: 0 auto;
+}
+
+.image button {
+  background-color: gainsboro;
+  border-radius: 10px;
+  margin: 0 auto;
+  display: block;
+  margin-top: 50px;
+}
+
+.image div {
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  color: burlywood;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.button button {
+  margin: 0 15px;
+}
+
+.button button[type="submit"] {
+  background-color: #19bf2b;
+  width: 20%;
+  border-radius: 10px;
+}
+
+.button button[type="button"] {
+  background-color: #ed2d2d;
+  width: 20%;
+  border-radius: 10px;
+}
+
+.slider-wrapper {
+  position: relative;
+  max-width: 40rem;
+}
+
+.image {
+  position: relative;
+  max-width: 40rem;
+}
+
+.slider {
+  display: flex;
+  aspect-ratio: 16/10;
+
+  overflow-x: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0);
+  border-radius: 10px;
+}
+
+.slider img {
+  flex: 1 0 100%;
+  scroll-snap-align: start;
+  object-fit: cover;
+}
+
+.slider-nav {
+  display: flex;
+  column-gap: 1rem;
+  position: absolute;
+  bottom: 23rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.slider-nav a {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #000;
+  opacity: 0.75;
+  transition: opacity ease 250ms;
+}
+
+.slider-nav a:hover {
+  opacity: 1;
+}
+
+@media only screen and (max-width: 1200px) {
+  label {
+    font-size: 18px;
+  }
+
+  input {
+    font-size: 15px;
+  }
+
+  .button button {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  label {
+    font-size: 15px;
+  }
+
+  input {
+    font-size: 10px;
+  }
+
+  .button button {
+    font-size: 8px;
+  }
+
+  .button {
+    margin-top: 10px;
+  }
+
+  img {
+    padding: 60px 0;
+    width: 100%;
+  }
+
+  .image div {
+    font-size: 18px;
+  }
+
+  .image button {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  input {
+    font-size: 7px;
+  }
+
+  .button button {
+    font-size: 5px;
+  }
+
+  .button {
+    margin-top: 5px;
+  }
+
+  img {
+    padding: 80px 0;
+    width: 100%;
+  }
+
+  .image div {
+    padding: 5px 0;
+    font-size: 14px;
+  }
+
+  .image button {
+    font-size: 10px;
+  }
+}
