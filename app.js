@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 const __dirname = path.resolve();
 
 dotenv.config(path.join(__dirname, ".env"));
+
 import departmentRoute from './government/routes/departmentRoute.js';
 // import testController from "./government/controllers/testController.js";
 import cookieParser from 'cookie-parser';
@@ -87,9 +88,9 @@ import apiRoute, { setHeaders } from "./government/routes/apiRoutes.js";
 import districtRoute from './government/routes/districtRoute.js';
 import wardRoute from './government/routes/wardRoute.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
-governmentApp.use('/department', checkAuth,departmentRoute);
-governmentApp.use('/district', checkAuth,districtRoute);
-governmentApp.use('/ward', checkAuth, wardRoute);
+governmentApp.use('/department',departmentRoute);
+governmentApp.use('/district',districtRoute);
+governmentApp.use('/ward', wardRoute);
 
 // ==============================================================================
 // test area
