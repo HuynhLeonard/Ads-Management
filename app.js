@@ -100,34 +100,24 @@ governmentApp.get("/", (req,res) => {
 
 import { loginController } from "./government/controllers/authController.js";
 governmentApp.post('/', loginController);
-governmentApp.use('/add', (req,res) => {
-    res.render('add')
-})
 
 governmentApp.get('/show', (req,res) => {
     res.send(req.user);
 })
 
-import userController from './government/controllers/userController.js';
 import apiRoute, { setHeaders } from "./government/routes/apiRoutes.js";
 import districtRoute from './government/routes/districtRoute.js';
 import wardRoute from './government/routes/wardRoute.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
-governmentApp.use('/department', departmentRoute);
-governmentApp.use('/district', districtRoute);
-governmentApp.use('/ward', wardRoute);
-// governmentApp.get('/api/location/', (req,res) => {
-//     api
-//         .getAllLocations(req.query.districtID, req.query.wardID)
-//         .then((location) => res.status(200).json(location));
-// });
-governmentApp.get('/imgur', imgurController.getAccessToken);
-governmentApp.post('/test', userController.createUser);
+governmentApp.use('/department', checkAuth,departmentRoute);
+governmentApp.use('/district', checkAuth,districtRoute);
+governmentApp.use('/ward', checkAuth, wardRoute);
 
 // ==============================================================================
 // test area
 import { changePasswordController, forgotPassController, resetPasswordController, verifyOTPController } from "./government/controllers/authController.js";
 import uploadingRoute from './government/routes/uploading.js';
+import { checkAuth } from "./government/middleware/authMiddleware.js";
 governmentApp.use('/pic', uploadingRoute);
 governmentApp.post('/forgot-password', forgotPassController)
 governmentApp.post('/verify-code', verifyOTPController);
