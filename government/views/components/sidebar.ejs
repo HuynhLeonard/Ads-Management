@@ -1,78 +1,180 @@
 <!DOCTYPE html>
 <html>
-    <title>W3.CSS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <body style="font-family: Montserrat;">
-<!-- Sidebar -->
-    <div class="w3-sidebar w3-bar-block" style="display:none; z-index:10; background-color: #048480; width: 24rem; color: gainsboro;" id="mySidebar">
-        <button class="w3-bar-item w3-button w3-xxlarge" onclick="w3_close()" style="color: gainsboro; text-align: center; margin-bottom: 15px;">
-            <img src="/assets/logo.png" alt="logo" style="width: 70%;">
-            <i class='bx bx-x' style="font-size: 50px; position: relative; top: 10px;"></i>
-        </button>
-        <a href="/department" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-home w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Trang chủ</span>
-        </a>
-        <a href="/department/locations" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-building-house w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Danh sách quận huyện</span>
-        </a>
-        <a href="/department/advertisements?category=Location" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-map w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Điểm đặt / bảng quảng cáo</span>
-        </a>
-        <a href="/department/types?category=ads" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-spreadsheet w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Loại hình quảng cáo</span>
-        </a>
-        <a href="/department/requests?category=license" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-comment-dots w3-xxlarge' ></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Yêu cầu quảng cáo</span>
-        </a>
-        <a href="/department/reports" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bxs-report w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Danh sách báo cáo</span>
-        </a>
-        <a href="#" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-signal-5 w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Thống kê báo cáo</span>
-        </a>
-        <a href="/department/assign" class="w3-bar-item w3-button" style="width: 24rem; text-align: left; margin-bottom: 15px;">
-            <i class='bx bx-user w3-xxlarge'></i>
-            <span style="font-size: 20px; position:relative; bottom: 8px; left: 10px;">Phân công</span>
-        </a>
+  <title>W3.CSS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Montserrat"
+  />
+  <link
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+  />
+  <body style="font-family: Montserrat">
+    <!-- Sidebar -->
+    <div
+      class="w3-sidebar w3-bar-block w3-animate-left"
+      style="
+        display: none;
+        z-index: 10;
+        background-color: #048480;
+        width: 24rem;
+        color: gainsboro;
+      "
+      id="mySidebar"
+    >
+      <button
+        class="w3-bar-item w3-button w3-xxlarge"
+        onclick="w3_close()"
+        style="color: gainsboro; text-align: center; margin-bottom: 15px"
+      >
+        <img src="/assets/logo.png" alt="logo" style="width: 70%" />
+        <i
+          class="bx bx-x"
+          style="font-size: 50px; position: relative; top: 10px"
+        ></i>
+      </button>
+      <a
+        href="/department"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-home w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Trang chủ</span
+        >
+      </a>
+      <a
+        href="/department/locations"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-building-house w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Danh sách quận huyện</span
+        >
+      </a>
+      <a
+        href="/department/advertisements?category=Location"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-map w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Điểm đặt / bảng quảng cáo</span
+        >
+      </a>
+      <a
+        href="/department/types?category=ads"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-spreadsheet w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Loại hình quảng cáo</span
+        >
+      </a>
+      <a
+        href="/department/requests?category=license"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-comment-dots w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Yêu cầu quảng cáo</span
+        >
+      </a>
+      <a
+        href="/department/reports"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bxs-report w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Danh sách báo cáo</span
+        >
+      </a>
+      <a
+        href="#"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-signal-5 w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Thống kê báo cáo</span
+        >
+      </a>
+      <a
+        href="/department/assign"
+        class="w3-bar-item w3-button"
+        style="width: 24rem; text-align: left; margin-bottom: 15px"
+      >
+        <i class="bx bx-user w3-xxlarge"></i>
+        <span
+          style="font-size: 20px; position: relative; bottom: 8px; left: 10px"
+          >Phân công</span
+        >
+      </a>
     </div>
 
     <!-- Page Content -->
-    <div class="w3-overlay" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+    <div
+      class="w3-overlay"
+      onclick="w3_close()"
+      style="cursor: pointer"
+      id="myOverlay"
+    ></div>
 
-    <button class="w3-xxlarge" onclick="w3_open()" style="background-color: #048480; width: 5rem; color: gainsboro;">
-    <div style="height: 100vh; background-color: #048480; background-color:#048480; display: flex; flex-flow: column; gap: 40px; padding-top: 20px;">
-            <i class='bx bx-menu'></i>
-            <i class='bx bx-home'></i>
-            <i class='bx bx-building-house'></i>
-            <i class='bx bx-map' ></i>
-            <i class='bx bx-spreadsheet'></i>
-            <i class='bx bx-comment-dots'></i>
-            <i class='bx bxs-report' ></i>
-            <i class='bx bx-signal-5'></i>
-            <i class='bx bx-user' ></i>
-    </div>
+    <button
+      class="w3-xxlarge"
+      onclick="w3_open()"
+      style="
+        background-color: #048480;
+        width: 5rem;
+        color: gainsboro;
+        height: 100%;
+      "
+    >
+      <div
+        style="
+          height: 100%;
+          background-color: #048480;
+          display: flex;
+          flex-flow: column;
+          gap: 40px;
+          padding-top: 20px;
+        "
+      >
+        <i class="bx bx-menu"></i>
+        <i class="bx bx-home"></i>
+        <i class="bx bx-building-house"></i>
+        <i class="bx bx-map"></i>
+        <i class="bx bx-spreadsheet"></i>
+        <i class="bx bx-comment-dots"></i>
+        <i class="bx bxs-report"></i>
+        <i class="bx bx-signal-5"></i>
+        <i class="bx bx-user"></i>
+      </div>
     </button>
 
-        <script>
-            function w3_open() {
-                document.getElementById("mySidebar").style.display = "block";
-                document.getElementById("myOverlay").style.display = "block";
-            }
+    <script>
+      function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("myOverlay").style.display = "block";
+      }
 
-            function w3_close() {
-                document.getElementById("mySidebar").style.display = "none";
-                document.getElementById("myOverlay").style.display = "none";
-            }
-        </script>
-    </body>
+      function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("myOverlay").style.display = "none";
+      }
+    </script>
+  </body>
 </html>
