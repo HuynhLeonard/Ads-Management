@@ -9,17 +9,17 @@ import Report from '../models/reportAdsSchema.js';
 import ReportType from '../models/reportTypeSchema.js';
 
 const id = {
-    licensingRequests: 'requestID',
-    adsforms: 'CategoriesID',
+    licensingrequests: 'requestID',
+    adscategories: 'CategoriesID',
     boards: 'boardID',
-    spots: 'locationID',
+    locations: 'locationID',
     districts: 'districtID',
     wards: 'wardID',
     reports: 'reportID',
-    boardTypes: 'boardTypeID',
-    editRequests: 'requestID',
-    reportTypes: 'reportTypeID',
-    spotTypes: 'locationTypeID'
+    boardtypes: 'boardTypeID',
+    editrequests: 'requestID',
+    reporttypes: 'reportTypeID',
+    locationtypes: 'locationTypeID'
 };
 
 

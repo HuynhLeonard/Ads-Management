@@ -2,7 +2,7 @@ import locationSchema from "../../models/locationSchema.js";
 import * as adsCategoryService from "../../services/adsCategoriesService.js";
 import * as boardService from "../../services/boardService.js";
 import * as boardTypeService from "../../services/boardTypeService.js";
-// import * as IDCreate from "../../services/createIDService.js";
+import * as IDCreate from "../../services/createIDService.js";
 import * as districtService from "../../services/districtService.js";
 import * as locationService from "../../services/locationService.js";
 import * as locationTypeService from "../../services/locationTypeService.js";
@@ -258,7 +258,8 @@ const generateSpotID = async () => {
 // category = Location || Board
 export const addNewSpot = async (req, res) => {
     const { locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm, planned, images } = req.body;
-    const locationID = await generateSpotID();
+    const temp = await IDCreate.getNewID('Spot');
+    const locationID = temp;
     const data = { locationID, locationName, longitude, latitude, address, wardID, districtID, locationType, adsForm, planned, images }
     try {
         await locationService.createNewLocation(data);

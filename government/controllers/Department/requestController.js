@@ -153,18 +153,18 @@ controller.requestProcessing = async (req, res) => {
             const { objectID, editContent } = await editRequestService.getSingle(requestID);
             console.log('here2', editContent)
             if (objectID.startsWith('LC')) {
-                const { spotID, address, latitude, longitude, wardID, districtID, spotType, adsForm, planned, spotName, spotImage } = editContent;
+                const { spotID, address, latitude, longitude, wardID, districtID, locationType, adsForm, planned, locationName, images } = editContent;
                 await spotService.updateLocation(spotID, {
                     address: address,
                     latitude: latitude,
                     longitude: longitude,
                     wardID: wardID,
                     districtID: districtID,
-                    locationType: spotType,
+                    locationType: locationType,
                     adsForm: adsForm,
                     planned: planned,
-                    locationName: spotName,
-                    images: spotImage
+                    locationName: locationName,
+                    images: images
                 })
             } else {
                 console.log('newinfo',editContent);
