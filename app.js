@@ -5,6 +5,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import http from "http";
 import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
+
 const __dirname = path.resolve();
 
 dotenv.config(path.join(__dirname, ".env"));
@@ -52,6 +54,9 @@ governmentApp.use(
         secret: 'hihihi', // secret key
         resave: false,
         saveUninitialized: true,
+        store: MongoStore.create({
+            mongoUrl:'mongodb+srv://thienhuuhuynhdev:thienhuu2003@server.1iqibpx.mongodb.net/Advertisment',
+        }),
         proxy: true,
         name: 'LeonardApp',
         cookie: {
