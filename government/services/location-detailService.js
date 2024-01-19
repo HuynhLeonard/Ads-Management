@@ -161,7 +161,7 @@ export const getDistrictWardName = async (lat, lng) => {
       districtName = districtName;
     }
     if (wardName.length === 1) {
-      wardName = '0' + wardName;
+      wardName = wardName;
     }
     let address = data.items[0].address.label;
     console.log(address);
@@ -174,9 +174,9 @@ export const getDistrictWardName = async (lat, lng) => {
     const check1 = 'Quận ' + districtName;
     const check2 = 'Phường ' + wardName
     const  districtID = (await districtService.getIDByName(check1)) || '';
-    // console.log(districtName, districtID);
+    console.log(districtName, districtID);
     const wardID = (await wardService.getIDByName(check2)) || '';
-    // console.log(wardName, wardID);
+    console.log(wardName, wardID);
 
     return { address, districtName, wardName, districtID, wardID };
   } catch (error) {

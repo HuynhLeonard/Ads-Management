@@ -28,8 +28,6 @@ const show = async (req, res) => {
 	}
 
 	const data = await reportService.getReportByOfficerRole(officerRole);
-	console.log('report type service');
-	console.log(data);
 
 	const roleData = {
 		district: {
@@ -39,11 +37,9 @@ const show = async (req, res) => {
 				let wardName = item.wardName;
 
 				if (item.objectID.includes('AD')) {
-					console.log('check here');
 					const lat = item.objectID.split(':')[1];
 					const lng = item.objectID.split(':')[0].replace('AD', '');
 					const location = await locationDetailService.getDistrictWardName(lat, lng);
-					console.log(location);
 					const districtID = location.districtID;
 
 					// if districtID is not equal to officerRole, then return empty object
@@ -78,11 +74,10 @@ const show = async (req, res) => {
 				if (item.objectID.includes('AD')) {
 					const lat = item.objectID.split(':')[1];
 					const lng = item.objectID.split(':')[0].replace('AD', '');
+
 					const location = await locationDetailService.getDistrictWardName(lat, lng);
-					console.log(location);
 					const wardID = location.wardID;
-					console.log(officerRole);
-					console.log(wardID);
+
 
 					// if wardID is not equal to officerRole, then return empty object
 					if (wardID !== officerRole) {
@@ -108,19 +103,16 @@ const show = async (req, res) => {
 			)
 		},
 	}
-
 	let roleInfo = roleData[role];
 	// remove empty object
 	roleInfo.tableData = roleInfo.tableData.filter(item => Object.keys(item).length !== 0);
 
-	// console.log(roleInfo);
 
 	if (!roleInfo) {
 		res.status(404);
 		return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } });
 	}
 
-	// console.log(roleInfo);
 	let wardsOfDistrict = []
 	if (role === 'district') {
 		wardsOfDistrict = await wardService.getWardOfDistrict(officerRole)
@@ -134,7 +126,7 @@ const show = async (req, res) => {
 		roleInfo.checkboxData = wardsOfDistrict
 	}
 
-	// console.log(wardsOfDistrict);
+
 
 	res.render('reports', { url: req.originalUrl, title: title, ...roleInfo, role: role });
 }
@@ -147,7 +139,7 @@ const updateReport = async (req, res) => {
 
 	const reportInfo1 = await reportService.getSingleReport(reportID);
 	const reportInfo = reportInfo1[0];
-	console.log(reportInfo);
+
 	let officer = await userService.getRoleByUsername(dataToUpdate.officer);
 
 	if (role === 'district') {
@@ -185,10 +177,10 @@ const updateReport = async (req, res) => {
 const showDetail = async (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
 	const reportID = req.params.reportID;
-	console.log(reportID);
+
 	const data1 = await reportService.getSingleReport(reportID);
 	const dataFetch = data1[0];
-	console.log(dataFetch);
+
 	let title = role === 'district' ? 'Quận - Chi tiết báo cáo vi phạm' : 'Phường - Chi tiết báo cáo vi phạm';
 
 	const officerName = req.user.username;
