@@ -49,7 +49,14 @@ governmentApp.use(
     session({
         secret: 'hihihi', // secret key
         resave: false,
-        saveUninitialized: true
+        saveUninitialized: true,
+        proxy: true,
+        name: 'LeonardApp',
+        cookie: {
+            secure: true,
+            httpOnly: false,
+            sameSite: 'none'
+        }
          // use local session, session store will be cleared when the server restarts
     })
 );
