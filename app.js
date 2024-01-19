@@ -44,7 +44,8 @@ console.log(publicDirectory)
 governmentApp.use(express.static(publicDirectory));
 governmentApp.use(cookieParser('leonardHuynh'));
 
-passportConfig(passport)
+passportConfig(passport);
+governmentApp.set("trust proxy", 1);
 governmentApp.use(
     session({
         secret: 'hihihi', // secret key
