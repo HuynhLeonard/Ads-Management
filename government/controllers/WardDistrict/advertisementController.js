@@ -23,6 +23,7 @@ const show = async (req, res) => {
   let checkboxHeader = ''
 
   if (role === 'district') {
+    console.log(req.user);
     checkboxHeader = await districtService.getDistrictByID(req.user.districtID)
     if (checkboxHeader) checkboxHeader = checkboxHeader.districtName
     else checkboxHeader = 'Không có thông tin quận'
