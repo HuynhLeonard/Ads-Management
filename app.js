@@ -59,10 +59,11 @@ governmentApp.use(
         }),
         proxy: true,
         name: 'LeonardApp',
+        maxAge: 1000 * 60 * 15,
         cookie: {
             // secure: true,
             // httpOnly: false,
-            // sameSite: 'none'
+            sameSite: 'none'
         }
          // use local session, session store will be cleared when the server restarts
     })
