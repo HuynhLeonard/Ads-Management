@@ -14,6 +14,9 @@ router.get("/", async (req, res) => {
 });
 
 // lay thong tin officer (:username)
+router.get("/officer", (req,res) => {
+    res.redirect(`officer/${req.user.username}`);
+});
 router.get("/officer/:username", async (req,res) => controller.infoController.getInfo(req,res));
 router.post('/officer/:username', async (req, res) => controller.infoController.updateInfo(req, res));
 //nhóm report

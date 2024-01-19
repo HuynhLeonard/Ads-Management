@@ -103,9 +103,9 @@ import apiRoute, { setHeaders } from "./government/routes/apiRoutes.js";
 import districtRoute from './government/routes/districtRoute.js';
 import wardRoute from './government/routes/wardRoute.js';
 governmentApp.use('/api',setHeaders ,apiRoute);
-governmentApp.use('/department',departmentRoute);
-governmentApp.use('/district',districtRoute);
-governmentApp.use('/ward', wardRoute);
+governmentApp.use('/department',checkAuth,departmentRoute);
+governmentApp.use('/district',checkAuth,districtRoute);
+governmentApp.use('/ward',checkAuth, wardRoute);
 governmentApp.get('/ID', async (req,res) => {
     const ID = await createID.getNewID('Report');
     res.send(ID);
