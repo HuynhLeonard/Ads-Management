@@ -9,9 +9,9 @@ import Report from '../models/reportAdsSchema.js';
 import ReportType from '../models/reportTypeSchema.js';
 
 const id = {
-    licensingrequests: 'requestID',
+    LicensingRequest: 'requestID',
     adscategories: 'CategoriesID',
-    boards: 'boardID',
+    Board: 'boardID',
     locations: 'locationID',
     districts: 'districtID',
     wards: 'wardID',

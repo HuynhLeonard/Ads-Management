@@ -4,6 +4,7 @@ import { getSingleBoardType } from '../../services/boardTypeService.js';
 import { getSingleRequest } from '../../services/licensingService.js';
 import * as spotService from '../../services/locationService.js';
 import { editRequestService, licensingRequestService } from '../../services/requestService.js';
+import * as createID from "../../services/createIDService.js"
 const controller = {};
 
 const convertDate = (date) => {
@@ -215,7 +216,7 @@ controller.acceptLicense = async (req, res) => {
             res.redirect('requests?category=license');
         }
     } else {
-        data.boardID = await generateBoardID();
+        data.boardID = await createID.getNewID('Board');
         console.log(data);
         try {
             const response = await boardService.createNewBoard(data);

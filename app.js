@@ -18,6 +18,7 @@ import morgan from 'morgan';
 import passport from 'passport';
 import passportConfig from './government/config/passport.js';
 import imgurController from './government/controllers/imgurController.js';
+import * as createID from "./government/services/createIDService.js";
 
 
 const governmentApp = express();
@@ -99,6 +100,10 @@ governmentApp.use('/api',setHeaders ,apiRoute);
 governmentApp.use('/department',departmentRoute);
 governmentApp.use('/district',districtRoute);
 governmentApp.use('/ward', wardRoute);
+governmentApp.get('/ID', async (req,res) => {
+    const ID = await createID.getNewID('Report');
+    res.send(ID);
+})
 
 // ==============================================================================
 // test area

@@ -15,6 +15,7 @@ import {
 import { getRoleByUsername } from "../../services/userService.js";
 import { getWardOfDistrict } from "../../services/wardService.js";
 import licensingSchema from "../../models/licensingSchema.js";
+import * as createID from "../../services/createIDService.js";
 const convertDate = (date) => {
     const dateObject = new Date(date);
 
@@ -274,7 +275,7 @@ const add = async (req, res) => {
         console.log(license);
         const role = String(req.originalUrl.split("/")[1]);
         license.status = 0;
-        license.requestID = await generatelicenseID();
+        license.requestID = await createID.getNewID('LicensingRequest');;
         console.log(license);
         await createLicense(license);
         res.redirect(`/${role}`);

@@ -1,10 +1,9 @@
 import report from '../models/reportAdsSchema.js';
-
+import * as createID from "../services/createIDService.js";
 export const createReport = async (reportData) => {
     try {
         const newReport = new report(reportData);
-        const count = await report.countDocuments();
-        newReport.reportID = 'BC' + String(count + 1).padStart(3, '0');
+        newReport.reportID = await createID.getNewID('Report');
         console.log(newReport);
         const saveData = await newReport.save();
         return newReport.reportID;
