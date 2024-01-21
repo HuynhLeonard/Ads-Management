@@ -109,6 +109,14 @@ governmentApp.use('/ward',checkAuth, wardRoute);
 governmentApp.get('/ID', async (req,res) => {
     const ID = await createID.getNewID('Report');
     res.send(ID);
+});
+governmentApp.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err)
+      }
+      res.redirect('/')
+    })
 })
 
 // ==============================================================================
